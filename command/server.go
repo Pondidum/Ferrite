@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/jet"
 	"github.com/mitchellh/cli"
 	"github.com/spf13/pflag"
 )
@@ -42,11 +43,21 @@ func (c *ServerCommand) EnvironmentVariables() map[string]string {
 
 func (c *ServerCommand) RunContext(ctx context.Context, args []string) error {
 
-	app := fiber.New()
+	engine := jet.New("./ui", ".jet")
+	engine.Reload(true)
+
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("hello")
+		return c.Render("index", fiber.Map{
+			"Title": "Hello, World!",
+		}, "layouts/main")
 	})
+
+	app.Static("/js", "./ui/js")
+	app.Static("/css", "./ui/css")
 
 	return app.Listen(c.addr)
 }
