@@ -1,1 +1,10 @@
-<h1>{{ Title }}</h1>
+
+<div style="width: 975px; height: 301.476px; margin: 0px auto; padding: 40px;">
+  <div style="position: 'relative'">
+    {{range Layout }}
+      <div class="key" style="{{ .Style() }}">
+        <span class="binding">{{ .Label }}</span>
+      </div>
+    {{end}}
+  </div>
+</div>
