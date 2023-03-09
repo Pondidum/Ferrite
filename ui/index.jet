@@ -1,31 +1,68 @@
 <script type="module">
 import { Controller } from "./js/stimulus.js"
 Stimulus.register("keyboard", class extends Controller {
-  static targets = [ "key", "editor" ]
+  static targets = [ "layerTab", "layer" ]
+  static values = { selectedLayer: Number }
 
-  click(event) {
-    this.editorTarget.setAttribute("open", "")
+  selectLayer(event) {
+    event.preventDefault()
+    this.selectedLayerValue = Number(event.target.dataset.layer)
   }
 
-  cancel(event){
-    this.editorTarget.removeAttribute("open")
+  selectedLayerValueChanged() {
+
+    // select the tab
+    this.layerTabTargets.forEach((element, index) => {
+      element.classList.toggle("active", index === this.selectedLayerValue)
+    })
+
+    this.layerTargets.forEach((element, index) => {
+      element.hidden = index !== this.selectedLayerValue
+    })
+
   }
 
-  accept(event){
-    this.editorTarget.removeAttribute("open")
-  }
+//  click(event) {
+//    this.editorTarget.setAttribute("open", "")
+//  }
+//
+//  cancel(event){
+//    this.editorTarget.removeAttribute("open")
+//  }
+//
+//  accept(event){
+//    this.editorTarget.removeAttribute("open")
+//  }
 })
 </script>
 
+<div data-controller="keyboard">
 
-<div style="width: 975px; height: 301.476px; margin: 0px auto; padding: 40px;" data-controller="keyboard">
-  <div style="position: 'relative'">
-    {{range Layout }}
-      <div class="key" style="{{ .Style() }}" data-keyboard-target="key" data-action="click->keyboard#click">
-        <span class="binding">{{ .Label }}</span>
-      </div>
-    {{end}}
+  <ul class="nav nav-tabs">
+  {{ range index, layer := Keymap.Layers }}
+    <li class="nav-item">
+      <a class="nav-link" data-layer="{{ index }}" data-keyboard-target="layerTab" data-action="keyboard#selectLayer">{{ layer.Name }}</a>
+    </li>
+  {{ end }}
+  </ul>
+
+  {{ range layerIndex, layer := Keymap.Layers }}
+  <div style="position: relative; width: 975px; height: 301.476px; padding: 40px;" data-keyboard-target="layer" >
+  {{range i, key := Layout }}
+    {{ binding := layer.Bindings[i] }}
+
+    <div class="key" style="{{ key.Style() }}"
+      data-keyboard-target="key"
+      data-action="click->keyboard#click"
+      data-type="{{ binding.Type }}"
+      data-codes="{{ binding.Codes }}"
+    >
+      <span class="binding">{{ binding.Type }} : {{ binding.Codes }}</span>
+    </div>
+  {{end}}
   </div>
+  {{ end }}
+
 
   <dialog id="key-editor" data-keyboard-target="editor">
     hi
