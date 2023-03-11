@@ -1,0 +1,17 @@
+.modifiers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 5px;
+  row-gap: 5px;
+}
+
+.modifiers > * {
+  box-sizing: border-box;
+  background-color: whitesmoke;
+  padding: 0.5em 1em;
+}
+
+.active {
+  color: white;
+  background-color: var(--highlight);
+}

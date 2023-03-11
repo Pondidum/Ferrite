@@ -1,0 +1,61 @@
+<script type="module">
+  import { Controller } from "./js/stimulus.js"
+
+  Stimulus.register("editor",  class extends Controller {
+    static targets = [ "editor", "kp", "mo", "lt" ]
+
+    open({ detail: { key, type }}) {
+      console.log(event)
+
+      this.kpTarget.hidden = type !== "kp"
+      this.moTarget.hidden = type !== "mo"
+      this.ltTarget.hidden = type !== "lt"
+
+      this.editorTarget.showModal()
+    }
+
+    cancel(event){
+    this.editorTarget.close()
+    }
+
+    accept(event){
+      this.editorTarget.close()
+    }
+  })
+</script>
+
+<dialog id="key-editor"
+  data-controller="editor"
+  data-keyboard-target="editor"
+  data-editor-target="editor"
+  data-action="keyboard:open->editor#open"
+  >
+  <div data-editor-target="kp">
+    <h3>Key Press</h3>
+  </div>
+
+  <div data-editor-target="mo">
+    <h3>Momentary</h3>
+  </div>
+
+  <div data-editor-target="lt">
+    <h3>Layer Tap</h3>
+  </div>
+
+  <h3>Modifiers</h3>
+  <div class="modifiers">
+    <div data-editor-target="modifier" class="active">Left Shift</div>
+    <div data-editor-target="modifier">Right Shift</div>
+    <div data-editor-target="modifier">Left Ctrl</div>
+    <div data-editor-target="modifier">Right Ctrl</div>
+    <div data-editor-target="modifier">Left Alt</div>
+    <div data-editor-target="modifier">Right Alt</div>
+    <div data-editor-target="modifier">Left Meta</div>
+    <div data-editor-target="modifier">Right Meta</div>
+  </div>
+
+  <div>
+    <button value="cancel" data-action="editor#cancel">Cancel</button>
+    <button value="default" data-action="editor#accept">Confirm</button>
+  </div>
+</dialog>

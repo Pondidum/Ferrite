@@ -1,7 +1,7 @@
 <script type="module">
 import { Controller } from "./js/stimulus.js"
 Stimulus.register("keyboard", class extends Controller {
-  static targets = [ "layerTab", "layer" ]
+  static targets = [ "layerTab", "layer", "editor" ]
   static values = { selectedLayer: Number }
 
   selectLayer(event) {
@@ -22,17 +22,17 @@ Stimulus.register("keyboard", class extends Controller {
 
   }
 
-//  click(event) {
-//    this.editorTarget.setAttribute("open", "")
-//  }
-//
-//  cancel(event){
-//    this.editorTarget.removeAttribute("open")
-//  }
-//
-//  accept(event){
-//    this.editorTarget.removeAttribute("open")
-//  }
+  editKey(event) {
+    const key = event.target.closest("div.key")
+
+    const data = {
+      codes: key.dataset.codes,
+      type: key.dataset.type
+    }
+
+    this.dispatch("open", { target: this.editorTarget, detail: data})
+  }
+
 })
 </script>
 
@@ -54,7 +54,7 @@ Stimulus.register("keyboard", class extends Controller {
 
     <div class="key" style="{{ $key.Style }}"
       data-keyboard-target="key"
-      data-action="click->keyboard#click"
+      data-action="click->keyboard#editKey"
       data-type="{{ $binding.Type }}"
       data-codes="{{ $binding.Codes }}"
     >
@@ -65,13 +65,7 @@ Stimulus.register("keyboard", class extends Controller {
   </div>
   {{ end }}
 
+  {{ template "partials/editor" . }}
 
-  <dialog id="key-editor" data-keyboard-target="editor">
-    hi
-    <div>
-      <button value="cancel" data-action="keyboard#cancel">Cancel</button>
-      <button value="default" data-action="keyboard#accept">Confirm</button>
-    </div>
-  </dialog>
 
 </div>
