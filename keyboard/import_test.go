@@ -13,6 +13,7 @@ func TestKeycodeParsing(t *testing.T) {
 		"&none":         {Type: "none", Codes: []string{}},
 		"&kp LS(N1)":    {Type: "kp", Codes: []string{"LS", "N1"}},
 		"&kp LG(LS(Q))": {Type: "kp", Codes: []string{"LG", "LS", "Q"}},
+		"&mt LGUI L":    {Type: "mt", Codes: []string{"LGUI", "L"}},
 	}
 
 	for input, expected := range cases {

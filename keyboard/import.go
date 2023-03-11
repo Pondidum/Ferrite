@@ -57,7 +57,7 @@ func parseKeycode(keycode string) Keybind {
 
 	value := paramsRx.ReplaceAllString(keybind, "")
 	if value != "" {
-		codes = append(codes, value)
+		codes = append(codes, strings.Split(value, " ")...)
 	}
 
 	rem := paramsRx.FindStringSubmatch(keybind)
