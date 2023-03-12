@@ -2,24 +2,59 @@
   import { Controller } from "./js/stimulus.js"
 
   Stimulus.register("editor",  class extends Controller {
-    static targets = [ "editor", "kp", "mo", "lt" ]
+    static targets = [ "modifier", "key" ]
 
-    open({ detail: { key, type }}) {
-      console.log(event)
+    modifiers;
 
-      this.kpTarget.hidden = type !== "kp"
-      this.moTarget.hidden = type !== "mo"
-      this.ltTarget.hidden = type !== "lt"
+    connect() {
+      this.modifiers = {}
 
-      this.editorTarget.showModal()
+      this.modifierTargets.forEach(e => {
+        this.modifiers[e.dataset.modifierKey] = e
+        this.modifiers[e.dataset.modifierFunc] = e
+      })
+    }
+
+    resetModifiers() {
+      this.modifierTargets.forEach(e => e.classList.toggle("active", false))
+    }
+
+    activateModifier(code) {
+
+      const element = this.modifiers[code]
+      if (element) {
+        element.classList.toggle("active", true)
+      }
+
+    }
+
+    keyText(code) {
+      this.keyTarget.innerText = code
+    }
+
+    open({ detail }) {
+
+      this.resetModifiers()
+
+      detail.firstKey.split(",").forEach(code => {
+
+        if (this.modifiers[code]) {
+          this.activateModifier(code)
+        } else {
+          this.keyText(code)
+        }
+
+      })
+
+      this.element.showModal()
     }
 
     cancel(event){
-    this.editorTarget.close()
+      this.element.close()
     }
 
     accept(event){
-      this.editorTarget.close()
+      this.element.close()
     }
   })
 </script>
@@ -27,31 +62,23 @@
 <dialog id="key-editor"
   data-controller="editor"
   data-keyboard-target="editor"
-  data-editor-target="editor"
   data-action="keyboard:open->editor#open"
   >
-  <div data-editor-target="kp">
-    <h3>Key Press</h3>
-  </div>
 
-  <div data-editor-target="mo">
-    <h3>Momentary</h3>
-  </div>
+  <h5>Key</h5>
+  <div data-editor-target="key"></div>
 
-  <div data-editor-target="lt">
-    <h3>Layer Tap</h3>
-  </div>
 
-  <h3>Modifiers</h3>
+  <h5>Modifiers</h5>
   <div class="modifiers">
-    <div data-editor-target="modifier" class="active">Left Shift</div>
-    <div data-editor-target="modifier">Right Shift</div>
-    <div data-editor-target="modifier">Left Ctrl</div>
-    <div data-editor-target="modifier">Right Ctrl</div>
-    <div data-editor-target="modifier">Left Alt</div>
-    <div data-editor-target="modifier">Right Alt</div>
-    <div data-editor-target="modifier">Left Meta</div>
-    <div data-editor-target="modifier">Right Meta</div>
+    <div data-editor-target="modifier" data-modifier-key="LSHIFT" data-modifier-func="LS">Left Shift</div>
+    <div data-editor-target="modifier" data-modifier-key="RSHIFT" data-modifier-func="RS">Right Shift</div>
+    <div data-editor-target="modifier" data-modifier-key="LCTRL" data-modifier-func="LC">Left Ctrl</div>
+    <div data-editor-target="modifier" data-modifier-key="RCTRL" data-modifier-func="RC">Right Ctrl</div>
+    <div data-editor-target="modifier" data-modifier-key="LALT" data-modifier-func="LA">Left Alt</div>
+    <div data-editor-target="modifier" data-modifier-key="RALT" data-modifier-func="RA">Right Alt</div>
+    <div data-editor-target="modifier" data-modifier-key="LGUI" data-modifier-func="LG">Left Meta</div>
+    <div data-editor-target="modifier" data-modifier-key="RGUI" data-modifier-func="RG">Right Meta</div>
   </div>
 
   <div>

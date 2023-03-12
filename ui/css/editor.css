@@ -1,17 +1,18 @@
-.modifiers {
+#key-editor .modifiers {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 5px;
   row-gap: 5px;
 }
 
-.modifiers > * {
+#key-editor .modifiers > *,
+#key-editor *[data-editor-target="key"] {
   box-sizing: border-box;
   background-color: whitesmoke;
   padding: 0.5em 1em;
 }
 
-.active {
+#key-editor .active {
   color: white;
   background-color: var(--highlight);
 }

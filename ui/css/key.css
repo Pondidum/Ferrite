@@ -30,22 +30,6 @@
   font-size: 60%;
 }
 
-.params:not([data-is-root="true"])::before {
-  content: "(";
-  opacity: 0.4;
-  font-weight: bold;
-  margin: 2px;
-}
-.params:not([data-is-root="true"])::after {
-  content: ")";
-  opacity: 0.4;
-  font-weight: bold;
-  margin: 2px;
-}
-.params:not([data-is-root="true"]) .param:not(:last-child)::after {
-  content: ",";
-}
-
 .code {
   padding: 0px 4px;
   margin-left: -2px;

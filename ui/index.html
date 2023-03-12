@@ -26,8 +26,9 @@ Stimulus.register("keyboard", class extends Controller {
     const key = event.target.closest("div.key")
 
     const data = {
-      codes: key.dataset.codes,
-      type: key.dataset.type
+      type: key.dataset.type,
+      firstKey: key.dataset.firstKey,
+      secondKey: key.dataset.secondKey,
     }
 
     this.dispatch("open", { target: this.editorTarget, detail: data})
@@ -56,9 +57,11 @@ Stimulus.register("keyboard", class extends Controller {
       data-keyboard-target="key"
       data-action="click->keyboard#editKey"
       data-type="{{ $binding.Type }}"
-      data-codes="{{ $binding.Codes }}"
+      data-first-key="{{ $binding.FirstKey | csv }}"
+      data-second-key="{{ $binding.SecondKey | csv }}"
     >
-      <span class="binding">{{ $binding.Type }} : {{ $binding.Codes }}</span>
+      <span class="behaviour-binding">{{ $binding.Type }}</span>
+      <span class="code">{{ $binding.FirstKey | csv }}</span>
     </div>
 
   {{end}}
