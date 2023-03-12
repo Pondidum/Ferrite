@@ -35,7 +35,7 @@ func Import(originalPath string) (*Keymap, error) {
 		}
 
 		for k, code := range original.Layers[i] {
-			layer.Bindings[k] = parseKeycode(code)
+			layer.Bindings[k] = parseKeySequence(code)
 		}
 
 		keymap.Layers[i] = layer
@@ -48,19 +48,35 @@ func Import(originalPath string) (*Keymap, error) {
 var keyTypeRx = regexp.MustCompile(`^(&.+?)\b`)
 var paramsRx = regexp.MustCompile(`\((.+)\)`)
 
-func parseKeycode(keycode string) Keybind {
+func parseKeySequence(keycode string) Keybind {
 	keyType := keyTypeRx.FindStringSubmatch(keycode)
 
-	codes := []string{}
-
-	keybind := strings.TrimSpace(keyTypeRx.ReplaceAllString(keycode, ""))
-
-	value := paramsRx.ReplaceAllString(keybind, "")
-	if value != "" {
-		codes = append(codes, strings.Split(value, " ")...)
+	bind := Keybind{
+		Type: strings.TrimLeft(keyType[0], "&"),
 	}
 
-	rem := paramsRx.FindStringSubmatch(keybind)
+	keybind := strings.TrimSpace(keyTypeRx.ReplaceAllString(keycode, ""))
+	codes := strings.Split(keybind, " ")
+
+	if len(codes) >= 1 {
+		bind.FirstKey = parseKey(codes[0])
+	}
+
+	if len(codes) >= 2 {
+		bind.SecondKey = parseKey(codes[1])
+	}
+
+	return bind
+}
+
+func parseKey(code string) []string {
+	codes := []string{}
+	value := paramsRx.ReplaceAllString(code, "")
+	if value != "" {
+		codes = append(codes, value)
+	}
+
+	rem := paramsRx.FindStringSubmatch(code)
 
 	for len(rem) > 0 {
 		value = paramsRx.ReplaceAllString(rem[1], "")
@@ -70,8 +86,5 @@ func parseKeycode(keycode string) Keybind {
 		rem = paramsRx.FindStringSubmatch(rem[1])
 	}
 
-	return Keybind{
-		Type:  strings.TrimLeft(keyType[0], "&"),
-		Codes: codes,
-	}
+	return codes
 }

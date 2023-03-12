@@ -15,8 +15,9 @@ type Layer struct {
 }
 
 type Keybind struct {
-	Type  string   `json:"type"`
-	Codes []string `json:"codes"`
+	Type      string   `json:"type"`
+	FirstKey  []string `json:"first"`
+	SecondKey []string `json:"second"`
 }
 
 func ReadKeymap(jsonFile string) (*Keymap, error) {

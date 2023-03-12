@@ -9,16 +9,16 @@ import (
 func TestKeycodeParsing(t *testing.T) {
 
 	cases := map[string]Keybind{
-		"&kp Q":         {Type: "kp", Codes: []string{"Q"}},
-		"&none":         {Type: "none", Codes: []string{}},
-		"&kp LS(N1)":    {Type: "kp", Codes: []string{"LS", "N1"}},
-		"&kp LG(LS(Q))": {Type: "kp", Codes: []string{"LG", "LS", "Q"}},
-		"&mt LGUI L":    {Type: "mt", Codes: []string{"LGUI", "L"}},
+		"&kp Q":         {Type: "kp", FirstKey: []string{"Q"}},
+		"&none":         {Type: "none", FirstKey: []string{}},
+		"&kp LS(N1)":    {Type: "kp", FirstKey: []string{"LS", "N1"}},
+		"&kp LG(LS(Q))": {Type: "kp", FirstKey: []string{"LG", "LS", "Q"}},
+		"&mt LGUI L":    {Type: "mt", FirstKey: []string{"LGUI"}, SecondKey: []string{"L"}},
 	}
 
 	for input, expected := range cases {
 		t.Run(input, func(t *testing.T) {
-			assert.Equal(t, expected, parseKeycode(input))
+			assert.Equal(t, expected, parseKeySequence(input))
 		})
 	}
 }
