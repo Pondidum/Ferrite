@@ -2,275 +2,1573 @@
   "layers": [
     {
       "name": "default",
-      "mapping": [
-        "&kp Q",
-        "&kp W",
-        "&kp E",
-        "&kp R",
-        "&kp T",
-        "&kp Y",
-        "&kp U",
-        "&kp I",
-        "&kp O",
-        "&kp P",
-        "&kp A",
-        "&mt LGUI S",
-        "&mt LALT D",
-        "&kp F",
-        "&kp G",
-        "&kp H",
-        "&kp J",
-        "&mt LALT K",
-        "&mt LGUI L",
-        "&kp LSHIFT",
-        "&lt 6 Z",
-        "&kp X",
-        "&kp C",
-        "&kp V",
-        "&kp B",
-        "&kp N",
-        "&kp M",
-        "&kp COMMA",
-        "&kp DOT",
-        "&kp LCTRL",
-        "&lt 3 TAB",
-        "&lt 2 SPACE",
-        "&kp RET",
-        "&mo 1"
+      "bindings": [
+        {
+          "type": "kp",
+          "first": [
+            "Q"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "W"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "E"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "R"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "T"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "Y"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "U"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "I"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "O"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "P"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "A"
+          ],
+          "second": null
+        },
+        {
+          "type": "mt",
+          "first": [
+            "LGUI"
+          ],
+          "second": [
+            "S"
+          ]
+        },
+        {
+          "type": "mt",
+          "first": [
+            "LALT"
+          ],
+          "second": [
+            "D"
+          ]
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "G"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "H"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "J"
+          ],
+          "second": null
+        },
+        {
+          "type": "mt",
+          "first": [
+            "LALT"
+          ],
+          "second": [
+            "K"
+          ]
+        },
+        {
+          "type": "mt",
+          "first": [
+            "LGUI"
+          ],
+          "second": [
+            "L"
+          ]
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LSHIFT"
+          ],
+          "second": null
+        },
+        {
+          "type": "lt",
+          "first": [
+            "6"
+          ],
+          "second": [
+            "Z"
+          ]
+        },
+        {
+          "type": "kp",
+          "first": [
+            "X"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "C"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "V"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "B"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "N"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "M"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "COMMA"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "DOT"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LCTRL"
+          ],
+          "second": null
+        },
+        {
+          "type": "lt",
+          "first": [
+            "3"
+          ],
+          "second": [
+            "TAB"
+          ]
+        },
+        {
+          "type": "lt",
+          "first": [
+            "2"
+          ],
+          "second": [
+            "SPACE"
+          ]
+        },
+        {
+          "type": "kp",
+          "first": [
+            "RET"
+          ],
+          "second": null
+        },
+        {
+          "type": "mo",
+          "first": [
+            "1"
+          ],
+          "second": null
+        }
       ]
     },
     {
       "name": "NUM",
-      "mapping": [
-        "&kp N1",
-        "&kp N2",
-        "&kp N3",
-        "&kp N4",
-        "&kp N5",
-        "&kp N6",
-        "&kp N7",
-        "&kp N8",
-        "&kp N9",
-        "&kp N0",
-        "&none",
-        "&kp LGUI",
-        "&kp LALT",
-        "&kp LSHIFT",
-        "&kp LCTRL",
-        "&kp MINUS",
-        "&kp LS(MINUS)",
-        "&kp EQUAL",
-        "&kp LS(EQUAL)",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&kp PERIOD",
-        "&kp SLASH",
-        "&kp LS(N8)",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none"
+      "bindings": [
+        {
+          "type": "kp",
+          "first": [
+            "N1"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "N2"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "N3"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "N4"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "N5"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "N6"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "N7"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "N8"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "N9"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "N0"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LGUI"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LALT"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LSHIFT"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LCTRL"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "MINUS"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "MINUS"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "EQUAL"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "EQUAL"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "PERIOD"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "SLASH"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "N8"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        }
       ]
     },
     {
       "name": "SYM",
-      "mapping": [
-        "&kp LS(N1)",
-        "&kp LS(N2)",
-        "&kp LS(N3)",
-        "&kp LS(N4)",
-        "&kp LS(N5)",
-        "&kp LS(N6)",
-        "&kp LS(N7)",
-        "&kp LS(N8)",
-        "&kp LS(N9)",
-        "&kp LS(N0)",
-        "&kp LS(LEFT_BRACKET)",
-        "&kp LS(RIGHT_BRACKET)",
-        "&kp LEFT_BRACKET",
-        "&kp RIGHT_BRACKET",
-        "&kp NON_US_HASH",
-        "&kp LS(APOSTROPHE)",
-        "&kp APOSTROPHE",
-        "&kp LS(SEMICOLON)",
-        "&kp SEMICOLON",
-        "&kp LS(SLASH)",
-        "&kp LS(NON_US_BACKSLASH)",
-        "&kp NON_US_BACKSLASH",
-        "&none",
-        "&kp LS(NON_US_HASH)",
-        "&kp GRAVE",
-        "&kp MINUS",
-        "&kp LS(MINUS)",
-        "&kp EQUAL",
-        "&kp LS(EQUAL)",
-        "&kp SLASH",
-        "&none",
-        "&none",
-        "&kp DEL",
-        "&kp BACKSPACE"
+      "bindings": [
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "N1"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "N2"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "N3"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "N4"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "N5"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "N6"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "N7"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "N8"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "N9"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "N0"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "LEFT_BRACKET"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "RIGHT_BRACKET"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LEFT_BRACKET"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "RIGHT_BRACKET"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "NON_US_HASH"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "APOSTROPHE"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "APOSTROPHE"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "SEMICOLON"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "SEMICOLON"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "SLASH"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "NON_US_BACKSLASH"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "NON_US_BACKSLASH"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "NON_US_HASH"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "GRAVE"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "MINUS"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "MINUS"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "EQUAL"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LS",
+            "EQUAL"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "SLASH"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "DEL"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "BACKSPACE"
+          ],
+          "second": null
+        }
       ]
     },
     {
       "name": "NAV",
-      "mapping": [
-        "&kp ESCAPE",
-        "&none",
-        "&kp K_PREV",
-        "&kp K_PLAY_PAUSE",
-        "&kp K_NEXT",
-        "&kp PAGE_UP",
-        "&kp HOME",
-        "&kp END",
-        "&none",
-        "&kp PRINTSCREEN",
-        "&none",
-        "&kp LGUI",
-        "&kp LALT",
-        "&none",
-        "&kp K_VOL_UP",
-        "&kp LEFT_ARROW",
-        "&kp DOWN_ARROW",
-        "&kp UP_ARROW",
-        "&kp RIGHT_ARROW",
-        "&kp LSHIFT",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&kp K_VOL_DN",
-        "&kp PAGE_DOWN",
-        "&none",
-        "&none",
-        "&none",
-        "&kp LCTRL",
-        "&none",
-        "&none",
-        "&none",
-        "&none"
+      "bindings": [
+        {
+          "type": "kp",
+          "first": [
+            "ESCAPE"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "K_PREV"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "K_PLAY_PAUSE"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "K_NEXT"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "PAGE_UP"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "HOME"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "END"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "PRINTSCREEN"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LGUI"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LALT"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "K_VOL_UP"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LEFT_ARROW"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "DOWN_ARROW"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "UP_ARROW"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "RIGHT_ARROW"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LSHIFT"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "K_VOL_DN"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "PAGE_DOWN"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LCTRL"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        }
       ]
     },
     {
       "name": "WM",
-      "mapping": [
-        "&kp LG(N1)",
-        "&kp LG(N2)",
-        "&kp LG(N3)",
-        "&kp LG(N4)",
-        "&kp LG(N5)",
-        "&kp LG(N6)",
-        "&kp LG(N7)",
-        "&kp LG(N8)",
-        "&kp LG(N9)",
-        "&kp LG(N0)",
-        "&kp LSHIFT",
-        "&kp LG(W)",
-        "&kp LG(E)",
-        "&kp LG(V)",
-        "&kp LG(H)",
-        "&kp LG(LEFT_ARROW)",
-        "&kp LG(DOWN_ARROW)",
-        "&kp LG(UP_ARROW)",
-        "&kp LG(RIGHT_ARROW)",
-        "&none",
-        "&kp LALT",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&kp LG(LS(Q))",
-        "&none",
-        "&kp LG(D)",
-        "&kp LG(ENTER)"
+      "bindings": [
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "N1"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "N2"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "N3"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "N4"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "N5"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "N6"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "N7"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "N8"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "N9"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "N0"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LSHIFT"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "W"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "E"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "V"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "H"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "LEFT_ARROW"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "DOWN_ARROW"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "UP_ARROW"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "RIGHT_ARROW"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LALT"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "LS",
+            "Q"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "D"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LG",
+            "ENTER"
+          ],
+          "second": null
+        }
       ]
     },
     {
       "name": "SYS",
-      "mapping": [
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&bootloader",
-        "&bootloader",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none"
+      "bindings": [
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "bootloader",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "bootloader",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        }
       ]
     },
     {
       "name": "FUN",
-      "mapping": [
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&kp F1",
-        "&kp F2",
-        "&kp F3",
-        "&kp F4",
-        "&none",
-        "&none",
-        "&kp LGUI",
-        "&kp LALT",
-        "&kp LSHIFT",
-        "&kp LCTRL",
-        "&kp F5",
-        "&kp F6",
-        "&kp F7",
-        "&kp F8",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&kp F9",
-        "&kp F10",
-        "&kp F11",
-        "&kp F12",
-        "&none",
-        "&none",
-        "&none",
-        "&none",
-        "&none"
+      "bindings": [
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F1"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F2"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F3"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F4"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LGUI"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LALT"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LSHIFT"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "LCTRL"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F5"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F6"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F7"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F8"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F9"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F10"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F11"
+          ],
+          "second": null
+        },
+        {
+          "type": "kp",
+          "first": [
+            "F12"
+          ],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        },
+        {
+          "type": "none",
+          "first": [],
+          "second": null
+        }
       ]
     }
   ]
