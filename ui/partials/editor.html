@@ -2,51 +2,45 @@
   import { Controller } from "./js/stimulus.js"
 
   Stimulus.register("editor",  class extends Controller {
-    static targets = [ "modifier", "key" ]
-
-    modifiers;
-
-    connect() {
-      this.modifiers = {}
-
-      this.modifierTargets.forEach(e => {
-        this.modifiers[e.dataset.modifierKey] = e
-        this.modifiers[e.dataset.modifierFunc] = e
-      })
-    }
-
-    resetModifiers() {
-      this.modifierTargets.forEach(e => e.classList.toggle("active", false))
-    }
-
-    activateModifier(code) {
-
-      const element = this.modifiers[code]
-      if (element) {
-        element.classList.toggle("active", true)
-      }
-
-    }
-
-    keyText(code) {
-      this.keyTarget.innerText = code
-    }
+    static targets = [ "keyType", "keyFields" ]
+    static values = { selectedKeyType: String }
 
     open({ detail }) {
 
-      this.resetModifiers()
+      this.selectedKeyTypeValue = detail.type
 
-      detail.firstKey.split(",").forEach(code => {
 
-        if (this.modifiers[code]) {
-          this.activateModifier(code)
-        } else {
-          this.keyText(code)
-        }
+      // if (detail.type == "kp") {
+      //   this.tapKeyTarget.innerText = detail.firstKey
 
-      })
+      // } else if (detail.type == "lt") {
+      //   this.tapKeyTarget.innerText = detail.secondKey
+      //   this.layerTarget.innerText = detail.firstKey
+
+      // } else if (detail.type == "mt") {
+      //   this.tapKeyTarget.innerText = detail.secondKey
+
+      // } else if (detail.type == "mo") {
+      //   this.holdKeyTarget.innerText = detail.firstKey
+
+      // }
 
       this.element.showModal()
+    }
+
+    selectKeyType(event) {
+      event.preventDefault()
+      this.selectedKeyTypeValue = event.target.dataset.type
+    }
+
+    selectedKeyTypeValueChanged() {
+      this.keyTypeTargets.forEach((element) => {
+        element.classList.toggle("active", element.dataset.type === this.selectedKeyTypeValue)
+      })
+
+      this.keyFieldsTargets.forEach((element) => {
+        element.hidden = element.dataset.type !== this.selectedKeyTypeValue
+      })
     }
 
     cancel(event){
@@ -65,24 +59,55 @@
   data-action="keyboard:open->editor#open"
   >
 
-  <h5>Key</h5>
-  <div data-editor-target="key"></div>
+  <ul class="nav nav-tabs mb-2">
+    <li class="nav-item">
+      <a class="nav-link" data-type="kp" data-editor-target="keyType" data-action="editor#selectKeyType">KP</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-type="mt" data-editor-target="keyType" data-action="editor#selectKeyType">MT</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-type="lt" data-editor-target="keyType" data-action="editor#selectKeyType">LT</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-type="mo" data-editor-target="keyType" data-action="editor#selectKeyType">MO</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-type="none" data-editor-target="keyType" data-action="editor#selectKeyType">None</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-type="trans" data-editor-target="keyType" data-action="editor#selectKeyType">Trans</a>
+    </li>
+  </ul>
 
+  <div data-editor-target="keyFields" data-type="kp">
+    <p>When tapped <a href="#" data-editor-target="kpTap">KEY</a>.</p>
+  </div>
 
-  <h5>Modifiers</h5>
-  <div class="modifiers">
-    <div data-editor-target="modifier" data-modifier-key="LSHIFT" data-modifier-func="LS">Left Shift</div>
-    <div data-editor-target="modifier" data-modifier-key="RSHIFT" data-modifier-func="RS">Right Shift</div>
-    <div data-editor-target="modifier" data-modifier-key="LCTRL" data-modifier-func="LC">Left Ctrl</div>
-    <div data-editor-target="modifier" data-modifier-key="RCTRL" data-modifier-func="RC">Right Ctrl</div>
-    <div data-editor-target="modifier" data-modifier-key="LALT" data-modifier-func="LA">Left Alt</div>
-    <div data-editor-target="modifier" data-modifier-key="RALT" data-modifier-func="RA">Right Alt</div>
-    <div data-editor-target="modifier" data-modifier-key="LGUI" data-modifier-func="LG">Left Meta</div>
-    <div data-editor-target="modifier" data-modifier-key="RGUI" data-modifier-func="RG">Right Meta</div>
+  <div data-editor-target="keyFields" data-type="mt">
+    <p>When tapped <a href="#" data-editor-target="mtTap">KEY</a>.</p>
+    <p>When held <a href="#" data-editor-target="mtMod">KEY</a>.</p>
+  </div>
+
+  <div data-editor-target="keyFields" data-type="lt">
+    <p>When tapped <a href="#" data-editor-target="ltTap">KEY</a>.</p>
+    <p>When held switch to layer <a href="#" data-editor-target="ltLayer">LAYER</a>.</p>
+  </div>
+
+  <div data-editor-target="keyFields" data-type="mo">
+    <p>When tapped switch to layer <a href="#" data-editor-target="moLayer">LAYER</a>.</p>
+  </div>
+
+  <div data-editor-target="keyFields" data-type="none">
+    <p>Do Nothing</p>
+  </div>
+
+  <div data-editor-target="keyFields" data-type="trans">
+    <p>Pass the keypress through to the next layer below in the stack</p>
   </div>
 
   <div>
-    <button value="cancel" data-action="editor#cancel">Cancel</button>
-    <button value="default" data-action="editor#accept">Confirm</button>
+    <button class="btn btn-secondary" value="cancel" data-action="editor#cancel">Cancel</button>
+    <button class="btn btn-primary" value="default" data-action="editor#accept">Confirm</button>
   </div>
 </dialog>
