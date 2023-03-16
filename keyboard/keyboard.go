@@ -33,7 +33,7 @@ func (k *Key) Style() template.CSS {
 	h := DefaultSize
 	rx := (k.X - math.Max(k.Rx, k.X)) * -(DefaultSize + DefaultPadding)
 	ry := (k.Y - math.Max(k.Ry, k.Y)) * -(DefaultSize + DefaultPadding)
-	a := math.Max(k.R, 0)
+	a := k.R
 
 	return template.CSS(fmt.Sprintf(
 		"top: %vpx; left: %vpx; width: %vpx; height: %vpx; transform-origin: %vpx %vpx; transform: rotate(%vdeg)",
