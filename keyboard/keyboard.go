@@ -3,7 +3,6 @@ package keyboard
 import (
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"io/ioutil"
 	"math"
 )
@@ -26,7 +25,7 @@ type Key struct {
 const DefaultSize = 65
 const DefaultPadding = 5
 
-func (k *Key) Style() template.CSS {
+func (k *Key) Style() string {
 	x := k.X * (DefaultSize + DefaultPadding)
 	y := k.Y * (DefaultSize + DefaultPadding)
 	u := DefaultSize
@@ -35,9 +34,9 @@ func (k *Key) Style() template.CSS {
 	ry := (k.Y - math.Max(k.Ry, k.Y)) * -(DefaultSize + DefaultPadding)
 	a := k.R
 
-	return template.CSS(fmt.Sprintf(
+	return fmt.Sprintf(
 		"top: %vpx; left: %vpx; width: %vpx; height: %vpx; transform-origin: %vpx %vpx; transform: rotate(%vdeg)",
-		y, x, u, h, rx, ry, a))
+		y, x, u, h, rx, ry, a)
 
 }
 

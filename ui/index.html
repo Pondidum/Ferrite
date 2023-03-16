@@ -53,7 +53,7 @@ Stimulus.register("keyboard", class extends Controller {
   {{range $i, $key := $layout }}
     {{ $binding := index $layer.Bindings $i }}
 
-    <div class="key" style="{{ $key.Style }}"
+    <div class="key" style="{{ $key.Style | css }}"
       data-keyboard-target="key"
       data-action="click->keyboard#editKey"
       data-type="{{ $binding.Type }}"

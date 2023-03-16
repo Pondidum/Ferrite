@@ -3,6 +3,7 @@ package command
 import (
 	"context"
 	"ferrite/keyboard"
+	"html/template"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -49,6 +50,9 @@ func (c *ServerCommand) RunContext(ctx context.Context, args []string) error {
 	engine.Reload(true)
 	engine.AddFunc("csv", func(elems []string) string {
 		return strings.Join(elems, ",")
+	})
+	engine.AddFunc("css", func(in string) template.CSS {
+		return template.CSS(in)
 	})
 
 	app := fiber.New(fiber.Config{
