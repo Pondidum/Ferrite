@@ -3,6 +3,7 @@ package command
 import (
 	"context"
 	"ferrite/keyboard"
+	"ferrite/zmk"
 	"html/template"
 	"strings"
 
@@ -69,11 +70,16 @@ func (c *ServerCommand) RunContext(ctx context.Context, args []string) error {
 		return err
 	}
 
+	possibleKeys, err := zmk.ReadKeys()
+	if err != nil {
+		return err
+	}
+
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("index", fiber.Map{
-			"Title":  "Hello, World!",
-			"Layout": kb.Layout,
-			"Keymap": keymap,
+			"ZmkKeys": possibleKeys,
+			"Layout":  kb.Layout,
+			"Keymap":  keymap,
 		}, "layouts/main")
 	})
 
