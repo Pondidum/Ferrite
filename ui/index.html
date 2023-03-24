@@ -48,6 +48,7 @@ Stimulus.register("keyboard", class extends Controller {
   {{ end }}
   </ul>
 
+  {{ $symbols := .ZmkSymbolIndex }}
   {{ range $layerIndex, $layer := .Keymap.Layers }}
   <div style="position: relative; width: 975px; height: 301.476px; padding: 40px;" data-keyboard-target="layer" >
   {{range $i, $key := $layout }}
@@ -61,8 +62,12 @@ Stimulus.register("keyboard", class extends Controller {
       data-second-key="{{ $binding.SecondKey | csv }}"
     >
       <span class="behaviour-binding">{{ $binding.Type }}</span>
-      <span class="code">{{ $binding.FirstKey | csv }}</span>
-      <span class="code">{{ $binding.SecondKey | csv }}</span>
+      <span class="code">
+        {{ range $i, $bind := $binding.FirstKey }}
+          {{ index $symbols $bind }}
+        {{ end }}
+      </span>
+      <!-- <span class="code">{{ $binding.SecondKey | csv }}</span> -->
     </div>
 
   {{end}}

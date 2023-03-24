@@ -77,9 +77,9 @@ func (c *ServerCommand) RunContext(ctx context.Context, args []string) error {
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("index", fiber.Map{
-			"ZmkKeys": possibleKeys,
-			"Layout":  kb.Layout,
-			"Keymap":  keymap,
+			"ZmkSymbolIndex": zmk.BuildSymbolIndex(possibleKeys),
+			"Layout":         kb.Layout,
+			"Keymap":         keymap,
 		}, "layouts/main")
 	})
 
