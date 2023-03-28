@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/template/html"
 	"github.com/mitchellh/cli"
 	"github.com/spf13/pflag"
@@ -60,6 +61,8 @@ func (c *ServerCommand) RunContext(ctx context.Context, args []string) error {
 		Views: engine,
 	})
 
+	app.Use(cors.New())
+
 	kb, err := keyboard.ReadKeyboardInfo("./config/keyboard.json")
 	if err != nil {
 		return err
@@ -75,16 +78,27 @@ func (c *ServerCommand) RunContext(ctx context.Context, args []string) error {
 		return err
 	}
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Render("index", fiber.Map{
-			"ZmkSymbolIndex": zmk.BuildSymbolIndex(possibleKeys),
-			"Layout":         kb.Layout,
-			"Keymap":         keymap,
-		}, "layouts/main")
+	app.Get("/api/zmk/", func(c *fiber.Ctx) error {
+		return c.JSON(map[string]any{
+			"symbols": zmk.BuildSymbolIndex(possibleKeys),
+			"layout":  kb.Layout,
+		})
 	})
 
-	app.Static("/js", "./ui/js")
-	app.Static("/css", "./ui/css")
+	app.Get("/api/keymap/", func(c *fiber.Ctx) error {
+		return c.JSON(keymap)
+	})
+
+	// app.Get("/", func(c *fiber.Ctx) error {
+	// 	return c.Render("index", fiber.Map{
+	// 		"ZmkSymbolIndex": zmk.BuildSymbolIndex(possibleKeys),
+	// 		"Layout":         kb.Layout,
+	// 		"Keymap":         keymap,
+	// 	}, "layouts/main")
+	// })
+
+	// app.Static("/js", "./ui/js")
+	// app.Static("/css", "./ui/css")
 
 	return app.Listen(c.addr)
 }
