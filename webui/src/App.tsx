@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { Box, Container, Tab, Tabs } from "@mui/material";
+import { SyntheticEvent, useEffect, useState } from "react";
 import "./App.css";
 import Keyboard from "./keyboard";
 
@@ -34,8 +35,15 @@ export interface KeymapBinding {
 
 function App() {
   const [zmk, setZmk] = useState<Zmk>({ layout: [] });
-
   const [keymap, setKeymap] = useState<Keymap>({ layers: [] });
+
+  const [layer, setLayer] = useState<KeymapLayer | null>(null);
+
+  const selectLayer = (e: SyntheticEvent, newValue: number) => {
+    if (keymap) {
+      setLayer(keymap.layers[newValue]);
+    }
+  };
 
   useEffect(() => {
     fetch("http://localhost:5656/api/zmk")
@@ -50,9 +58,17 @@ function App() {
   });
 
   return (
-    <div className="App">
-      <Keyboard layout={zmk.layout} layer={keymap.layers[0]} />
-    </div>
+    <Container>
+      <Box>
+        <Tabs value={layer} onChange={selectLayer}>
+          {keymap.layers.map((l) => (
+            <Tab label={l.name} />
+          ))}
+        </Tabs>
+
+        {layer && <Keyboard layout={zmk.layout} layer={layer} />}
+      </Box>
+    </Container>
   );
 }
 
