@@ -9,6 +9,6 @@ export interface KeymapLayer {
 
 export interface KeymapBinding {
   type: string;
-  first: string[];
-  second: string[];
+  first: string[] | undefined;
+  second: string[] | undefined;
 }

@@ -36,12 +36,14 @@ const Key = ({ zmkKey, symbols, binding, editBinding }: KeyProps) => {
     editBinding(binding);
   };
 
-  const label = binding.first.map((b) => symbols[b] || b).join(" ");
+  const first = binding.first?.map((b) => symbols[b] || b).join(" ");
+  const second = binding.second?.map((b) => symbols[b] || b).join(" ");
 
   return (
     <div className="key" style={styleKey(zmkKey)} onClick={onClick}>
       <span className="behaviour-binding">{binding.type}</span>
-      <span className="code">{label}</span>
+      {second && <div className="code">{second}</div>}
+      <div className="code">{first}</div>
     </div>
   );
 };

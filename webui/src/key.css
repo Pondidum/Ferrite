@@ -1,8 +1,9 @@
 .key {
   position: absolute;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   color: #999;
   background-color: whitesmoke;
@@ -19,37 +20,16 @@
 .key:hover .behaviour-binding {
   color: white;
 }
-.key > .code {
-  padding: 5px;
-}
 
-.key[data-simple="true"] {
-  font-size: 140%;
-}
-.key[data-long="true"] {
-  font-size: 60%;
-}
-
-.code {
-  padding: 0px 4px;
-  margin-left: -2px;
-  margin-right: -2px;
-}
-
-.code {
+.key .code {
+  padding: 0;
   cursor: pointer;
-  display: inline-block;
-  box-sizing: content-box;
   min-width: 0.5em;
   text-align: center;
-  border-radius: 4px;
-}
-.code.highlight {
-  background-color: white !important;
-  color: var(--highlight) !important;
+  line-height: 1.2em;
 }
 
-.code * {
+.key .code * {
   pointer-events: none;
 }
 
@@ -61,12 +41,4 @@
   font-variant: smallcaps;
   padding: 2px;
   opacity: 0.5;
-}
-
-.behaviour-binding:hover {
-  cursor: pointer;
-  color: var(--highlight) !important;
-  background-color: white;
-  border-radius: 5px 0;
-  opacity: 1;
 }
