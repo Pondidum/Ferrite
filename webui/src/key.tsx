@@ -1,7 +1,7 @@
 import { CSSProperties, Dispatch, SetStateAction, SyntheticEvent } from "react";
 import "./key.css";
 import { KeymapBinding } from "./keymap";
-import { ZmkLayoutKey } from "./zmk";
+import { SymbolMap, ZmkLayoutKey } from "./zmk";
 
 const DefaultSize = 65;
 const DefaultPadding = 5;
@@ -27,18 +27,21 @@ const styleKey = (k: ZmkLayoutKey): CSSProperties => {
 
 interface KeyProps {
   zmkKey: ZmkLayoutKey;
+  symbols: SymbolMap;
   binding: KeymapBinding;
   editBinding: Dispatch<SetStateAction<KeymapBinding | undefined>>;
 }
-const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
+const Key = ({ zmkKey, symbols, binding, editBinding }: KeyProps) => {
   const onClick = (e: SyntheticEvent) => {
     editBinding(binding);
   };
 
+  const label = binding.first.map((b) => symbols[b] || b).join(" ");
+
   return (
     <div className="key" style={styleKey(zmkKey)} onClick={onClick}>
       <span className="behaviour-binding">{binding.type}</span>
-      <span className="code">{binding.first.join(" ")}</span>
+      <span className="code">{label}</span>
     </div>
   );
 };

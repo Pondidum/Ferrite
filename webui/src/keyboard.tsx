@@ -1,15 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
 import { KeymapBinding, KeymapLayer } from "./keymap";
-import { ZmkLayoutKey } from "./zmk";
+import { Zmk, ZmkLayoutKey } from "./zmk";
 import Key from "./key";
 
 interface KeyboardProps {
-  layout: ZmkLayoutKey[];
+  zmk: Zmk;
   layer: KeymapLayer;
   editBinding: Dispatch<SetStateAction<KeymapBinding | undefined>>;
 }
 
-const Keyboard = ({ layout, layer, editBinding }: KeyboardProps) => {
+const Keyboard = ({ zmk, layer, editBinding }: KeyboardProps) => {
   return (
     <div
       style={{
@@ -19,10 +19,11 @@ const Keyboard = ({ layout, layer, editBinding }: KeyboardProps) => {
         padding: "40px",
       }}
     >
-      {layout.map((key, i) => (
+      {zmk.layout.map((key, i) => (
         <Key
           key={key.Label}
           zmkKey={key}
+          symbols={zmk.symbols}
           binding={layer.bindings[i]}
           editBinding={editBinding}
         />

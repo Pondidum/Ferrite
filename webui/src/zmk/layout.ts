@@ -1,5 +1,10 @@
 export interface Zmk {
   layout: ZmkLayoutKey[];
+  symbols: SymbolMap;
+}
+
+export interface SymbolMap {
+  [key: string]: string;
 }
 
 export interface ZmkLayoutKey {

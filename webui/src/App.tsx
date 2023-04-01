@@ -4,19 +4,19 @@ import "./App.css";
 import BindingEditor from "./binding-editor";
 import Keyboard from "./keyboard";
 import { Keymap, KeymapBinding, KeymapLayer } from "./keymap";
-import { ZmkLayoutKey, Zmk } from "./zmk";
+import { Zmk } from "./zmk";
 
 interface LayerSelection {
-  index: number;
+  index: number | false;
   layer: KeymapLayer | undefined;
 }
 
 const LayerEditor = ({
-  layout,
+  zmk,
   keymap,
   layer,
 }: {
-  layout: ZmkLayoutKey[];
+  zmk: Zmk;
   keymap: Keymap;
   layer: KeymapLayer | undefined;
 }) => {
@@ -28,7 +28,7 @@ const LayerEditor = ({
 
   return (
     <>
-      <Keyboard layout={layout} layer={layer} editBinding={editBinding} />
+      <Keyboard zmk={zmk} layer={layer} editBinding={editBinding} />
       <BindingEditor
         open={Boolean(binding)}
         keymap={keymap}
@@ -46,11 +46,14 @@ const LayerEditor = ({
 };
 
 function App() {
-  const [zmk, setZmk] = useState<Zmk>({ layout: [] });
+  const [zmk, setZmk] = useState<Zmk>({
+    layout: [],
+    symbols: {},
+  });
   const [keymap, setKeymap] = useState<Keymap>({ layers: [] });
 
   const [layer, setLayer] = useState<LayerSelection>({
-    index: 0,
+    index: false,
     layer: undefined,
   });
 
@@ -84,7 +87,7 @@ function App() {
           ))}
         </Tabs>
 
-        <LayerEditor layout={zmk.layout} keymap={keymap} layer={layer.layer} />
+        <LayerEditor zmk={zmk} keymap={keymap} layer={layer.layer} />
       </Box>
     </Container>
   );
