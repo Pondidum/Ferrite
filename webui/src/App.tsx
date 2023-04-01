@@ -70,13 +70,13 @@ function App() {
     fetch("http://localhost:5656/api/zmk")
       .then((r) => r.json())
       .then((j) => setZmk(j));
-  });
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:5656/api/keymap")
       .then((r) => r.json())
       .then((j) => setKeymap(j));
-  });
+  }, []);
 
   return (
     <Container>
