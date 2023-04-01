@@ -1,7 +1,7 @@
 import { Box, Container, Tab, Tabs } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
 import "./App.css";
-import KeyEditor from "./key-editor/key-editor";
+import BindingEditor from "./binding-editor/binding-editor";
 import Keyboard from "./keyboard";
 
 interface Zmk {
@@ -57,7 +57,7 @@ const LayerEditor = ({
   return (
     <>
       <Keyboard layout={layout} layer={layer} editBinding={editBinding} />
-      <KeyEditor
+      <BindingEditor
         open={Boolean(binding)}
         keymap={keymap}
         binding={binding}

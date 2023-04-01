@@ -82,7 +82,7 @@ const selectEditor = (
   }
 };
 
-const KeyEditor = ({
+const BindingEditor = ({
   open,
   keymap,
   binding,
@@ -135,4 +135,4 @@ const KeyEditor = ({
   );
 };
 
-export default KeyEditor;
+export default BindingEditor;
