@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
-import { Keymap, KeymapBinding, KeymapLayer } from "../App";
+import { Keymap, KeymapBinding } from "../keymap";
 import LayerPicker from "./layer-picker";
 
 const selectEditor = (

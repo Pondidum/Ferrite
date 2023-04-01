@@ -1,6 +1,6 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import { useState, SyntheticEvent, Dispatch, SetStateAction } from "react";
-import { KeymapBinding, KeymapLayer } from "../App";
+import { KeymapBinding, KeymapLayer } from "../keymap";
 import { MouseEvent } from "react";
 
 const LayerPicker = ({

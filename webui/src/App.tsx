@@ -1,38 +1,10 @@
 import { Box, Container, Tab, Tabs } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
 import "./App.css";
-import BindingEditor from "./binding-editor/binding-editor";
+import BindingEditor from "./binding-editor";
 import Keyboard from "./keyboard";
-
-interface Zmk {
-  layout: ZmkLayoutKey[];
-}
-
-export interface ZmkLayoutKey {
-  Label: string;
-  Row: number;
-  Col: number;
-  X: number;
-  Y: number;
-  R: number;
-  Rx: number;
-  Ry: number;
-}
-
-export interface Keymap {
-  layers: KeymapLayer[];
-}
-
-export interface KeymapLayer {
-  name: string;
-  bindings: KeymapBinding[];
-}
-
-export interface KeymapBinding {
-  type: string;
-  first: string[];
-  second: string[];
-}
+import { Keymap, KeymapBinding, KeymapLayer } from "./keymap";
+import { ZmkLayoutKey, Zmk } from "./zmk";
 
 interface LayerSelection {
   index: number;
