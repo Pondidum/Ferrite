@@ -1,6 +1,7 @@
 import { Box, Container, Tab, Tabs } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
 import "./App.css";
+import KeyEditor from "./key-editor/key-editor";
 import Keyboard from "./keyboard";
 
 interface Zmk {
@@ -33,15 +34,55 @@ export interface KeymapBinding {
   second: string[];
 }
 
+interface LayerSelection {
+  index: number;
+  layer: KeymapLayer | undefined;
+}
+
+const LayerEditor = ({
+  layout,
+  keymap,
+  layer,
+}: {
+  layout: ZmkLayoutKey[];
+  keymap: Keymap;
+  layer: KeymapLayer | undefined;
+}) => {
+  if (!layer) {
+    return <></>;
+  }
+
+  const [binding, editBinding] = useState<KeymapBinding | undefined>();
+
+  return (
+    <>
+      <Keyboard layout={layout} layer={layer} editBinding={editBinding} />
+      <KeyEditor
+        open={Boolean(binding)}
+        keymap={keymap}
+        binding={binding}
+        onCancel={() => editBinding(undefined)}
+        onConfirm={(newBinding) => editBinding(undefined)}
+      />
+    </>
+  );
+};
+
 function App() {
   const [zmk, setZmk] = useState<Zmk>({ layout: [] });
   const [keymap, setKeymap] = useState<Keymap>({ layers: [] });
 
-  const [layer, setLayer] = useState<KeymapLayer | null>(null);
+  const [layer, setLayer] = useState<LayerSelection>({
+    index: 0,
+    layer: undefined,
+  });
 
   const selectLayer = (e: SyntheticEvent, newValue: number) => {
     if (keymap) {
-      setLayer(keymap.layers[newValue]);
+      setLayer({
+        index: newValue,
+        layer: keymap.layers[newValue],
+      });
     }
   };
 
@@ -60,13 +101,13 @@ function App() {
   return (
     <Container>
       <Box>
-        <Tabs value={layer} onChange={selectLayer}>
+        <Tabs value={layer.index} onChange={selectLayer}>
           {keymap.layers.map((l) => (
-            <Tab label={l.name} />
+            <Tab key={l.name} label={l.name} />
           ))}
         </Tabs>
 
-        {layer && <Keyboard layout={zmk.layout} layer={layer} />}
+        <LayerEditor layout={zmk.layout} keymap={keymap} layer={layer.layer} />
       </Box>
     </Container>
   );

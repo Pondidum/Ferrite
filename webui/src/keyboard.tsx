@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties, Dispatch, SetStateAction, SyntheticEvent } from "react";
 import { KeymapBinding, KeymapLayer, ZmkLayoutKey } from "./App";
 import "./key.css";
 
@@ -27,21 +27,29 @@ const styleKey = (k: ZmkLayoutKey): CSSProperties => {
 interface KeyboardProps {
   layout: ZmkLayoutKey[];
   layer: KeymapLayer;
+  editBinding: Dispatch<SetStateAction<KeymapBinding | undefined>>;
 }
 
 interface KeyProps {
   zmkKey: ZmkLayoutKey;
   binding: KeymapBinding;
+  editBinding: Dispatch<SetStateAction<KeymapBinding | undefined>>;
 }
 
-const Key = ({ zmkKey, binding }: KeyProps) => (
-  <div className="key" style={styleKey(zmkKey)}>
-    <span className="behaviour-binding">{binding.type}</span>
-    <span className="code">{binding.first.join(" ")}</span>
-  </div>
-);
+const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
+  const onClick = (e: SyntheticEvent) => {
+    editBinding(binding);
+  };
 
-const Keyboard = ({ layout, layer }: KeyboardProps) => {
+  return (
+    <div className="key" style={styleKey(zmkKey)} onClick={onClick}>
+      <span className="behaviour-binding">{binding.type}</span>
+      <span className="code">{binding.first.join(" ")}</span>
+    </div>
+  );
+};
+
+const Keyboard = ({ layout, layer, editBinding }: KeyboardProps) => {
   return (
     <div
       style={{
@@ -52,7 +60,12 @@ const Keyboard = ({ layout, layer }: KeyboardProps) => {
       }}
     >
       {layout.map((key, i) => (
-        <Key key={key.Label} zmkKey={key} binding={layer.bindings[i]} />
+        <Key
+          key={key.Label}
+          zmkKey={key}
+          binding={layer.bindings[i]}
+          editBinding={editBinding}
+        />
       ))}
     </div>
   );
