@@ -9,58 +9,16 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { SyntheticEvent, useState } from "react";
+import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
 import { Keymap, KeymapBinding, KeymapLayer } from "../App";
-import { MouseEvent } from "react";
-
-const LayerPicker = ({
-  layers,
-  selected,
-}: {
-  layers: KeymapLayer[];
-  selected: string;
-}) => {
-  const [selectedLayer, setSelectedLayer] = useState<number>(Number(selected));
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleSelect = (e: SyntheticEvent, i: number) => {
-    setAnchorEl(null);
-    setSelectedLayer(i);
-  };
-
-  return (
-    <>
-      <Button variant="outlined" onClick={handleClick}>
-        {layers[selectedLayer].name}
-      </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {layers.map((l, i) => (
-          <MenuItem key={i} onClick={(e) => handleSelect(e, i)}>
-            {l.name}
-          </MenuItem>
-        ))}
-      </Menu>
-    </>
-  );
-};
+import LayerPicker from "./layer-picker";
 
 const selectEditor = (
   keymap: Keymap,
-  action: string,
-  binding: KeymapBinding
+  binding: KeymapBinding,
+  updateBinding: Dispatch<SetStateAction<KeymapBinding>>
 ) => {
-  switch (action) {
+  switch (binding.type) {
     case "kp":
       return (
         <p>
@@ -88,7 +46,12 @@ const selectEditor = (
           </p>
           <p>
             When held switch to layer{" "}
-            <LayerPicker layers={keymap.layers} selected={binding.first[0]} />.
+            <LayerPicker
+              layers={keymap.layers}
+              binding={binding}
+              updateBinding={updateBinding}
+            />
+            .
           </p>
         </>
       );
@@ -96,7 +59,13 @@ const selectEditor = (
     case "mo":
       return (
         <p>
-          When tapped switch to layer <a href="">{binding.first}</a>
+          When tapped switch to layer
+          <LayerPicker
+            layers={keymap.layers}
+            binding={binding}
+            updateBinding={updateBinding}
+          />
+          .
         </p>
       );
 
@@ -130,19 +99,24 @@ const KeyEditor = ({
     return <></>;
   }
 
-  const [tab, setTab] = useState(binding.type);
+  const [newBinding, setBinding] = useState(binding);
 
-  const selectTab = (e: SyntheticEvent, newValue: string) => {
-    setTab(newValue);
+  const updateBinding: Dispatch<SetStateAction<KeymapBinding>> = (b) => {
+    console.log("new binding:", b);
+    setBinding(b);
   };
 
-  const editor = selectEditor(keymap, tab, binding);
+  const selectTab = (e: SyntheticEvent, newValue: string) => {
+    updateBinding({ ...newBinding, type: newValue });
+  };
+
+  const editor = selectEditor(keymap, newBinding, updateBinding);
 
   return (
     <Dialog open={open}>
       <DialogTitle>Configure Key</DialogTitle>
       <Box>
-        <Tabs value={tab} onChange={selectTab}>
+        <Tabs value={newBinding.type} onChange={selectTab}>
           <Tab value={"kp"} label="KP" />
           <Tab value={"mt"} label="MT" />
           <Tab value={"lt"} label="LT" />
@@ -155,7 +129,7 @@ const KeyEditor = ({
 
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
-        <Button onClick={() => onConfirm(binding)}>Confirm</Button>
+        <Button onClick={() => onConfirm(newBinding)}>Confirm</Button>
       </DialogActions>
     </Dialog>
   );

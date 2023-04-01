@@ -62,7 +62,12 @@ const LayerEditor = ({
         keymap={keymap}
         binding={binding}
         onCancel={() => editBinding(undefined)}
-        onConfirm={(newBinding) => editBinding(undefined)}
+        onConfirm={(newBinding) => {
+          console.log("confirm");
+          console.log("old", binding);
+          console.log("new", newBinding);
+          editBinding(undefined);
+        }}
       />
     </>
   );
