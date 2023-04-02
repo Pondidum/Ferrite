@@ -6,10 +6,12 @@ import (
 	"ferrite/zmk"
 	"fmt"
 	"html/template"
+	"net/http"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/template/html"
 	"github.com/mitchellh/cli"
 	"github.com/spf13/pflag"
@@ -94,16 +96,9 @@ func (c *ServerCommand) RunContext(ctx context.Context, args []string) error {
 		return c.JSON(keymap)
 	})
 
-	// app.Get("/", func(c *fiber.Ctx) error {
-	// 	return c.Render("index", fiber.Map{
-	// 		"ZmkSymbolIndex": zmk.BuildSymbolIndex(possibleKeys),
-	// 		"Layout":         kb.Layout,
-	// 		"Keymap":         keymap,
-	// 	}, "layouts/main")
-	// })
-
-	// app.Static("/js", "./ui/js")
-	// app.Static("/css", "./ui/css")
+	app.Use("/", filesystem.New(filesystem.Config{
+		Root: http.Dir("./webui/dist"),
+	}))
 
 	return app.Listen(c.addr)
 }
