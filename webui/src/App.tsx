@@ -4,7 +4,7 @@ import "./App.css";
 import BindingEditor from "./binding-editor";
 import Keyboard from "./keyboard";
 import { Keymap, KeymapBinding, KeymapLayer } from "./keymap";
-import { Zmk } from "./zmk";
+import { ZmkProvider } from "./zmk/context";
 
 interface LayerSelection {
   index: number | false;
@@ -12,11 +12,9 @@ interface LayerSelection {
 }
 
 const LayerEditor = ({
-  zmk,
   keymap,
   layer,
 }: {
-  zmk: Zmk;
   keymap: Keymap;
   layer: KeymapLayer | undefined;
 }) => {
@@ -28,7 +26,7 @@ const LayerEditor = ({
 
   return (
     <>
-      <Keyboard zmk={zmk} layer={layer} editBinding={editBinding} />
+      <Keyboard layer={layer} editBinding={editBinding} />
       <BindingEditor
         open={Boolean(binding)}
         keymap={keymap}
@@ -46,10 +44,6 @@ const LayerEditor = ({
 };
 
 function App() {
-  const [zmk, setZmk] = useState<Zmk>({
-    layout: [],
-    symbols: {},
-  });
   const [keymap, setKeymap] = useState<Keymap>({ layers: [] });
 
   const [layer, setLayer] = useState<LayerSelection>({
@@ -67,29 +61,25 @@ function App() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5656/api/zmk")
-      .then((r) => r.json())
-      .then((j) => setZmk(j));
-  }, []);
-
-  useEffect(() => {
     fetch("http://localhost:5656/api/keymap")
       .then((r) => r.json())
       .then((j) => setKeymap(j));
   }, []);
 
   return (
-    <Container>
-      <Box>
-        <Tabs value={layer.index} onChange={selectLayer}>
-          {keymap.layers.map((l) => (
-            <Tab key={l.name} label={l.name} />
-          ))}
-        </Tabs>
+    <ZmkProvider>
+      <Container>
+        <Box>
+          <Tabs value={layer.index} onChange={selectLayer}>
+            {keymap.layers.map((l) => (
+              <Tab key={l.name} label={l.name} />
+            ))}
+          </Tabs>
 
-        <LayerEditor zmk={zmk} keymap={keymap} layer={layer.layer} />
-      </Box>
-    </Container>
+          <LayerEditor keymap={keymap} layer={layer.layer} />
+        </Box>
+      </Container>
+    </ZmkProvider>
   );
 }
 
