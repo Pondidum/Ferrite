@@ -1,7 +1,14 @@
-import { CSSProperties, Dispatch, SetStateAction, SyntheticEvent } from "react";
+import {
+  CSSProperties,
+  Dispatch,
+  SetStateAction,
+  SyntheticEvent,
+  useContext,
+} from "react";
 import "./key.css";
 import { KeymapBinding } from "./keymap";
-import { SymbolMap, ZmkLayoutKey } from "./zmk";
+import { ZmkLayoutKey } from "./zmk";
+import { ZmkContext } from "./zmk/context";
 
 const DefaultSize = 65;
 const DefaultPadding = 5;
@@ -27,17 +34,19 @@ const styleKey = (k: ZmkLayoutKey): CSSProperties => {
 
 interface KeyProps {
   zmkKey: ZmkLayoutKey;
-  symbols: SymbolMap;
   binding: KeymapBinding;
   editBinding: Dispatch<SetStateAction<KeymapBinding | undefined>>;
 }
-const Key = ({ zmkKey, symbols, binding, editBinding }: KeyProps) => {
+
+const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
+  const zmk = useContext(ZmkContext);
+
   const onClick = (e: SyntheticEvent) => {
     editBinding(binding);
   };
 
-  const first = binding.first?.map((b) => symbols[b] || b).join(" ");
-  const second = binding.second?.map((b) => symbols[b] || b).join(" ");
+  const first = binding.first?.map((b) => zmk.keys[b]?.symbol || b).join(" ");
+  const second = binding.second?.map((b) => zmk.keys[b]?.symbol || b).join(" ");
 
   return (
     <div className="key" style={styleKey(zmkKey)} onClick={onClick}>

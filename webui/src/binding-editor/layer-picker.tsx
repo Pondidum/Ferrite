@@ -29,10 +29,12 @@ const LayerPicker = ({
     updateBinding({ ...binding, first: [String(i)] });
   };
 
+  const layerIndex = binding.first ? Number(binding.first[0]) : 0;
+
   return (
     <>
       <Button variant="outlined" onClick={handleClick}>
-        {layers[Number(binding.first[0])].name}
+        {layers[layerIndex].name}
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {layers.map((l, i) => (

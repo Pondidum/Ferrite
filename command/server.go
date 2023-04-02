@@ -4,6 +4,7 @@ import (
 	"context"
 	"ferrite/keyboard"
 	"ferrite/zmk"
+	"fmt"
 	"html/template"
 	"strings"
 
@@ -73,19 +74,23 @@ func (c *ServerCommand) RunContext(ctx context.Context, args []string) error {
 		return err
 	}
 
-	possibleKeys, err := zmk.ReadKeys()
+	keys, err := zmk.ReadKeys()
 	if err != nil {
 		return err
 	}
 
 	app.Get("/api/zmk/", func(c *fiber.Ctx) error {
+		fmt.Println("GET /api/zmk/")
+
 		return c.JSON(map[string]any{
-			"symbols": zmk.BuildSymbolIndex(possibleKeys),
-			"layout":  kb.Layout,
+			"layout": kb.Layout,
+			"keys":   zmk.BuildKeyMap(keys),
 		})
 	})
 
 	app.Get("/api/keymap/", func(c *fiber.Ctx) error {
+		fmt.Println("GET /api/keymap/")
+
 		return c.JSON(keymap)
 	})
 

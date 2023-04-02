@@ -23,7 +23,6 @@ const Keyboard = ({ layer, editBinding }: KeyboardProps) => {
         <Key
           key={key.Label}
           zmkKey={key}
-          symbols={zmk.symbols}
           binding={layer.bindings[i]}
           editBinding={editBinding}
         />

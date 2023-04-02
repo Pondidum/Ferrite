@@ -1,10 +1,6 @@
 export interface Zmk {
   layout: ZmkLayoutKey[];
-  symbols: SymbolMap;
-}
-
-export interface SymbolMap {
-  [key: string]: string;
+  keys: { [key: string]: ZmkKey };
 }
 
 export interface ZmkLayoutKey {
@@ -16,4 +12,23 @@ export interface ZmkLayoutKey {
   R: number;
   Rx: number;
   Ry: number;
+}
+
+export interface ZmkKey {
+  names: string[];
+  symbol: string;
+  description: string;
+  context: string;
+  clarify: boolean;
+  documentation: string;
+  os: Os;
+  footnotes: { [key: string]: string[] };
+}
+
+export interface Os {
+  windows: boolean;
+  linux: boolean;
+  android: boolean;
+  macos: boolean;
+  ios: boolean;
 }
