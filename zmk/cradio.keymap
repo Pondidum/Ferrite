@@ -12,10 +12,10 @@
 // #define WM 4
 // #define SYSTEM 5
 
-// &mt {
-//     tapping-term-ms = <200>;
-//     flavor = "tap-preferred";
-// };
+&mt {
+    tapping-term-ms = <200>;
+    flavor = "tap-preferred";
+};
 
 / {
 

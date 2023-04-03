@@ -185,4 +185,15 @@ func TestKeymap(t *testing.T) {
 	assert.NoError(t, err)
 
 	assert.NotNil(t, k)
+
+	// check options are processed
+	assert.Equal(t, "mt", k.Configs[0].Behavior)
+	assert.Equal(t, []*Options{
+		{Key: p("tapping-term-ms"), Value: &Value{Number: p(200)}},
+		{Key: p("flavor"), Value: &Value{String: p("tap-preferred")}},
+	}, k.Configs[0].Values)
+}
+
+func p[T any](v T) *T {
+	return &v
 }

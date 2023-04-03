@@ -41,7 +41,7 @@ type Config struct {
 }
 
 type Options struct {
-	Key   *string `parser:"@Ident '='"`
+	Key   *string `parser:"@Ident(@'-' @Ident)* '='"`
 	Value *Value  `parser:"@@ ';'"`
 }
 
