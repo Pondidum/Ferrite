@@ -38,6 +38,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.1.1 // indirect
 	github.com/Masterminds/sprig/v3 v3.2.1 // indirect
 	github.com/alecthomas/chroma v0.10.0 // indirect
+	github.com/alecthomas/participle/v2 v2.0.0
 	github.com/armon/go-radix v1.0.0 // indirect
 	github.com/aymanbagabas/go-osc52 v1.0.3 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
