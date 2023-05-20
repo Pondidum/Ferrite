@@ -10,6 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	"github.com/mitchellh/mapstructure"
 )
 
 func NewApi() (*fiber.App, error) {
@@ -49,6 +50,16 @@ func NewApi() (*fiber.App, error) {
 
 		f, err := zmk.Parse(keymap)
 		if err != nil {
+			return err
+		}
+
+		temp := map[string]any{}
+		if err := mapstructure.Decode(f, &temp); err != nil {
+			return err
+		}
+
+		response := File{}
+		if err := mapstructure.Decode(temp, &response); err != nil {
 			return err
 		}
 
