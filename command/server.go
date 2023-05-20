@@ -2,17 +2,8 @@ package command
 
 import (
 	"context"
-	"ferrite/keyboard"
-	"ferrite/zmk"
-	"fmt"
-	"html/template"
-	"net/http"
-	"strings"
+	"ferrite/api"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/filesystem"
-	"github.com/gofiber/template/html"
 	"github.com/mitchellh/cli"
 	"github.com/spf13/pflag"
 )
@@ -51,54 +42,10 @@ func (c *ServerCommand) EnvironmentVariables() map[string]string {
 
 func (c *ServerCommand) RunContext(ctx context.Context, args []string) error {
 
-	engine := html.New("./ui", ".html")
-	engine.Reload(true)
-	engine.AddFunc("csv", func(elems []string) string {
-		return strings.Join(elems, ",")
-	})
-	engine.AddFunc("css", func(in string) template.CSS {
-		return template.CSS(in)
-	})
-
-	app := fiber.New(fiber.Config{
-		Views: engine,
-	})
-
-	app.Use(cors.New())
-
-	kb, err := keyboard.ReadKeyboardInfo("./config/keyboard.json")
+	app, err := api.NewApi()
 	if err != nil {
 		return err
 	}
-
-	keymap, err := keyboard.ReadKeymap("./config/keymap.json")
-	if err != nil {
-		return err
-	}
-
-	keys, err := zmk.ReadKeys()
-	if err != nil {
-		return err
-	}
-
-	app.Get("/api/zmk/", func(c *fiber.Ctx) error {
-		fmt.Println("GET /api/zmk/")
-
-		return c.JSON(map[string]any{
-			"layout": kb.Layout,
-			"keys":   zmk.BuildKeyMap(keys),
-		})
-	})
-
-	app.Get("/api/keymap/", func(c *fiber.Ctx) error {
-		fmt.Println("GET /api/keymap/")
-
-		return c.JSON(keymap)
-	})
-
-	app.Use("/", filesystem.New(filesystem.Config{
-		Root: http.Dir("./webui/dist"),
-	}))
 
 	return app.Listen(c.addr)
 }
