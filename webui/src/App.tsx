@@ -3,12 +3,12 @@ import { SyntheticEvent, useEffect, useState } from "react";
 import "./App.css";
 import BindingEditor from "./binding-editor";
 import Keyboard from "./keyboard";
-import { Keymap, KeymapBinding, KeymapLayer } from "./keymap";
+import { Keymap, Behavior, Layer, Device } from "./keymap";
 import { ZmkProvider } from "./zmk/context";
 
 interface LayerSelection {
   index: number | false;
-  layer: KeymapLayer | undefined;
+  layer: Layer | undefined;
 }
 
 const LayerEditor = ({
@@ -16,13 +16,13 @@ const LayerEditor = ({
   layer,
 }: {
   keymap: Keymap;
-  layer: KeymapLayer | undefined;
+  layer: Layer | undefined;
 }) => {
   if (!layer) {
     return <></>;
   }
 
-  const [binding, editBinding] = useState<KeymapBinding | undefined>();
+  const [binding, editBinding] = useState<Behavior | undefined>();
 
   return (
     <>
@@ -44,7 +44,7 @@ const LayerEditor = ({
 };
 
 function App() {
-  const [keymap, setKeymap] = useState<Keymap>({ layers: [] });
+  const [device, setDevice] = useState<Device>({ keymap: { layers: [] } });
 
   const [layer, setLayer] = useState<LayerSelection>({
     index: false,
@@ -52,18 +52,18 @@ function App() {
   });
 
   const selectLayer = (e: SyntheticEvent, newValue: number) => {
-    if (keymap) {
+    if (device) {
       setLayer({
         index: newValue,
-        layer: keymap.layers[newValue],
+        layer: device.keymap.layers[newValue],
       });
     }
   };
 
   useEffect(() => {
-    fetch("http://localhost:5656/api/keymap")
+    fetch("http://localhost:5656/api/device")
       .then((r) => r.json())
-      .then((j) => setKeymap(j));
+      .then((j) => setDevice(j));
   }, []);
 
   return (
@@ -71,12 +71,12 @@ function App() {
       <Container>
         <Box>
           <Tabs value={layer.index} onChange={selectLayer}>
-            {keymap.layers.map((l) => (
+            {device.keymap.layers.map((l) => (
               <Tab key={l.name} label={l.name} />
             ))}
           </Tabs>
 
-          <LayerEditor keymap={keymap} layer={layer.layer} />
+          <LayerEditor keymap={device.keymap} layer={layer.layer} />
         </Box>
       </Container>
     </ZmkProvider>

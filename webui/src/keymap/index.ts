@@ -1,14 +1,26 @@
+// export interface KeymapConfig {
+//   device: Device;
+// }
+
+export interface Device {
+  keymap: Keymap;
+}
+
 export interface Keymap {
-  layers: KeymapLayer[];
+  layers: Layer[];
 }
 
-export interface KeymapLayer {
+export interface Layer {
   name: string;
-  bindings: KeymapBinding[];
+  bindings: Behavior[];
 }
 
-export interface KeymapBinding {
-  type: string;
-  first: string[] | undefined;
-  second: string[] | undefined;
+export interface Behavior {
+  action: string;
+  params?: Param[];
+}
+
+export interface Param {
+  number?: number;
+  keyCode?: string;
 }

@@ -1,6 +1,6 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import { useState, SyntheticEvent, Dispatch, SetStateAction } from "react";
-import { KeymapBinding, KeymapLayer } from "../keymap";
+import { Behavior, Layer, Param } from "../keymap";
 import { MouseEvent } from "react";
 
 const LayerPicker = ({
@@ -8,9 +8,9 @@ const LayerPicker = ({
   binding,
   updateBinding,
 }: {
-  layers: KeymapLayer[];
-  binding: KeymapBinding;
-  updateBinding: Dispatch<SetStateAction<KeymapBinding>>;
+  layers: Layer[];
+  binding: Behavior;
+  updateBinding: Dispatch<SetStateAction<Behavior>>;
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -26,10 +26,16 @@ const LayerPicker = ({
 
   const handleSelect = (e: SyntheticEvent, i: number) => {
     setAnchorEl(null);
-    updateBinding({ ...binding, first: [String(i)] });
+
+    const [_, ...rest] = binding.params;
+
+    const newSelection: Param = { number: i };
+
+    updateBinding({ ...binding, params: [newSelection, ...rest] });
   };
 
-  const layerIndex = binding.first ? Number(binding.first[0]) : 0;
+  const layerIndex =
+    (binding.params.length > 0 && binding.params[0].number) || 0;
 
   return (
     <>

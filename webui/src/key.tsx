@@ -6,7 +6,7 @@ import {
   useContext,
 } from "react";
 import "./key.css";
-import { KeymapBinding } from "./keymap";
+import { Behavior } from "./keymap";
 import { ZmkLayoutKey } from "./zmk";
 import { ZmkContext } from "./zmk/context";
 
@@ -34,8 +34,8 @@ const styleKey = (k: ZmkLayoutKey): CSSProperties => {
 
 interface KeyProps {
   zmkKey: ZmkLayoutKey;
-  binding: KeymapBinding;
-  editBinding: Dispatch<SetStateAction<KeymapBinding | undefined>>;
+  binding: Behavior;
+  editBinding: Dispatch<SetStateAction<Behavior | undefined>>;
 }
 
 const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
@@ -45,12 +45,17 @@ const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
     editBinding(binding);
   };
 
-  const first = binding.first?.map((b) => zmk.keys[b]?.symbol || b).join(" ");
-  const second = binding.second?.map((b) => zmk.keys[b]?.symbol || b).join(" ");
+  const params = binding.params || [];
+
+  const first = params.length > 0 && (params[0].number || params[0].keyCode);
+  const second = params.length > 1 && (params[1].number || params[1].keyCode);
+
+  // const first = binding.first?.map((b) => zmk.keys[b]?.symbol || b).join(" ");
+  // const second = binding.second?.map((b) => zmk.keys[b]?.symbol || b).join(" ");
 
   return (
     <div className="key" style={styleKey(zmkKey)} onClick={onClick}>
-      <span className="behaviour-binding">{binding.type}</span>
+      <span className="behaviour-binding">{binding.action}</span>
       {second && <div className="code">{second}</div>}
       <div className="code">{first}</div>
     </div>

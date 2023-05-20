@@ -10,72 +10,72 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
-import { Keymap, KeymapBinding } from "../keymap";
+import { Keymap, Behavior } from "../keymap";
 import LayerPicker from "./layer-picker";
 
 const selectEditor = (
   keymap: Keymap,
-  binding: KeymapBinding,
-  updateBinding: Dispatch<SetStateAction<KeymapBinding>>
+  binding: Behavior,
+  updateBinding: Dispatch<SetStateAction<Behavior>>
 ) => {
-  switch (binding.type) {
-    case "kp":
-      return (
-        <p>
-          When tapped <a href="">{binding.first}</a>
-        </p>
-      );
+  switch (binding.action) {
+    // case "kp":
+    //   return (
+    //     <p>
+    //       When tapped <a href="">{binding.params[0].keyCode}</a>
+    //     </p>
+    //   );
 
-    case "mt":
-      return (
-        <>
-          <p>
-            When tapped <a href="">{binding.first}</a>
-          </p>
-          <p>
-            When held <a href="">{binding.second}</a>
-          </p>
-        </>
-      );
+    // case "mt":
+    //   return (
+    //     <>
+    //       <p>
+    //         When tapped <a href="">{binding.first}</a>
+    //       </p>
+    //       <p>
+    //         When held <a href="">{binding.second}</a>
+    //       </p>
+    //     </>
+    //   );
 
-    case "lt":
-      return (
-        <>
-          <p>
-            When tapped <a href="">{binding.second}</a>
-          </p>
-          <p>
-            When held switch to layer{" "}
-            <LayerPicker
-              layers={keymap.layers}
-              binding={binding}
-              updateBinding={updateBinding}
-            />
-            .
-          </p>
-        </>
-      );
+    // case "lt":
+    //   return (
+    //     <>
+    //       <p>
+    //         When tapped <a href="">{binding.second}</a>
+    //       </p>
+    //       <p>
+    //         When held switch to layer{" "}
+    //         <LayerPicker
+    //           layers={keymap.layers}
+    //           binding={binding}
+    //           updateBinding={updateBinding}
+    //         />
+    //         .
+    //       </p>
+    //     </>
+    //   );
 
-    case "mo":
-      return (
-        <p>
-          When tapped switch to layer
-          <LayerPicker
-            layers={keymap.layers}
-            binding={binding}
-            updateBinding={updateBinding}
-          />
-          .
-        </p>
-      );
+    // case "mo":
+    //   return (
+    //     <p>
+    //       When tapped switch to layer
+    //       <LayerPicker
+    //         layers={keymap.layers}
+    //         binding={binding}
+    //         updateBinding={updateBinding}
+    //       />
+    //       .
+    //     </p>
+    //   );
 
-    case "none":
-      return <p>Do nothing</p>;
+    // case "none":
+    //   return <p>Do nothing</p>;
 
-    case "trans":
-      return (
-        <p>Pass the keypress through to the next layer below in the stack</p>
-      );
+    // case "trans":
+    //   return (
+    //     <p>Pass the keypress through to the next layer below in the stack</p>
+    //   );
 
     default:
       return <></>;
@@ -91,9 +91,9 @@ const BindingEditor = ({
 }: {
   open: boolean;
   keymap: Keymap;
-  binding: KeymapBinding | undefined;
+  binding: Behavior | undefined;
   onCancel: () => void;
-  onConfirm: (newBinding: KeymapBinding) => void;
+  onConfirm: (newBinding: Behavior) => void;
 }) => {
   if (!binding) {
     return <></>;
@@ -101,13 +101,13 @@ const BindingEditor = ({
 
   const [newBinding, setBinding] = useState(binding);
 
-  const updateBinding: Dispatch<SetStateAction<KeymapBinding>> = (b) => {
+  const updateBinding: Dispatch<SetStateAction<Behavior>> = (b) => {
     console.log("new binding:", b);
     setBinding(b);
   };
 
   const selectTab = (e: SyntheticEvent, newValue: string) => {
-    updateBinding({ ...newBinding, type: newValue });
+    updateBinding({ ...newBinding, action: newValue });
   };
 
   const editor = selectEditor(keymap, newBinding, updateBinding);
@@ -116,7 +116,7 @@ const BindingEditor = ({
     <Dialog open={open}>
       <DialogTitle>Configure Key</DialogTitle>
       <Box>
-        <Tabs value={newBinding.type} onChange={selectTab}>
+        <Tabs value={newBinding.action} onChange={selectTab}>
           <Tab value={"kp"} label="KP" />
           <Tab value={"mt"} label="MT" />
           <Tab value={"lt"} label="LT" />
