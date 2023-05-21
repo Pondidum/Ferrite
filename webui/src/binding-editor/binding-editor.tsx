@@ -19,63 +19,14 @@ const selectEditor = (
   updateBinding: Dispatch<SetStateAction<Behavior>>
 ) => {
   switch (binding.action) {
-    // case "kp":
-    //   return (
-    //     <p>
-    //       When tapped <a href="">{binding.params[0].keyCode}</a>
-    //     </p>
-    //   );
-
-    // case "mt":
-    //   return (
-    //     <>
-    //       <p>
-    //         When tapped <a href="">{binding.first}</a>
-    //       </p>
-    //       <p>
-    //         When held <a href="">{binding.second}</a>
-    //       </p>
-    //     </>
-    //   );
-
-    // case "lt":
-    //   return (
-    //     <>
-    //       <p>
-    //         When tapped <a href="">{binding.second}</a>
-    //       </p>
-    //       <p>
-    //         When held switch to layer{" "}
-    //         <LayerPicker
-    //           layers={keymap.layers}
-    //           binding={binding}
-    //           updateBinding={updateBinding}
-    //         />
-    //         .
-    //       </p>
-    //     </>
-    //   );
-
-    // case "mo":
-    //   return (
-    //     <p>
-    //       When tapped switch to layer
-    //       <LayerPicker
-    //         layers={keymap.layers}
-    //         binding={binding}
-    //         updateBinding={updateBinding}
-    //       />
-    //       .
-    //     </p>
-    //   );
-
-    // case "none":
-    //   return <p>Do nothing</p>;
-
-    // case "trans":
-    //   return (
-    //     <p>Pass the keypress through to the next layer below in the stack</p>
-    //   );
+    case "lt":
+      return (
+        <LayerPicker
+          layers={keymap.layers}
+          binding={binding}
+          updateBinding={updateBinding}
+        />
+      );
 
     default:
       return <></>;
