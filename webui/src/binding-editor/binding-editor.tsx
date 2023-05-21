@@ -113,7 +113,7 @@ const BindingEditor = ({
   const editor = selectEditor(keymap, newBinding, updateBinding);
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onClose={onCancel}>
       <DialogTitle>Configure Key</DialogTitle>
       <Box>
         <Tabs value={newBinding.action} onChange={selectTab}>
