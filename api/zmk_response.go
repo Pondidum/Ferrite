@@ -1,5 +1,7 @@
 package api
 
+import "encoding/json"
+
 type File struct {
 	Includes []*Include `json:"includes"`
 	Defines  []*Define  `json:"defines"`
@@ -68,4 +70,20 @@ type List struct {
 type Behavior struct {
 	Action string  `json:"action"`
 	Params []*List `json:"params"`
+}
+
+func (b *Behavior) MarshalJSON() ([]byte, error) {
+
+	type Dto Behavior
+
+	dto := Dto{
+		Action: b.Action,
+		Params: b.Params,
+	}
+
+	if dto.Params == nil {
+		dto.Params = []*List{}
+	}
+
+	return json.Marshal(dto)
 }

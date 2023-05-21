@@ -17,7 +17,7 @@ export interface Layer {
 
 export interface Behavior {
   action: string;
-  params?: Param[];
+  params: Param[];
 }
 
 export interface Param {

@@ -63,7 +63,7 @@ func NewApi() (*fiber.App, error) {
 			return err
 		}
 
-		return c.JSON(f)
+		return c.JSON(response.Device)
 	})
 
 	app.Use("/", filesystem.New(filesystem.Config{
