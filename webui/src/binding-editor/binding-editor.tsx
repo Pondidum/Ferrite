@@ -23,6 +23,19 @@ const selectEditor = (
   updateBinding: Dispatch<SetStateAction<Behavior>>
 ) => {
   switch (binding.action) {
+    case "kp":
+      return (
+        <KeyPicker
+          param={paramOrDefault(binding.params, 0)}
+          update={(p) =>
+            updateBinding((b) => ({
+              action: b.action,
+              params: [p],
+            }))
+          }
+        />
+      );
+
     case "lt":
       return (
         <>
