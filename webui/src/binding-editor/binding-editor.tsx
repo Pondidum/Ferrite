@@ -62,6 +62,30 @@ const selectEditor = (
         />
       );
 
+    case "mt":
+      return (
+        <>
+          <KeyPicker
+            param={paramOrDefault(binding.params, 1)}
+            update={(p) =>
+              updateBinding((b) => ({
+                action: b.action,
+                params: [p, paramOrDefault(b.params, 0)],
+              }))
+            }
+          />
+          <KeyPicker
+            param={paramOrDefault(binding.params, 0)}
+            update={(p) =>
+              updateBinding((b) => ({
+                action: b.action,
+                params: [p, paramOrDefault(b.params, 1)],
+              }))
+            }
+          />
+        </>
+      );
+
     default:
       return <></>;
   }
