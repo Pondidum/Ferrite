@@ -48,6 +48,20 @@ const selectEditor = (
         </>
       );
 
+    case "mo":
+      return (
+        <LayerPicker
+          layers={keymap.layers}
+          param={paramOrDefault(binding.params, 0)}
+          update={(p) =>
+            updateBinding((b) => ({
+              action: b.action,
+              params: [p],
+            }))
+          }
+        />
+      );
+
     default:
       return <></>;
   }
