@@ -5,15 +5,14 @@ import { MouseEvent } from "react";
 
 const LayerPicker = ({
   layers,
-  binding,
-  updateBinding,
+  param,
+  update,
 }: {
   layers: Layer[];
-  binding: Behavior;
-  updateBinding: Dispatch<SetStateAction<Behavior>>;
+  param: Param;
+  update: (param: Param) => void;
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -26,23 +25,15 @@ const LayerPicker = ({
 
   const handleSelect = (e: SyntheticEvent, i: number) => {
     setAnchorEl(null);
-
-    const [_, ...rest] = binding.params;
-
-    const newSelection: Param = { number: i };
-
-    updateBinding({ ...binding, params: [newSelection, ...rest] });
+    update({ number: i });
   };
-
-  const layerIndex =
-    (binding.params.length > 0 && binding.params[0].number) || 0;
 
   return (
     <>
       <Button variant="outlined" onClick={handleClick}>
-        {layers[layerIndex].name}
+        {layers[param.number || 0].name}
       </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         {layers.map((l, i) => (
           <MenuItem key={i} onClick={(e) => handleSelect(e, i)}>
             {l.name}

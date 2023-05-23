@@ -10,8 +10,12 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
-import { Keymap, Behavior } from "../keymap";
+import { Keymap, Behavior, Param } from "../keymap";
 import LayerPicker from "./layer-picker";
+import KeyPicker from "./key-picker";
+
+const paramOrDefault = (params: Param[], index: number) =>
+  params.length > index ? params[index] : {};
 
 const selectEditor = (
   keymap: Keymap,
@@ -21,11 +25,27 @@ const selectEditor = (
   switch (binding.action) {
     case "lt":
       return (
-        <LayerPicker
-          layers={keymap.layers}
-          binding={binding}
-          updateBinding={updateBinding}
-        />
+        <>
+          <KeyPicker
+            param={paramOrDefault(binding.params, 1)}
+            update={(p) =>
+              updateBinding((b) => ({
+                ...b,
+                params: [paramOrDefault(b.params, 0), p],
+              }))
+            }
+          />
+          <LayerPicker
+            layers={keymap.layers}
+            param={paramOrDefault(binding.params, 0)}
+            update={(p) =>
+              updateBinding((b) => ({
+                action: b.action,
+                params: [p, paramOrDefault(b.params, 1)],
+              }))
+            }
+          />
+        </>
       );
 
     default:
