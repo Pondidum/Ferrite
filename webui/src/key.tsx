@@ -7,7 +7,7 @@ import {
 } from "react";
 import "./key.css";
 import { Behavior } from "./keymap";
-import { ZmkLayoutKey } from "./zmk";
+import { ZmkKey, ZmkLayoutKey } from "./zmk";
 import { ZmkContext } from "./zmk/context";
 
 const DefaultSize = 65;
@@ -40,7 +40,7 @@ interface KeyProps {
 
 export const keysFromCombo = (input: string | undefined) => {
   if (!input) {
-    return "";
+    return [];
   }
 
   const keys = [];
@@ -62,10 +62,20 @@ export const keysFromCombo = (input: string | undefined) => {
     keys.push(current);
   }
 
-  return keys.join(" ");
+  return keys;
 };
 
+const trySymbol = (lookup: { [key: string]: ZmkKey }, key: string) =>
+  lookup[key] ? lookup[key].symbol || key : key;
+
+const render = (lookup: { [key: string]: ZmkKey }, combo: string | undefined) =>
+  keysFromCombo(combo)
+    .map((k) => trySymbol(lookup, k))
+    .join(" ");
+
 const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
+  const zmk = useContext(ZmkContext);
+
   const onClick = (e: SyntheticEvent) => {
     editBinding(binding);
   };
@@ -73,9 +83,11 @@ const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
   const params = binding.params || [];
 
   const first =
-    params.length > 0 && (params[0].number || keysFromCombo(params[0].keyCode));
+    params.length > 0 &&
+    (params[0].number || render(zmk.keys, params[0].keyCode));
   const second =
-    params.length > 1 && (params[1].number || keysFromCombo(params[1].keyCode));
+    params.length > 1 &&
+    (params[1].number || render(zmk.keys, params[1].keyCode));
 
   return (
     <div className="key" style={styleKey(zmkKey)} onClick={onClick}>
