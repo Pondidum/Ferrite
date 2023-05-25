@@ -38,20 +38,44 @@ interface KeyProps {
   editBinding: Dispatch<SetStateAction<Behavior | undefined>>;
 }
 
-const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
-  const zmk = useContext(ZmkContext);
+export const keysFromCombo = (input: string | undefined) => {
+  if (!input) {
+    return "";
+  }
 
+  const keys = [];
+  let current = "";
+  for (let i = 0; i < input.length; i++) {
+    const char = input[i];
+
+    if (char === "(") {
+      keys.push(current);
+      current = "";
+    } else if (char === ")") {
+      break;
+    } else {
+      current += char;
+    }
+  }
+
+  if (current !== "") {
+    keys.push(current);
+  }
+
+  return keys.join(" ");
+};
+
+const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
   const onClick = (e: SyntheticEvent) => {
     editBinding(binding);
   };
 
   const params = binding.params || [];
 
-  const first = params.length > 0 && (params[0].number || params[0].keyCode);
-  const second = params.length > 1 && (params[1].number || params[1].keyCode);
-
-  // const first = binding.first?.map((b) => zmk.keys[b]?.symbol || b).join(" ");
-  // const second = binding.second?.map((b) => zmk.keys[b]?.symbol || b).join(" ");
+  const first =
+    params.length > 0 && (params[0].number || keysFromCombo(params[0].keyCode));
+  const second =
+    params.length > 1 && (params[1].number || keysFromCombo(params[1].keyCode));
 
   return (
     <div className="key" style={styleKey(zmkKey)} onClick={onClick}>
