@@ -49,7 +49,7 @@ export const keysFromCombo = (input: string | undefined) => {
     const char = input[i];
 
     if (char === "(") {
-      keys.push(current);
+      keys.push(current + "(code)"); // modifiers are defined as "LS(code)"
       current = "";
     } else if (char === ")") {
       break;
