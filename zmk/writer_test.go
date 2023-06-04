@@ -20,6 +20,25 @@ var expected = strings.TrimLeftFunc(`
 	flavor = "tap-preferred";
 }
 
+/ {
+
+	combos {
+		compatible = "zmk,combos";
+		combo_system {
+			timeout-ms = <50>;
+			key-positions = <2 3 4>;
+			layers = <0 5>;
+			bindings = <&tog 5>;
+		};
+		combo_wm {
+			timeout-ms = <50>;
+			key-positions = <19 29>;
+			layers = <0>;
+			bindings = <&mo 4>;
+		};
+	}
+}
+
 `, unicode.IsSpace)
 
 func TestWriting(t *testing.T) {
