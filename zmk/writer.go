@@ -2,6 +2,7 @@ package zmk
 
 import (
 	"bytes"
+	"ferrite/keyboard"
 	"fmt"
 	"io"
 	"strconv"
@@ -53,8 +54,13 @@ func writeDevice(w io.Writer, device *Device) {
 
 	writeCombos(w, device.Combos)
 
+	io.WriteString(w, "\n")
+
+	writeKeymap(w, device.Keymap)
+
 	io.WriteString(w, "}\n")
 	io.WriteString(w, "\n")
+
 }
 
 func writeCombos(w io.Writer, combos *Combos) {
@@ -74,6 +80,22 @@ func writeCombos(w io.Writer, combos *Combos) {
 		io.WriteString(w, fmt.Sprintf("\t\t\tbindings = <%v>;\n", renderBehaviors(combo.Bindings)))
 
 		io.WriteString(w, "\t\t};\n")
+	}
+
+	io.WriteString(w, "\t}\n")
+}
+
+func writeKeymap(w io.Writer, keymap *Keymap) {
+	io.WriteString(w, "\tkeymap {\n")
+	io.WriteString(w, fmt.Sprintf("\t\tcompatible = \"%s\";\n", keymap.Compatible))
+	io.WriteString(w, "\n")
+
+	for _, layer := range keymap.Layers {
+		io.WriteString(w, fmt.Sprintf("\t\t%s {\n", layer.Name))
+		io.WriteString(w, "\t\t\tbindings = <\n")
+		io.WriteString(w, "\t\t\t>;\n")
+		io.WriteString(w, "\t\t}\n")
+		io.WriteString(w, "\n")
 	}
 
 	io.WriteString(w, "\t}\n")
@@ -123,4 +145,43 @@ func renderBehaviors(behaviors []*Behavior) string {
 func renderBehavior(behavior *Behavior) string {
 
 	return fmt.Sprintf("&%s %s", behavior.Action, renderList(behavior.Params))
+}
+
+func renderBindings(w io.Writer, kb *keyboard.Keyboard, bindings []*Behavior) {
+
+	keys := make([]string, len(bindings))
+	maxChars := 0
+
+	for i, b := range bindings {
+		rendered := renderBehavior(b)
+
+		keys[i] = rendered
+		if chars := len(rendered); chars > maxChars {
+			maxChars = chars
+		}
+	}
+
+	// separator
+	sep := " "
+
+	currentRow := 0
+	line := bytes.Buffer{}
+
+	for i, key := range keys {
+		row := kb.Layout[i].Row
+
+		if row > currentRow {
+			w.Write(bytes.TrimSpace(line.Bytes()))
+			io.WriteString(w, "\n")
+
+			line.Reset()
+			currentRow = row
+		}
+
+		line.WriteString(fmt.Sprintf("%-*s%s", maxChars, key, sep))
+	}
+
+	w.Write(bytes.TrimSpace(line.Bytes()))
+	io.WriteString(w, "\n")
+
 }

@@ -2,6 +2,7 @@ package zmk
 
 import (
 	"bytes"
+	"ferrite/keyboard"
 	"os"
 	"strings"
 	"testing"
@@ -37,6 +38,46 @@ var expected = strings.TrimLeftFunc(`
 			bindings = <&mo 4>;
 		};
 	}
+
+	keymap {
+		compatible = "zmk,keymap";
+
+		default_layer {
+			bindings = <
+			>;
+		}
+
+		layer_NUM {
+			bindings = <
+			>;
+		}
+
+		layer_SYM {
+			bindings = <
+			>;
+		}
+
+		layer_NAV {
+			bindings = <
+			>;
+		}
+
+		layer_WM {
+			bindings = <
+			>;
+		}
+
+		layer_SYS {
+			bindings = <
+			>;
+		}
+
+		layer_FUN {
+			bindings = <
+			>;
+		}
+
+	}
 }
 
 `, unicode.IsSpace)
@@ -51,6 +92,33 @@ func TestWriting(t *testing.T) {
 
 	b := &bytes.Buffer{}
 	Write(b, k)
+
+	assert.Equal(t, expected, b.String())
+
+}
+
+func TestWriteBindings(t *testing.T) {
+	f, err := os.Open("cradio.keymap")
+	assert.NoError(t, err)
+	defer f.Close()
+
+	conf, err := Parse(f)
+	assert.NoError(t, err)
+
+	layer := conf.Device.Keymap.Layers[0]
+	bindings := layer.Bindings
+
+	kb, err := keyboard.ReadKeyboardInfo("../config/keyboard.json")
+	assert.NoError(t, err)
+	b := &bytes.Buffer{}
+	renderBindings(b, kb, bindings)
+
+	var expected = strings.TrimLeftFunc(`
+&kp Q       &kp W       &kp E       &kp R       &kp T       &kp Y       &kp U       &kp I       &kp O       &kp P
+&kp A       &mt LGUI S  &mt LALT D  &kp F       &kp G       &kp H       &kp J       &mt LALT K  &mt LGUI L  &kp LSHIFT
+&lt 6 Z     &kp X       &kp C       &kp V       &kp B       &kp N       &kp M       &kp COMMA   &kp DOT     &kp LCTRL
+&lt 3 TAB   &lt 2 SPACE &kp RET     &mo 1
+`, unicode.IsSpace)
 
 	assert.Equal(t, expected, b.String())
 
