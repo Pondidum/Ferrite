@@ -8,14 +8,14 @@ import (
 	"strconv"
 )
 
-func Write(w io.Writer, f *File) {
+func Write(w io.Writer, keyboard *keyboard.Keyboard, f *File) {
 
 	writeIncludes(w, f.Includes)
 
 	// defines?
 	writeConfigs(w, f.Configs)
 
-	writeDevice(w, f.Device)
+	writeDevice(w, keyboard, f.Device)
 }
 
 func writeIncludes(w io.Writer, includes []*Include) {
@@ -48,7 +48,7 @@ func writeConfigs(w io.Writer, configs []*Config) {
 	io.WriteString(w, "\n")
 }
 
-func writeDevice(w io.Writer, device *Device) {
+func writeDevice(w io.Writer, keyboard *keyboard.Keyboard, device *Device) {
 
 	io.WriteString(w, "/ {\n\n")
 
@@ -56,7 +56,7 @@ func writeDevice(w io.Writer, device *Device) {
 
 	io.WriteString(w, "\n")
 
-	writeKeymap(w, device.Keymap)
+	writeKeymap(w, keyboard, device.Keymap)
 
 	io.WriteString(w, "}\n")
 	io.WriteString(w, "\n")
@@ -85,7 +85,7 @@ func writeCombos(w io.Writer, combos *Combos) {
 	io.WriteString(w, "\t}\n")
 }
 
-func writeKeymap(w io.Writer, keymap *Keymap) {
+func writeKeymap(w io.Writer, keyboard *keyboard.Keyboard, keymap *Keymap) {
 	io.WriteString(w, "\tkeymap {\n")
 	io.WriteString(w, fmt.Sprintf("\t\tcompatible = \"%s\";\n", keymap.Compatible))
 	io.WriteString(w, "\n")
@@ -93,6 +93,9 @@ func writeKeymap(w io.Writer, keymap *Keymap) {
 	for _, layer := range keymap.Layers {
 		io.WriteString(w, fmt.Sprintf("\t\t%s {\n", layer.Name))
 		io.WriteString(w, "\t\t\tbindings = <\n")
+
+		renderBindings(w, keyboard, layer.Bindings)
+
 		io.WriteString(w, "\t\t\t>;\n")
 		io.WriteString(w, "\t\t}\n")
 		io.WriteString(w, "\n")
