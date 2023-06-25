@@ -14,11 +14,11 @@ const DefaultSize = 65;
 const DefaultPadding = 5;
 
 const styleKey = (k: ZmkLayoutKey): CSSProperties => {
-  const x = k.X * (DefaultSize + DefaultPadding);
+  const x = k.Col * (DefaultSize + DefaultPadding);
   const y = k.Y * (DefaultSize + DefaultPadding);
   const w = DefaultSize;
   const h = DefaultSize;
-  const rx = (k.X - Math.max(k.Rx, k.X)) * -(DefaultSize + DefaultPadding);
+  const rx = (k.Col - Math.max(k.Rx, k.Col)) * -(DefaultSize + DefaultPadding);
   const ry = (k.Y - Math.max(k.Ry, k.Y)) * -(DefaultSize + DefaultPadding);
   const a = k.R;
 

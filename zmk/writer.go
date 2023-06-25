@@ -193,7 +193,7 @@ func renderBindings(w io.Writer, kb *keyboard.Keyboard, bindings []*Behavior) {
 
 	for i, key := range keys {
 		r := kb.Layout[i].Row
-		c := kb.Layout[i].Col - 1
+		c := kb.Layout[i].Col
 
 		for j, char := range key {
 
