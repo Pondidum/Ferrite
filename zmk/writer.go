@@ -43,7 +43,7 @@ func writeConfigs(w io.Writer, configs []*Config) {
 			}
 
 		}
-		io.WriteString(w, "}\n")
+		io.WriteString(w, "};\n")
 	}
 	io.WriteString(w, "\n")
 }
@@ -58,7 +58,7 @@ func writeDevice(w io.Writer, keyboard *keyboard.Keyboard, device *Device) {
 
 	writeKeymap(w, keyboard, device.Keymap)
 
-	io.WriteString(w, "}\n")
+	io.WriteString(w, "};\n")
 	io.WriteString(w, "\n")
 
 }
@@ -82,7 +82,7 @@ func writeCombos(w io.Writer, combos *Combos) {
 		io.WriteString(w, "\t\t};\n")
 	}
 
-	io.WriteString(w, "\t}\n")
+	io.WriteString(w, "\t};\n")
 }
 
 func writeKeymap(w io.Writer, keyboard *keyboard.Keyboard, keymap *Keymap) {
@@ -97,11 +97,11 @@ func writeKeymap(w io.Writer, keyboard *keyboard.Keyboard, keymap *Keymap) {
 		renderBindings(w, keyboard, layer.Bindings)
 
 		io.WriteString(w, "\t\t\t>;\n")
-		io.WriteString(w, "\t\t}\n")
+		io.WriteString(w, "\t\t};\n")
 		io.WriteString(w, "\n")
 	}
 
-	io.WriteString(w, "\t}\n")
+	io.WriteString(w, "\t};\n")
 }
 
 func renderList(list []*List) string {

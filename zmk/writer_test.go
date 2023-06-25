@@ -19,7 +19,7 @@ var expected = strings.TrimLeftFunc(`
 &mt {
 	tapping-term-ms = <200>;
 	flavor = "tap-preferred";
-}
+};
 
 / {
 
@@ -37,7 +37,7 @@ var expected = strings.TrimLeftFunc(`
 			layers = <0>;
 			bindings = <&mo 4>;
 		};
-	}
+	};
 
 	keymap {
 		compatible = "zmk,keymap";
@@ -49,7 +49,7 @@ var expected = strings.TrimLeftFunc(`
 &lt 6 Z     &kp X       &kp C       &kp V       &kp B       &kp N       &kp M       &kp COMMA   &kp DOT     &kp LCTRL
 &lt 3 TAB   &lt 2 SPACE &kp RET     &mo 1
 			>;
-		}
+		};
 
 		layer_NUM {
 			bindings = <
@@ -58,7 +58,7 @@ var expected = strings.TrimLeftFunc(`
 &none         &none         &none         &none         &none         &kp PERIOD    &kp SLASH     &kp LS(N8)    &none         &none
 &none         &none         &none         &none
 			>;
-		}
+		};
 
 		layer_SYM {
 			bindings = <
@@ -67,7 +67,7 @@ var expected = strings.TrimLeftFunc(`
 &kp LS(NON_US_BACKSLASH) &kp NON_US_BACKSLASH     &none                    &kp LS(NON_US_HASH)      &kp GRAVE                &kp MINUS                &kp LS(MINUS)            &kp EQUAL                &kp LS(EQUAL)            &kp SLASH
 &none                    &none                    &kp DEL                  &kp BACKSPACE
 			>;
-		}
+		};
 
 		layer_NAV {
 			bindings = <
@@ -76,7 +76,7 @@ var expected = strings.TrimLeftFunc(`
 &none            &none            &none            &none            &kp K_VOL_DN     &kp PAGE_DOWN    &none            &none            &none            &kp LCTRL
 &none            &none            &none            &none
 			>;
-		}
+		};
 
 		layer_WM {
 			bindings = <
@@ -85,7 +85,7 @@ var expected = strings.TrimLeftFunc(`
 &kp LALT            &none               &none               &none               &none               &none               &none               &none               &none               &none
 &kp LG(LS(Q))       &none               &kp LG(D)           &kp LG(ENTER)
 			>;
-		}
+		};
 
 		layer_SYS {
 			bindings = <
@@ -94,7 +94,7 @@ var expected = strings.TrimLeftFunc(`
 &none        &none        &none        &none        &bootloader  &bootloader  &none        &none        &none        &none
 &none        &none        &none        &none
 			>;
-		}
+		};
 
 		layer_FUN {
 			bindings = <
@@ -103,10 +103,10 @@ var expected = strings.TrimLeftFunc(`
 &none      &none      &none      &none      &none      &kp F9     &kp F10    &kp F11    &kp F12    &none
 &none      &none      &none      &none
 			>;
-		}
+		};
 
-	}
-}
+	};
+};
 
 `, unicode.IsSpace)
 
@@ -153,4 +153,23 @@ func TestWriteBindings(t *testing.T) {
 
 	assert.Equal(t, expected, b.String())
 
+}
+
+func TestParseWriteEndToEnd(t *testing.T) {
+
+	kb, err := keyboard.ReadKeyboardInfo("../config/keyboard.json")
+	assert.NoError(t, err)
+
+	f, err := os.Open("cradio.keymap")
+	assert.NoError(t, err)
+
+	k, err := Parse(f)
+	assert.NoError(t, err)
+	f.Close()
+
+	out, err := os.Create("cradio.keymap")
+	assert.NoError(t, err)
+	defer out.Close()
+
+	Write(out, kb, k)
 }
