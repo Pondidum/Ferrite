@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"strconv"
+	"strings"
+	"unicode"
 )
 
 func Write(w io.Writer, keyboard *keyboard.Keyboard, f *File) {
@@ -153,38 +155,63 @@ func renderBehavior(behavior *Behavior) string {
 func renderBindings(w io.Writer, kb *keyboard.Keyboard, bindings []*Behavior) {
 
 	keys := make([]string, len(bindings))
-	maxChars := 0
+	runesPerColumn := 0
 
 	for i, b := range bindings {
 		rendered := renderBehavior(b)
 
 		keys[i] = rendered
-		if chars := len(rendered); chars > maxChars {
-			maxChars = chars
+		if chars := len(rendered); chars > runesPerColumn {
+			runesPerColumn = chars
 		}
 	}
+
+	rowCount := 0
+	colCount := 0
+
+	for _, key := range kb.Layout {
+		if key.Col > colCount {
+			colCount = key.Col
+		}
+		if key.Row > rowCount {
+			rowCount = key.Row
+		}
+	}
+
+	rowCount += 1
+	colCount += 1
 
 	// separator
 	sep := " "
+	runesPerColumn += len(sep)
 
-	currentRow := 0
-	line := bytes.Buffer{}
-
-	for i, key := range keys {
-		row := kb.Layout[i].Row
-
-		if row > currentRow {
-			w.Write(bytes.TrimSpace(line.Bytes()))
-			io.WriteString(w, "\n")
-
-			line.Reset()
-			currentRow = row
-		}
-
-		line.WriteString(fmt.Sprintf("%-*s%s", maxChars, key, sep))
+	// row + column matrix
+	rows := make([][]rune, rowCount)
+	for r := range rows {
+		rows[r] = repeat(runesPerColumn*colCount, ' ')
 	}
 
-	w.Write(bytes.TrimSpace(line.Bytes()))
-	io.WriteString(w, "\n")
+	for i, key := range keys {
+		r := kb.Layout[i].Row
+		c := kb.Layout[i].Col - 1
 
+		for j, char := range key {
+
+			rows[r][(c*runesPerColumn)+j] = char
+		}
+	}
+
+	for _, row := range rows {
+		io.WriteString(w, strings.TrimRightFunc(string(row), unicode.IsSpace))
+		io.WriteString(w, "\n")
+	}
+}
+
+func repeat(length int, r rune) []rune {
+	row := make([]rune, length)
+	for i := range row {
+		row[i] = r
+	}
+
+	return row
 }
