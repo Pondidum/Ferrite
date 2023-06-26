@@ -77,14 +77,23 @@ func writeCombos(w io.Writer, combos *Combos) {
 		io.WriteString(w, fmt.Sprintf("\t\t%s {\n", combo.Name))
 
 		io.WriteString(w, fmt.Sprintf("\t\t\ttimeout-ms = <%d>;\n", combo.Timeout))
-		io.WriteString(w, fmt.Sprintf("\t\t\tkey-positions = <%v>;\n", renderList(combo.KeyPositions)))
-		io.WriteString(w, fmt.Sprintf("\t\t\tlayers = <%v>;\n", renderList(combo.Layers)))
+		io.WriteString(w, fmt.Sprintf("\t\t\tkey-positions = <%v>;\n", renderIntList(combo.KeyPositions)))
+		io.WriteString(w, fmt.Sprintf("\t\t\tlayers = <%v>;\n", renderIntList(combo.Layers)))
 		io.WriteString(w, fmt.Sprintf("\t\t\tbindings = <%v>;\n", renderBehaviors(combo.Bindings)))
 
 		io.WriteString(w, "\t\t};\n")
 	}
 
 	io.WriteString(w, "\t};\n")
+}
+
+func renderIntList(l []int32) string {
+
+	vals := make([]string, len(l))
+	for i, val := range l {
+		vals[i] = strconv.FormatInt(int64(val), 10)
+	}
+	return strings.Join(vals, " ")
 }
 
 func writeKeymap(w io.Writer, keyboard *keyboard.Keyboard, keymap *Keymap) {

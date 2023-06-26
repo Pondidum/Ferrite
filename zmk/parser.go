@@ -69,8 +69,8 @@ type Combo struct {
 
 	Name         string      `parser:"@Ident '{'"`
 	Timeout      int32       `parser:"'timeout''-''ms' '=' '<'@Int'>'';'"`
-	KeyPositions []*List     `parser:"'key''-''positions' '=' '<'@@+'>'';'"`
-	Layers       []*List     `parser:"('layers' '=' '<'@@+'>'';')?"`
+	KeyPositions []int32     `parser:"'key''-''positions' '=' '<'@Int*'>'';'"`
+	Layers       []int32     `parser:"('layers' '=' '<'@Int*'>'';')?"`
 	Bindings     []*Behavior `parser:"'bindings' '=' '<'@@+'>'';' '}'';'"`
 }
 

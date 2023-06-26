@@ -192,6 +192,11 @@ func TestKeymap(t *testing.T) {
 		{Key: p("tapping-term-ms"), Value: &Value{Number: p(200)}},
 		{Key: p("flavor"), Value: &Value{String: p("tap-preferred")}},
 	}, k.Configs[0].Values)
+
+	combo := k.Device.Combos.Combos[0]
+
+	assert.Equal(t, "combo_system", combo.Name)
+	assert.Equal(t, []int32{0, 5}, combo.Layers)
 }
 
 func p[T any](v T) *T {
