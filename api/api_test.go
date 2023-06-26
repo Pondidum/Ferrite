@@ -26,7 +26,7 @@ func TestMapping(t *testing.T) {
 func decode() (*List, error) {
 
 	code := "LS(R)"
-	f := zmk.List{
+	f := zmk.Binding{
 		KeyCode: &code,
 	}
 

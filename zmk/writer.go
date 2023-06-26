@@ -115,7 +115,7 @@ func writeKeymap(w io.Writer, keyboard *keyboard.Keyboard, keymap *Keymap) {
 	io.WriteString(w, "\t};\n")
 }
 
-func renderList(list []*List) string {
+func renderBindingList(list []*Binding) string {
 	b := &bytes.Buffer{}
 
 	for i, l := range list {
@@ -129,7 +129,7 @@ func renderList(list []*List) string {
 	return b.String()
 }
 
-func renderListItem(l *List) string {
+func renderListItem(l *Binding) string {
 	if l.Number != nil {
 		return strconv.FormatInt(int64(*l.Number), 10)
 	}
@@ -158,7 +158,7 @@ func renderBehaviors(behaviors []*Behavior) string {
 
 func renderBehavior(behavior *Behavior) string {
 
-	return fmt.Sprintf("&%s %s", behavior.Action, renderList(behavior.Params))
+	return fmt.Sprintf("&%s %s", behavior.Action, renderBindingList(behavior.Params))
 }
 
 func renderBindings(w io.Writer, kb *keyboard.Keyboard, bindings []*Behavior) {

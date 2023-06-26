@@ -90,7 +90,7 @@ type Layer struct {
 	EndBrace       string      `parser:" '}'';'"`
 }
 
-type List struct {
+type Binding struct {
 	Number  *int32  `parser:"@Int"`
 	KeyCode *string `parser:"| @(Ident('('Ident('('Ident')')?')')?)"`
 }
@@ -98,8 +98,8 @@ type List struct {
 type Behavior struct {
 	pos lexer.Position
 
-	Action string  `parser:"'&'@Ident"`
-	Params []*List `parser:"@@*"`
+	Action string     `parser:"'&'@Ident"`
+	Params []*Binding `parser:"@@*"`
 }
 
 func Parse(r io.Reader) (*File, error) {
