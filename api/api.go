@@ -1,7 +1,6 @@
 package api
 
 import (
-	"ferrite/keyboard"
 	"ferrite/zmk"
 	"fmt"
 	"net/http"
@@ -22,7 +21,7 @@ func NewApi() (*fiber.App, error) {
 
 	app.Use(cors.New())
 
-	kb, err := keyboard.ReadKeyboardInfo("./config/keyboard.json")
+	kb, err := zmk.ReadKeyboardInfo("./config/keyboard.json")
 	if err != nil {
 		return nil, err
 	}

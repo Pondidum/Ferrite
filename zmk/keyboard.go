@@ -1,4 +1,4 @@
-package keyboard
+package zmk
 
 import (
 	"encoding/json"
@@ -8,10 +8,10 @@ import (
 )
 
 type Keyboard struct {
-	Layout []Key `json:"layout"`
+	Layout []KeyboardKey `json:"layout"`
 }
 
-type Key struct {
+type KeyboardKey struct {
 	Label string
 	Row   int
 	Col   int
@@ -25,7 +25,7 @@ type Key struct {
 const DefaultSize = 65
 const DefaultPadding = 5
 
-func (k *Key) Style() string {
+func (k *KeyboardKey) Style() string {
 	x := k.X * (DefaultSize + DefaultPadding)
 	y := k.Y * (DefaultSize + DefaultPadding)
 	u := DefaultSize

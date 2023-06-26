@@ -2,7 +2,6 @@ package zmk
 
 import (
 	"bytes"
-	"ferrite/keyboard"
 	"os"
 	"strings"
 	"testing"
@@ -115,7 +114,7 @@ func TestWriting(t *testing.T) {
 	assert.NoError(t, err)
 	defer f.Close()
 
-	kb, err := keyboard.ReadKeyboardInfo("../config/keyboard.json")
+	kb, err := ReadKeyboardInfo("../config/keyboard.json")
 	assert.NoError(t, err)
 
 	k, err := Parse(f)
@@ -139,7 +138,7 @@ func TestWriteBindings(t *testing.T) {
 	layer := conf.Device.Keymap.Layers[0]
 	bindings := layer.Bindings
 
-	kb, err := keyboard.ReadKeyboardInfo("../config/keyboard.json")
+	kb, err := ReadKeyboardInfo("../config/keyboard.json")
 	assert.NoError(t, err)
 	b := &bytes.Buffer{}
 	renderBindings(b, kb, bindings)
@@ -157,7 +156,7 @@ func TestWriteBindings(t *testing.T) {
 
 func TestParseWriteEndToEnd(t *testing.T) {
 
-	kb, err := keyboard.ReadKeyboardInfo("../config/keyboard.json")
+	kb, err := ReadKeyboardInfo("../config/keyboard.json")
 	assert.NoError(t, err)
 
 	f, err := os.ReadFile("cradio.keymap")

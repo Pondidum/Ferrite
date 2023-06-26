@@ -2,7 +2,6 @@ package zmk
 
 import (
 	"bytes"
-	"ferrite/keyboard"
 	"fmt"
 	"io"
 	"strconv"
@@ -10,7 +9,7 @@ import (
 	"unicode"
 )
 
-func Write(w io.Writer, keyboard *keyboard.Keyboard, f *File) {
+func Write(w io.Writer, keyboard *Keyboard, f *File) {
 
 	writeIncludes(w, f.Includes)
 
@@ -50,7 +49,7 @@ func writeConfigs(w io.Writer, configs []*Config) {
 	io.WriteString(w, "\n")
 }
 
-func writeDevice(w io.Writer, keyboard *keyboard.Keyboard, device *Device) {
+func writeDevice(w io.Writer, keyboard *Keyboard, device *Device) {
 
 	io.WriteString(w, "/ {\n\n")
 
@@ -96,7 +95,7 @@ func renderIntList(l []int32) string {
 	return strings.Join(vals, " ")
 }
 
-func writeKeymap(w io.Writer, keyboard *keyboard.Keyboard, keymap *Keymap) {
+func writeKeymap(w io.Writer, keyboard *Keyboard, keymap *Keymap) {
 	io.WriteString(w, "\tkeymap {\n")
 	io.WriteString(w, fmt.Sprintf("\t\tcompatible = \"%s\";\n", keymap.Compatible))
 	io.WriteString(w, "\n")
@@ -161,7 +160,7 @@ func renderBehavior(behavior *Behavior) string {
 	return fmt.Sprintf("&%s %s", behavior.Action, renderBindingList(behavior.Params))
 }
 
-func renderBindings(w io.Writer, kb *keyboard.Keyboard, bindings []*Behavior) {
+func renderBindings(w io.Writer, kb *Keyboard, bindings []*Behavior) {
 
 	keys := make([]string, len(bindings))
 	runesPerColumn := 0
