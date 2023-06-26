@@ -38,40 +38,11 @@ interface KeyProps {
   editBinding: Dispatch<SetStateAction<Behavior | undefined>>;
 }
 
-export const keysFromCombo = (input: string | undefined) => {
-  if (!input) {
-    return [];
-  }
-
-  const keys = [];
-  let current = "";
-  for (let i = 0; i < input.length; i++) {
-    const char = input[i];
-
-    if (char === "(") {
-      keys.push(current + "(code)"); // modifiers are defined as "LS(code)"
-      current = "";
-    } else if (char === ")") {
-      break;
-    } else {
-      current += char;
-    }
-  }
-
-  if (current !== "") {
-    keys.push(current);
-  }
-
-  return keys;
-};
-
 const trySymbol = (lookup: { [key: string]: ZmkKey }, key: string) =>
   lookup[key] ? lookup[key].symbol || key : key;
 
-const render = (lookup: { [key: string]: ZmkKey }, combo: string | undefined) =>
-  keysFromCombo(combo)
-    .map((k) => trySymbol(lookup, k))
-    .join(" ");
+const render = (lookup: { [key: string]: ZmkKey }, keyCodes: string[]) =>
+  keyCodes.map((k) => trySymbol(lookup, k)).join(" ");
 
 const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
   const zmk = useContext(ZmkContext);
@@ -84,10 +55,10 @@ const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
 
   const first =
     params.length > 0 &&
-    (params[0].number || render(zmk.keys, params[0].keyCode));
+    (params[0].number || render(zmk.keys, params[0].keyCodes));
   const second =
     params.length > 1 &&
-    (params[1].number || render(zmk.keys, params[1].keyCode));
+    (params[1].number || render(zmk.keys, params[1].keyCodes));
 
   return (
     <div className="key" style={styleKey(zmkKey)} onClick={onClick}>

@@ -22,5 +22,5 @@ export interface Behavior {
 
 export interface Param {
   number?: number;
-  keyCode?: string;
+  keyCodes: string[];
 }

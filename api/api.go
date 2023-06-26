@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"reflect"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -59,7 +60,15 @@ func NewApi() (*fiber.App, error) {
 		}
 
 		response := File{}
-		if err := mapstructure.Decode(temp, &response); err != nil {
+		d, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{
+			DecodeHook: KeyCodeToKeysHookFunc(),
+			Result:     &response,
+		})
+		if err != nil {
+			return err
+		}
+
+		if err := d.Decode(temp); err != nil {
 			return err
 		}
 
@@ -71,4 +80,54 @@ func NewApi() (*fiber.App, error) {
 	}))
 
 	return app, nil
+}
+
+func KeyCodeToKeysHookFunc() mapstructure.DecodeHookFunc {
+	return func(
+		f reflect.Type,
+		t reflect.Type,
+		data interface{}) (interface{}, error) {
+		if t != reflect.TypeOf([]string{}) {
+			return data, nil
+		}
+
+		if f.Kind() == reflect.Pointer && f.Elem().Kind() == reflect.String {
+			str := data.(*string)
+			keys := parseKeys(*str)
+			return keys, nil
+		}
+
+		if f.Kind() == reflect.String {
+			str := data.(string)
+			keys := parseKeys(str)
+			return keys, nil
+		}
+
+		return data, nil
+	}
+}
+
+func parseKeys(input string) []string {
+
+	keys := []string{}
+
+	current := []rune{}
+	for _, char := range input {
+
+		if char == '(' {
+			keys = append(keys, string(current))
+			// keys.push(current + "(code)"); // modifiers are defined as "LS(code)"
+			current = []rune{}
+		} else if char == ')' {
+			break
+		} else {
+			current = append(current, char)
+		}
+	}
+
+	if len(current) > 0 {
+		keys = append(keys, string(current))
+	}
+
+	return keys
 }

@@ -25,7 +25,7 @@ const LayerPicker = ({
 
   const handleSelect = (e: SyntheticEvent, i: number) => {
     setAnchorEl(null);
-    update({ number: i });
+    update({ number: i, keyCodes: [] });
   };
 
   return (

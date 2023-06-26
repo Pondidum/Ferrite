@@ -63,8 +63,24 @@ type Layer struct {
 }
 
 type List struct {
-	Number  *int32  `json:"number"`
-	KeyCode *string `json:"keyCode"`
+	Number  *int32   `json:"number"`
+	KeyCode []string `json:"keyCode"`
+}
+
+func (l *List) MarshalJSON() ([]byte, error) {
+
+	type Dto List
+
+	dto := Dto{
+		Number:  l.Number,
+		KeyCode: l.KeyCode,
+	}
+
+	if dto.KeyCode == nil {
+		dto.KeyCode = []string{}
+	}
+
+	return json.Marshal(dto)
 }
 
 type Behavior struct {
