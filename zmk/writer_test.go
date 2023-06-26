@@ -160,16 +160,14 @@ func TestParseWriteEndToEnd(t *testing.T) {
 	kb, err := keyboard.ReadKeyboardInfo("../config/keyboard.json")
 	assert.NoError(t, err)
 
-	f, err := os.Open("cradio.keymap")
+	f, err := os.ReadFile("cradio.keymap")
 	assert.NoError(t, err)
 
-	k, err := Parse(f)
+	k, err := Parse(bytes.NewBuffer(f))
 	assert.NoError(t, err)
-	f.Close()
 
-	out, err := os.Create("cradio.keymap")
-	assert.NoError(t, err)
-	defer out.Close()
-
+	out := &bytes.Buffer{}
 	Write(out, kb, k)
+
+	assert.Equal(t, string(f), out.String())
 }
