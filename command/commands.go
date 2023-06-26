@@ -11,10 +11,6 @@ func Commands(ui cli.Ui) map[string]cli.CommandFactory {
 			return NewVersionCommand(ui)
 		},
 
-		"import": func() (cli.Command, error) {
-			return NewImportCommand(ui)
-		},
-
 		"server": func() (cli.Command, error) {
 			return NewServerCommand(ui)
 		},
