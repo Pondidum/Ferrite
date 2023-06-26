@@ -9,16 +9,20 @@ const KeyPicker = ({
   update: (param: Parameter) => void;
 }) => {
   return (
-    <TextField
-      variant="outlined"
-      value={param.keyCodes}
-      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-        update({
-          number: param.number,
-          keyCodes: param.keyCodes,
-        });
-      }}
-    />
+    <>
+      <h3>When tapped, press</h3>
+
+      <TextField
+        variant="outlined"
+        value={param.keyCodes}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          update({
+            number: param.number,
+            keyCodes: param.keyCodes,
+          });
+        }}
+      />
+    </>
   );
 };
 
