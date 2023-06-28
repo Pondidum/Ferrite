@@ -18,6 +18,11 @@ func NewApi() (*fiber.App, error) {
 
 	})
 
+	app.Use(func(c *fiber.Ctx) error {
+		fmt.Printf("%s %s \n", c.Method(), c.Path())
+		return c.Next()
+	})
+
 	app.Use(cors.New())
 
 	kb, err := zmk.ReadKeyboardInfo("./config/keyboard.json")
@@ -31,8 +36,6 @@ func NewApi() (*fiber.App, error) {
 	}
 
 	app.Get("/api/zmk/", func(c *fiber.Ctx) error {
-		fmt.Println("GET /api/zmk/")
-
 		return c.JSON(map[string]any{
 			"layout": kb.Layout,
 			"keys":   zmk.BuildKeyMap(keys),
@@ -40,8 +43,6 @@ func NewApi() (*fiber.App, error) {
 	})
 
 	app.Get("/api/device", func(c *fiber.Ctx) error {
-		fmt.Println("GET /api/device")
-
 		keymapFile, err := os.Open("./config/cradio.keymap")
 		if err != nil {
 			return err
