@@ -1,21 +1,21 @@
 import { TextField } from "@mui/material";
-import { Param } from "../keymap";
+import { Parameter } from "../keymap";
 
 const KeyPicker = ({
   param,
   update,
 }: {
-  param: Param;
-  update: (param: Param) => void;
+  param: Parameter;
+  update: (param: Parameter) => void;
 }) => {
   return (
     <TextField
       variant="outlined"
-      value={param.keyCode}
+      value={param.keyCodes}
       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
         update({
           number: param.number,
-          keyCode: param.keyCode,
+          keyCodes: param.keyCodes,
         });
       }}
     />

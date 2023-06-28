@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useContext } from "react";
-import { Layer, Behavior } from "./keymap";
+import { Layer, Binding } from "./keymap";
 import Key from "./key";
 import { ZmkContext } from "./zmk/context";
 
 interface KeyboardProps {
   layer: Layer;
-  editBinding: Dispatch<SetStateAction<Behavior | undefined>>;
+  editBinding: Dispatch<SetStateAction<Binding | undefined>>;
 }
 
 const Keyboard = ({ layer, editBinding }: KeyboardProps) => {

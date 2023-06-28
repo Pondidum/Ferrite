@@ -1,6 +1,6 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import { useState, SyntheticEvent, Dispatch, SetStateAction } from "react";
-import { Behavior, Layer, Param } from "../keymap";
+import { Layer, Parameter } from "../keymap";
 import { MouseEvent } from "react";
 
 const LayerPicker = ({
@@ -9,8 +9,8 @@ const LayerPicker = ({
   update,
 }: {
   layers: Layer[];
-  param: Param;
-  update: (param: Param) => void;
+  param: Parameter;
+  update: (param: Parameter) => void;
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 

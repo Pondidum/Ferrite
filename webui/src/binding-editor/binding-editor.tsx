@@ -10,17 +10,17 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
-import { Keymap, Behavior, Param } from "../keymap";
+import { Keymap, Binding, Parameter } from "../keymap";
 import LayerPicker from "./layer-picker";
 import KeyPicker from "./key-picker";
 
-const paramOrDefault = (params: Param[], index: number) =>
-  params.length > index ? params[index] : {};
+const paramOrDefault = (params: Parameter[], index: number): Parameter =>
+  params.length > index ? params[index] : { keyCodes: [] };
 
 const selectEditor = (
   keymap: Keymap,
-  binding: Behavior,
-  updateBinding: Dispatch<SetStateAction<Behavior>>
+  binding: Binding,
+  updateBinding: Dispatch<SetStateAction<Binding>>
 ) => {
   switch (binding.action) {
     case "kp":
@@ -113,9 +113,9 @@ const BindingEditor = ({
 }: {
   open: boolean;
   keymap: Keymap;
-  binding: Behavior | undefined;
+  binding: Binding | undefined;
   onCancel: () => void;
-  onConfirm: (newBinding: Behavior) => void;
+  onConfirm: (newBinding: Binding) => void;
 }) => {
   if (!binding) {
     return <></>;
@@ -123,7 +123,7 @@ const BindingEditor = ({
 
   const [newBinding, setBinding] = useState(binding);
 
-  const updateBinding: Dispatch<SetStateAction<Behavior>> = (b) => {
+  const updateBinding: Dispatch<SetStateAction<Binding>> = (b) => {
     console.log("new binding:", b);
     setBinding(b);
   };

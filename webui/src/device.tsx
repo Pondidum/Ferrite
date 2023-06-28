@@ -3,7 +3,7 @@ import { ComponentType, SyntheticEvent, useState } from "react";
 import "./App.css";
 import BindingEditor from "./binding-editor";
 import Keyboard from "./keyboard";
-import { Keymap, Behavior, Layer, Device } from "./keymap";
+import { Keymap, Binding, Layer } from "./keymap";
 import { Link, useLoaderData } from "react-router-dom";
 
 const LayerEditor = ({
@@ -17,7 +17,7 @@ const LayerEditor = ({
     return <></>;
   }
 
-  const [binding, editBinding] = useState<Behavior | undefined>();
+  const [binding, editBinding] = useState<Binding | undefined>();
 
   return (
     <>
@@ -44,18 +44,18 @@ const LinkTab: ComponentType<TabProps & LinkProps> = Tab as React.ComponentType<
   TabProps & LinkProps
 >;
 
-const DeviceEditor = () => {
-  const { device, layer: layerIndex } = useLoaderData() as {
-    device: Device;
+const KeymapEditor = () => {
+  const { keymap, layer: layerIndex } = useLoaderData() as {
+    keymap: Keymap;
     layer: number;
   };
 
-  const layer = device.keymap.layers[layerIndex];
+  const layer = keymap.layers[layerIndex];
 
   return (
     <Box>
       <Tabs value={layerIndex}>
-        {device.keymap.layers.map((l, i) => (
+        {keymap.layers.map((l, i) => (
           <LinkTab
             key={l.name}
             label={l.name}
@@ -65,9 +65,9 @@ const DeviceEditor = () => {
         ))}
       </Tabs>
 
-      <LayerEditor keymap={device.keymap} layer={layer} />
+      <LayerEditor keymap={keymap} layer={layer} />
     </Box>
   );
 };
 
-export default DeviceEditor;
+export default KeymapEditor;

@@ -6,7 +6,7 @@ import {
   useContext,
 } from "react";
 import "./key.css";
-import { Behavior } from "./keymap";
+import { Binding } from "./keymap";
 import { ZmkKey, ZmkLayoutKey } from "./zmk";
 import { ZmkContext } from "./zmk/context";
 
@@ -34,8 +34,8 @@ const styleKey = (k: ZmkLayoutKey): CSSProperties => {
 
 interface KeyProps {
   zmkKey: ZmkLayoutKey;
-  binding: Behavior;
-  editBinding: Dispatch<SetStateAction<Behavior | undefined>>;
+  binding: Binding;
+  editBinding: Dispatch<SetStateAction<Binding | undefined>>;
 }
 
 const trySymbol = (lookup: { [key: string]: ZmkKey }, key: string) =>
