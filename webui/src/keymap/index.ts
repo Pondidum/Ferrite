@@ -22,8 +22,10 @@ export interface Combo {
   bindings: Binding[];
 }
 
+export type Actions = "kp" | "mt" | "lt" | "mo" | "none" | "trans";
+
 export interface Binding {
-  action: string;
+  action: Actions;
   params: Parameter[];
 }
 

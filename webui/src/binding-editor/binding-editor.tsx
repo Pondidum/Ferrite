@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
-import { Keymap, Binding, Parameter } from "../keymap";
+import { Keymap, Binding, Parameter, Actions } from "../keymap";
 import LayerPicker from "./layer-picker";
 import KeyPicker from "./key-picker";
 
@@ -19,19 +19,20 @@ const paramOrDefault = (params: Parameter[], index: number): Parameter =>
 
 const selectEditor = (
   keymap: Keymap,
-  binding: Binding,
-  updateBinding: Dispatch<SetStateAction<Binding>>
+  selected: Actions,
+  params: Parameter[]
 ) => {
-  switch (binding.action) {
+  switch (selected) {
     case "kp":
       return (
         <KeyPicker
-          param={paramOrDefault(binding.params, 0)}
-          update={(p) =>
-            updateBinding((b) => ({
-              action: b.action,
-              params: [p],
-            }))
+          param={paramOrDefault(params, 0)}
+          update={
+            (p) => {}
+            // updateBinding((b) => ({
+            //   action: b.action,
+            //   params: [p],
+            // }))
           }
         />
       );
@@ -40,22 +41,24 @@ const selectEditor = (
       return (
         <>
           <KeyPicker
-            param={paramOrDefault(binding.params, 1)}
-            update={(p) =>
-              updateBinding((b) => ({
-                ...b,
-                params: [paramOrDefault(b.params, 0), p],
-              }))
+            param={paramOrDefault(params, 1)}
+            update={
+              (p) => {}
+              // updateBinding((b) => ({
+              //   ...b,
+              //   params: [paramOrDefault(b.params, 0), p],
+              // }))
             }
           />
           <LayerPicker
             layers={keymap.layers}
-            param={paramOrDefault(binding.params, 0)}
-            update={(p) =>
-              updateBinding((b) => ({
-                action: b.action,
-                params: [p, paramOrDefault(b.params, 1)],
-              }))
+            param={paramOrDefault(params, 0)}
+            update={
+              (p) => {}
+              // updateBinding((b) => ({
+              //   action: b.action,
+              //   params: [p, paramOrDefault(b.params, 1)],
+              // }))
             }
           />
         </>
@@ -65,12 +68,13 @@ const selectEditor = (
       return (
         <LayerPicker
           layers={keymap.layers}
-          param={paramOrDefault(binding.params, 0)}
-          update={(p) =>
-            updateBinding((b) => ({
-              action: b.action,
-              params: [p],
-            }))
+          param={paramOrDefault(params, 0)}
+          update={
+            (p) => {}
+            // updateBinding((b) => ({
+            //   action: b.action,
+            //   params: [p],
+            // }))
           }
         />
       );
@@ -79,21 +83,23 @@ const selectEditor = (
       return (
         <>
           <KeyPicker
-            param={paramOrDefault(binding.params, 1)}
-            update={(p) =>
-              updateBinding((b) => ({
-                action: b.action,
-                params: [p, paramOrDefault(b.params, 0)],
-              }))
+            param={paramOrDefault(params, 1)}
+            update={
+              (p) => {}
+              // updateBinding((b) => ({
+              //   action: b.action,
+              //   params: [p, paramOrDefault(b.params, 0)],
+              // }))
             }
           />
           <KeyPicker
-            param={paramOrDefault(binding.params, 0)}
-            update={(p) =>
-              updateBinding((b) => ({
-                action: b.action,
-                params: [p, paramOrDefault(b.params, 1)],
-              }))
+            param={paramOrDefault(params, 0)}
+            update={
+              (p) => {}
+              // updateBinding((b) => ({
+              //   action: b.action,
+              //   params: [p, paramOrDefault(b.params, 1)],
+              // }))
             }
           />
         </>
@@ -103,6 +109,10 @@ const selectEditor = (
       return <></>;
   }
 };
+
+// type BindingOptions = {
+//   [key in Actions]: Parameter[];
+// };
 
 const BindingEditor = ({
   open,
@@ -121,24 +131,20 @@ const BindingEditor = ({
     return <></>;
   }
 
-  const [newBinding, setBinding] = useState(binding);
+  const [selected, setSelected] = useState<Actions>(binding.action);
+  const [options, setOptions] = useState({ [binding.action]: binding.params });
 
-  const updateBinding: Dispatch<SetStateAction<Binding>> = (b) => {
-    console.log("new binding:", b);
-    setBinding(b);
+  const selectTab = (e: SyntheticEvent, newValue: Actions) => {
+    setSelected(newValue);
   };
 
-  const selectTab = (e: SyntheticEvent, newValue: string) => {
-    updateBinding({ ...newBinding, action: newValue });
-  };
-
-  const editor = selectEditor(keymap, newBinding, updateBinding);
+  const editor = selectEditor(keymap, selected, options[selected] ?? []);
 
   return (
     <Dialog open={open} onClose={onCancel}>
       <DialogTitle>Configure Key</DialogTitle>
       <Box>
-        <Tabs value={newBinding.action} onChange={selectTab}>
+        <Tabs value={selected} onChange={selectTab}>
           <Tab value={"kp"} label="KP" />
           <Tab value={"mt"} label="MT" />
           <Tab value={"lt"} label="LT" />
@@ -147,11 +153,18 @@ const BindingEditor = ({
           <Tab value={"trans"} label="Trans" />
         </Tabs>
       </Box>
+
       {editor}
 
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
-        <Button onClick={() => onConfirm(newBinding)}>Confirm</Button>
+        <Button
+          onClick={() =>
+            onConfirm({ action: selected, params: options[selected] })
+          }
+        >
+          Confirm
+        </Button>
       </DialogActions>
     </Dialog>
   );
