@@ -5,34 +5,51 @@ import (
 	"encoding/json"
 )
 
+type KeyMap = map[string]KeyCode
+
 // source: https://github.com/zmkfirmware/zmk/blob/main/docs/src/data/hid.js
 //
 //go:embed keys.json
 var keyJson []byte
 
-func BuildKeyMap(keys []KeyCode) map[string]KeyCode {
+var keyMap KeyMap
 
-	m := make(map[string]KeyCode, len(keys))
+func ReadKeys() (map[string]KeyCode, error) {
 
-	for _, key := range keys {
-		for _, name := range key.Names {
-			m[name] = key
+	if keyMap == nil {
+
+		var keys []KeyCode
+		if err := json.Unmarshal(keyJson, &keys); err != nil {
+			return nil, err
 		}
+
+		ApplySymbols(keys)
+
+		m := make(map[string]KeyCode, len(keys))
+
+		for _, key := range keys {
+			for _, name := range key.Names {
+				m[name] = key
+			}
+		}
+
+		keyMap = m
 	}
 
-	return m
+	return keyMap, nil
 }
 
-func ReadKeys() ([]KeyCode, error) {
+func Canonical(key string) string {
+	return keyMap[key].Names[0]
+}
 
-	var keys []KeyCode
-	if err := json.Unmarshal(keyJson, &keys); err != nil {
-		return nil, err
+func Canonicalise(keys []string) []string {
+
+	canonical := make([]string, len(keys))
+	for i, code := range keys {
+		canonical[i] = Canonical(code)
 	}
-
-	ApplySymbols(keys)
-
-	return keys, nil
+	return canonical
 }
 
 type KeyCode struct {

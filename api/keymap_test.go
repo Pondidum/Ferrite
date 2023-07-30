@@ -24,7 +24,7 @@ func TestParsing(t *testing.T) {
 		t.Run(tc.input, func(t *testing.T) {
 			k, m := parseKeys(ptr(tc.input))
 
-			assert.Equal(t, tc.key, *k)
+			assert.Equal(t, tc.key, k)
 			assert.Equal(t, tc.modifiers, m)
 		})
 	}

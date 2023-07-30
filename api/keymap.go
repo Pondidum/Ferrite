@@ -42,7 +42,7 @@ type Layer struct {
 	Bindings []Binding `json:"bindings"`
 }
 
-func KeymapFromZmk(zmkKeys map[string]zmk.KeyCode, f *zmk.File) Keymap {
+func KeymapFromZmk(f *zmk.File) Keymap {
 
 	km := Keymap{
 		Configs: make([]Configuration, len(f.Configs)),
@@ -69,34 +69,34 @@ func KeymapFromZmk(zmkKeys map[string]zmk.KeyCode, f *zmk.File) Keymap {
 			Timeout:      int(c.Timeout),
 			KeyPositions: c.KeyPositions,
 			Layers:       c.Layers,
-			Bindings:     convertBindings(zmkKeys, c.Bindings),
+			Bindings:     convertBindings(c.Bindings),
 		}
 	}
 
 	for i, layer := range f.Device.Keymap.Layers {
 		km.Layers[i] = Layer{
 			Name:     layer.Name,
-			Bindings: convertBindings(zmkKeys, layer.Bindings),
+			Bindings: convertBindings(layer.Bindings),
 		}
 	}
 
 	return km
 }
 
-func convertBindings(zmkKeys map[string]zmk.KeyCode, behaviours []*zmk.Behavior) []Binding {
+func convertBindings(behaviours []*zmk.Behavior) []Binding {
 	bindings := make([]Binding, len(behaviours))
 
 	for i, b := range behaviours {
 		bindings[i] = Binding{
 			Action: b.Action,
-			Params: convertParams(zmkKeys, b.Params),
+			Params: convertParams(b.Params),
 		}
 	}
 
 	return bindings
 }
 
-func convertParams(zmkKeys map[string]zmk.KeyCode, bindings []*zmk.Binding) []Parameter {
+func convertParams(bindings []*zmk.Binding) []Parameter {
 	params := make([]Parameter, len(bindings))
 
 	for i, b := range bindings {
@@ -104,26 +104,18 @@ func convertParams(zmkKeys map[string]zmk.KeyCode, bindings []*zmk.Binding) []Pa
 		key, modifiers := parseKeys(b.KeyCode)
 		param := Parameter{
 			Number:    b.Number,
-			Modifiers: canonical(zmkKeys, modifiers),
+			Modifiers: zmk.Canonicalise(modifiers),
 		}
 
 		if key != "" {
-			param.KeyCode = &zmkKeys[key].Names[0]
+			canonicalKey := zmk.Canonical(key)
+			param.KeyCode = &canonicalKey
 		}
 
 		params[i] = param
 	}
 
 	return params
-}
-
-func canonical(zmkKeys map[string]zmk.KeyCode, mods []string) []string {
-
-	canonical := make([]string, len(mods))
-	for i, code := range mods {
-		canonical[i] = zmkKeys[code].Names[0]
-	}
-	return canonical
 }
 
 func parseKeys(input *string) (string, []string) {
