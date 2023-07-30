@@ -4,11 +4,11 @@ import Key from "./key";
 import { ZmkContext } from "./zmk/context";
 
 interface KeyboardProps {
-  layer: Layer;
-  editBinding: Dispatch<SetStateAction<Binding | undefined>>;
+  bindings: Binding[];
+  editBinding: Dispatch<SetStateAction<number | undefined>>;
 }
 
-const Keyboard = ({ layer, editBinding }: KeyboardProps) => {
+const Keyboard = ({ bindings, editBinding }: KeyboardProps) => {
   const zmk = useContext(ZmkContext);
   return (
     <div
@@ -23,8 +23,8 @@ const Keyboard = ({ layer, editBinding }: KeyboardProps) => {
         <Key
           key={key.Label}
           zmkKey={key}
-          binding={layer.bindings[i]}
-          editBinding={editBinding}
+          binding={bindings[i]}
+          editBinding={() => editBinding(i)}
         />
       ))}
     </div>

@@ -17,15 +17,16 @@ const LayerEditor = ({
     return <></>;
   }
 
-  const [binding, editBinding] = useState<Binding | undefined>();
+  const [bindings, setBindings] = useState(layer.bindings);
+  const [binding, editBinding] = useState<number | undefined>();
 
   return (
     <>
-      <Keyboard layer={layer} editBinding={editBinding} />
+      <Keyboard bindings={bindings} editBinding={editBinding} />
       <BindingEditor
         open={Boolean(binding)}
         keymap={keymap}
-        binding={binding}
+        binding={binding ? bindings[binding] : undefined}
         onCancel={() => {
           editBinding(undefined);
         }}
@@ -33,6 +34,12 @@ const LayerEditor = ({
           console.log("confirm");
           console.log("old", binding);
           console.log("new", newBinding);
+
+          if (binding) {
+            bindings.splice(binding, 1, newBinding);
+            setBindings(bindings);
+          }
+          // setBindings()
           editBinding(undefined);
         }}
       />

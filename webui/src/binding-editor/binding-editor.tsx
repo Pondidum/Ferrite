@@ -36,18 +36,12 @@ const selectEditor = (
       return (
         <KeyPicker
           param={paramOrDefault(params, 0)}
-          setParam={
-            (p) => {
-              setOptions({
-                ...options,
-                [selected]: [p],
-              });
-            }
-            // updateBinding((b) => ({
-            //   action: b.action,
-            //   params: [p],
-            // }))
-          }
+          setParam={(p) => {
+            setOptions({
+              ...options,
+              [selected]: [p],
+            });
+          }}
         />
       );
 
@@ -56,13 +50,12 @@ const selectEditor = (
         <>
           <KeyPicker
             param={paramOrDefault(params, 1)}
-            setParam={
-              (p) => {}
-              // updateBinding((b) => ({
-              //   ...b,
-              //   params: [paramOrDefault(b.params, 0), p],
-              // }))
-            }
+            setParam={(p) => {
+              setOptions({
+                ...options,
+                [selected]: [paramOrDefault(params, 0), p],
+              });
+            }}
           />
           <h3>When held, switch to layer</h3>
 
@@ -71,13 +64,12 @@ const selectEditor = (
               <LayerPicker
                 layers={keymap.layers}
                 param={paramOrDefault(params, 0)}
-                update={
-                  (p) => {}
-                  // updateBinding((b) => ({
-                  //   action: b.action,
-                  //   params: [p, paramOrDefault(b.params, 1)],
-                  // }))
-                }
+                setParam={(p) => {
+                  setOptions({
+                    ...options,
+                    [selected]: [p],
+                  });
+                }}
               />
             </Grid>
           </Grid>
@@ -89,30 +81,19 @@ const selectEditor = (
         <LayerPicker
           layers={keymap.layers}
           param={paramOrDefault(params, 0)}
-          update={
-            (p) => {}
-            // updateBinding((b) => ({
-            //   action: b.action,
-            //   params: [p],
-            // }))
-          }
+          setParam={(p) => {
+            setOptions({
+              ...options,
+              [selected]: [p],
+            });
+          }}
         />
       );
 
     case "mt":
       return (
         <>
-          <KeyPicker
-            param={paramOrDefault(params, 1)}
-            setParam={
-              (p) => {}
-              // updateBinding((b) => ({
-              //   action: b.action,
-              //   params: [p, paramOrDefault(b.params, 0)],
-              // }))
-            }
-          />
-          {/* <ModifierPicker param={paramOrDefault(params, 0).keyCode} /> */}
+          <KeyPicker param={paramOrDefault(params, 1)} setParam={(p) => {}} />
         </>
       );
 

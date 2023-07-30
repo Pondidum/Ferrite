@@ -35,7 +35,7 @@ const styleKey = (k: ZmkLayoutKey): CSSProperties => {
 interface KeyProps {
   zmkKey: ZmkLayoutKey;
   binding: Binding;
-  editBinding: Dispatch<SetStateAction<Binding | undefined>>;
+  editBinding: () => void;
 }
 
 const trySymbol = (lookup: { [key: string]: ZmkKey }, key: string) =>
@@ -59,7 +59,7 @@ const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
   const zmk = useContext(ZmkContext);
 
   const onClick = (e: SyntheticEvent) => {
-    editBinding(binding);
+    editBinding();
   };
 
   const params = binding.params || [];

@@ -6,11 +6,11 @@ import { MouseEvent } from "react";
 const LayerPicker = ({
   layers,
   param,
-  update,
+  setParam,
 }: {
   layers: Layer[];
   param: Parameter;
-  update: (param: Parameter) => void;
+  setParam: (param: Parameter) => void;
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -25,7 +25,7 @@ const LayerPicker = ({
 
   const handleSelect = (e: SyntheticEvent, i: number) => {
     setAnchorEl(null);
-    update({ number: i });
+    setParam({ number: i });
   };
 
   return (
