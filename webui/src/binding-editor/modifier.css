@@ -1,0 +1,6 @@
+.modifier.Mui-selected {
+  color: white;
+  background-color: var(--highlight);
+  transition: 200ms;
+  z-index: 1;
+}

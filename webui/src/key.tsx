@@ -6,7 +6,7 @@ import {
   useContext,
 } from "react";
 import "./key.css";
-import { Binding } from "./keymap";
+import { Binding, Parameter } from "./keymap";
 import { ZmkKey, ZmkLayoutKey } from "./zmk";
 import { ZmkContext } from "./zmk/context";
 
@@ -41,8 +41,19 @@ interface KeyProps {
 const trySymbol = (lookup: { [key: string]: ZmkKey }, key: string) =>
   lookup[key] ? lookup[key].symbol || key : key;
 
-const render = (lookup: { [key: string]: ZmkKey }, keyCodes: string[]) =>
-  keyCodes.map((k) => trySymbol(lookup, k)).join(" ");
+const render = (lookup: { [key: string]: ZmkKey }, param: Parameter) => {
+  const keys = [];
+
+  if (param.modifiers) {
+    keys.push(...param.modifiers);
+  }
+
+  if (param.keyCode) {
+    keys.push(param.keyCode);
+  }
+
+  return keys.map((m) => trySymbol(lookup, m)).join(" ");
+};
 
 const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
   const zmk = useContext(ZmkContext);
@@ -54,11 +65,9 @@ const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
   const params = binding.params || [];
 
   const first =
-    params.length > 0 &&
-    (params[0].number || render(zmk.keys, params[0].keyCodes));
+    params.length > 0 && (params[0].number || render(zmk.keys, params[0]));
   const second =
-    params.length > 1 &&
-    (params[1].number || render(zmk.keys, params[1].keyCodes));
+    params.length > 1 && (params[1].number || render(zmk.keys, params[1]));
 
   return (
     <div className="key" style={styleKey(zmkKey)} onClick={onClick}>

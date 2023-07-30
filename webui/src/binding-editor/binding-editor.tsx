@@ -10,6 +10,7 @@ import {
   MenuItem,
   Container,
   DialogContent,
+  Grid,
 } from "@mui/material";
 import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
 import { Keymap, Binding, Parameter, Actions } from "../keymap";
@@ -18,7 +19,7 @@ import KeyPicker from "./key-picker";
 import ModifierPicker from "./modifier-picker";
 
 const paramOrDefault = (params: Parameter[], index: number): Parameter =>
-  params.length > index ? params[index] : { keyCodes: [] };
+  params.length > index ? params[index] : {};
 
 const selectEditor = (
   keymap: Keymap,
@@ -53,17 +54,23 @@ const selectEditor = (
               // }))
             }
           />
-          <LayerPicker
-            layers={keymap.layers}
-            param={paramOrDefault(params, 0)}
-            update={
-              (p) => {}
-              // updateBinding((b) => ({
-              //   action: b.action,
-              //   params: [p, paramOrDefault(b.params, 1)],
-              // }))
-            }
-          />
+          <h3>When held, switch to layer</h3>
+
+          <Grid container spacing={1} columns={4}>
+            <Grid item xs={2}>
+              <LayerPicker
+                layers={keymap.layers}
+                param={paramOrDefault(params, 0)}
+                update={
+                  (p) => {}
+                  // updateBinding((b) => ({
+                  //   action: b.action,
+                  //   params: [p, paramOrDefault(b.params, 1)],
+                  // }))
+                }
+              />
+            </Grid>
+          </Grid>
         </>
       );
 
@@ -95,16 +102,7 @@ const selectEditor = (
               // }))
             }
           />
-          <ModifierPicker
-            param={paramOrDefault(params, 0)}
-            update={
-              (p) => {}
-              // updateBinding((b) => ({
-              //   action: b.action,
-              //   params: [p, paramOrDefault(b.params, 1)],
-              // }))
-            }
-          />
+          <ModifierPicker param={paramOrDefault(params, 0)} />
         </>
       );
 

@@ -31,7 +31,8 @@ export interface Binding {
 
 export interface Parameter {
   number?: number;
-  keyCodes: string[];
+  keyCode?: string;
+  modifiers?: string[];
 }
 
 export interface Layer {

@@ -25,12 +25,12 @@ const LayerPicker = ({
 
   const handleSelect = (e: SyntheticEvent, i: number) => {
     setAnchorEl(null);
-    update({ number: i, keyCodes: [] });
+    update({ number: i });
   };
 
   return (
     <>
-      <Button variant="outlined" onClick={handleClick}>
+      <Button variant="outlined" onClick={handleClick} fullWidth>
         {layers[param.number || 0].name}
       </Button>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>

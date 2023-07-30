@@ -32,8 +32,9 @@ type Binding struct {
 }
 
 type Parameter struct {
-	Number   *int32   `json:"number"`
-	KeyCodes []string `json:"keyCodes"`
+	Number    *int32   `json:"number"`
+	KeyCode   *string  `json:"keyCode"`
+	Modifiers []string `json:"modifiers"`
 }
 
 type Layer struct {
@@ -99,28 +100,32 @@ func convertParams(bindings []*zmk.Binding) []Parameter {
 	params := make([]Parameter, len(bindings))
 
 	for i, b := range bindings {
+
+		key, modifiers := parseKeys(b.KeyCode)
+
 		params[i] = Parameter{
-			Number:   b.Number,
-			KeyCodes: parseKeys(b.KeyCode),
+			Number:    b.Number,
+			KeyCode:   key,
+			Modifiers: modifiers,
 		}
 	}
 
 	return params
 }
 
-func parseKeys(input *string) []string {
+func parseKeys(input *string) (*string, []string) {
 	keys := []string{}
 
 	if input == nil {
-		return keys
+		return nil, keys
 	}
 
 	current := []rune{}
 	for _, char := range *input {
 
 		if char == '(' {
-			keys = append(keys, string(current))
-			// keys.push(current + "(code)"); // modifiers are defined as "LS(code)"
+			// modifiers are defined as "LS(code)"
+			keys = append(keys, string(current)+"(code)")
 			current = []rune{}
 		} else if char == ')' {
 			break
@@ -129,9 +134,6 @@ func parseKeys(input *string) []string {
 		}
 	}
 
-	if len(current) > 0 {
-		keys = append(keys, string(current))
-	}
-
-	return keys
+	k := string(current)
+	return &k, keys
 }

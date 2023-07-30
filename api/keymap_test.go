@@ -10,7 +10,22 @@ func TestParsing(t *testing.T) {
 
 	ptr := func(s string) *string { return &s }
 
-	assert.Equal(t, []string{"A"}, parseKeys(ptr("A")))
-	assert.Equal(t, []string{"LS", "A"}, parseKeys(ptr("LS(A)")))
-	assert.Equal(t, []string{"LS", "LC", "F"}, parseKeys(ptr("LS(LC(F))")))
+	cases := []struct {
+		input     string
+		key       string
+		modifiers []string
+	}{
+		{input: "A", key: "A", modifiers: []string{}},
+		{input: "LS(A)", key: "A", modifiers: []string{"LS(code)"}},
+		{input: "LS(LC(F))", key: "F", modifiers: []string{"LS(code)", "LC(code)"}},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.input, func(t *testing.T) {
+			k, m := parseKeys(ptr(tc.input))
+
+			assert.Equal(t, tc.key, *k)
+			assert.Equal(t, tc.modifiers, m)
+		})
+	}
 }
