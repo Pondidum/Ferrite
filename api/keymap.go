@@ -42,7 +42,7 @@ type Layer struct {
 	Bindings []Binding `json:"bindings"`
 }
 
-func KeymapFromZmk(f *zmk.File) Keymap {
+func KeymapFromZmk(zmkKeys map[string]zmk.KeyCode, f *zmk.File) Keymap {
 
 	km := Keymap{
 		Configs: make([]Configuration, len(f.Configs)),
@@ -69,55 +69,68 @@ func KeymapFromZmk(f *zmk.File) Keymap {
 			Timeout:      int(c.Timeout),
 			KeyPositions: c.KeyPositions,
 			Layers:       c.Layers,
-			Bindings:     convertBindings(c.Bindings),
+			Bindings:     convertBindings(zmkKeys, c.Bindings),
 		}
 	}
 
 	for i, layer := range f.Device.Keymap.Layers {
 		km.Layers[i] = Layer{
 			Name:     layer.Name,
-			Bindings: convertBindings(layer.Bindings),
+			Bindings: convertBindings(zmkKeys, layer.Bindings),
 		}
 	}
 
 	return km
 }
 
-func convertBindings(behaviours []*zmk.Behavior) []Binding {
+func convertBindings(zmkKeys map[string]zmk.KeyCode, behaviours []*zmk.Behavior) []Binding {
 	bindings := make([]Binding, len(behaviours))
 
 	for i, b := range behaviours {
 		bindings[i] = Binding{
 			Action: b.Action,
-			Params: convertParams(b.Params),
+			Params: convertParams(zmkKeys, b.Params),
 		}
 	}
 
 	return bindings
 }
 
-func convertParams(bindings []*zmk.Binding) []Parameter {
+func convertParams(zmkKeys map[string]zmk.KeyCode, bindings []*zmk.Binding) []Parameter {
 	params := make([]Parameter, len(bindings))
 
 	for i, b := range bindings {
 
 		key, modifiers := parseKeys(b.KeyCode)
-
-		params[i] = Parameter{
+		param := Parameter{
 			Number:    b.Number,
-			KeyCode:   key,
-			Modifiers: modifiers,
+			Modifiers: canonical(zmkKeys, modifiers),
 		}
+
+		if key != "" {
+			param.KeyCode = &zmkKeys[key].Names[0]
+		}
+
+		params[i] = param
 	}
 
 	return params
 }
 
-func parseKeys(input *string) (*string, []string) {
+func canonical(zmkKeys map[string]zmk.KeyCode, mods []string) []string {
+
+	canonical := make([]string, len(mods))
+	for i, code := range mods {
+		canonical[i] = zmkKeys[code].Names[0]
+	}
+	return canonical
+}
+
+func parseKeys(input *string) (string, []string) {
 	keys := []string{}
 
 	if input == nil {
-		return nil, keys
+		return "", keys
 	}
 
 	current := []rune{}
@@ -134,6 +147,5 @@ func parseKeys(input *string) (*string, []string) {
 		}
 	}
 
-	k := string(current)
-	return &k, keys
+	return string(current), keys
 }

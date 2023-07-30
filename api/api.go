@@ -35,10 +35,12 @@ func NewApi() (*fiber.App, error) {
 		return nil, err
 	}
 
+	zmkKeyMap := zmk.BuildKeyMap(keys)
+
 	app.Get("/api/zmk/", func(c *fiber.Ctx) error {
 		return c.JSON(map[string]any{
 			"layout": kb.Layout,
-			"keys":   zmk.BuildKeyMap(keys),
+			"keys":   zmkKeyMap,
 		})
 	})
 
@@ -53,7 +55,7 @@ func NewApi() (*fiber.App, error) {
 			return err
 		}
 
-		keymap := KeymapFromZmk(zmkTree)
+		keymap := KeymapFromZmk(zmkKeyMap, zmkTree)
 		return c.JSON(keymap)
 	})
 
