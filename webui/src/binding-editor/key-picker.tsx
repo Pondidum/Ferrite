@@ -1,15 +1,15 @@
 import { Autocomplete, Grid, TextField } from "@mui/material";
 import { Parameter } from "../keymap";
-import { ModifierGrid } from "./modifier-picker";
+import { ModifierGrid } from "./modifier-grid";
 import { useContext } from "react";
 import { ZmkContext } from "../zmk/context";
 
 const KeyPicker = ({
   param,
-  update,
+  setParam,
 }: {
   param: Parameter;
-  update: (param: Parameter) => void;
+  setParam: (param: Parameter) => void;
 }) => {
   const zmk = useContext(ZmkContext);
   const keys = [...new Set(Object.values(zmk.keys).flatMap((k) => k.names))];
@@ -30,7 +30,15 @@ const KeyPicker = ({
       </Grid>
 
       <h4>With Modifiers</h4>
-      <ModifierGrid selected={param.modifiers ?? []} />
+      <ModifierGrid
+        modifiers={param.modifiers ?? []}
+        setModifiers={(m) => {
+          setParam({
+            ...param,
+            modifiers: m,
+          });
+        }}
+      />
     </>
   );
 };

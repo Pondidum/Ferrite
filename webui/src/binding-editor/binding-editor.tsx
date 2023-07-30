@@ -16,23 +16,33 @@ import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
 import { Keymap, Binding, Parameter, Actions } from "../keymap";
 import LayerPicker from "./layer-picker";
 import KeyPicker from "./key-picker";
-import ModifierPicker from "./modifier-picker";
+import ModifierPicker from "./modifier-grid";
 
 const paramOrDefault = (params: Parameter[], index: number): Parameter =>
   params.length > index ? params[index] : {};
 
+type Options = { [key: string]: Parameter[] };
+
 const selectEditor = (
   keymap: Keymap,
   selected: Actions,
-  params: Parameter[]
+  options: Options,
+  setOptions: (options: Options) => void
 ) => {
+  const params = options[selected] ?? [];
+
   switch (selected) {
     case "kp":
       return (
         <KeyPicker
           param={paramOrDefault(params, 0)}
-          update={
-            (p) => {}
+          setParam={
+            (p) => {
+              setOptions({
+                ...options,
+                [selected]: [p],
+              });
+            }
             // updateBinding((b) => ({
             //   action: b.action,
             //   params: [p],
@@ -46,7 +56,7 @@ const selectEditor = (
         <>
           <KeyPicker
             param={paramOrDefault(params, 1)}
-            update={
+            setParam={
               (p) => {}
               // updateBinding((b) => ({
               //   ...b,
@@ -94,7 +104,7 @@ const selectEditor = (
         <>
           <KeyPicker
             param={paramOrDefault(params, 1)}
-            update={
+            setParam={
               (p) => {}
               // updateBinding((b) => ({
               //   action: b.action,
@@ -102,7 +112,7 @@ const selectEditor = (
               // }))
             }
           />
-          <ModifierPicker param={paramOrDefault(params, 0)} />
+          {/* <ModifierPicker param={paramOrDefault(params, 0).keyCode} /> */}
         </>
       );
 
@@ -133,13 +143,15 @@ const BindingEditor = ({
   }
 
   const [selected, setSelected] = useState<Actions>(binding.action);
-  const [options, setOptions] = useState({ [binding.action]: binding.params });
+  const [options, setOptions] = useState<Options>({
+    [binding.action]: binding.params,
+  });
 
   const selectTab = (e: SyntheticEvent, newValue: Actions) => {
     setSelected(newValue);
   };
 
-  const editor = selectEditor(keymap, selected, options[selected] ?? []);
+  const editor = selectEditor(keymap, selected, options, setOptions);
 
   return (
     <Dialog open={open} onClose={onCancel} maxWidth={"sm"} fullWidth>
