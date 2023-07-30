@@ -31,8 +31,9 @@ export const ModifierGrid = ({
                 if (i === -1) {
                   setModifiers([...modifiers, value]);
                 } else {
-                  modifiers.splice(i, 1);
-                  setModifiers([...modifiers]);
+                  const without = modifiers.slice();
+                  without.splice(i, 1);
+                  setModifiers(without);
                 }
               }}
               fullWidth
