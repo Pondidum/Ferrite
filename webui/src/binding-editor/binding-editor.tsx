@@ -6,22 +6,18 @@ import {
   DialogActions,
   Button,
   Dialog,
-  Menu,
-  MenuItem,
-  Container,
   DialogContent,
-  Grid,
 } from "@mui/material";
-import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { Keymap, Binding, Parameter, Actions } from "../keymap";
-import LayerPicker from "./layer-picker";
-import KeyPicker from "./key-picker";
-import ModifierPicker from "./modifier-grid";
+import EditorKP from "./editors/kp";
+import EditorLT from "./editors/lt";
+import EditorMO from "./editors/mo";
 
 const paramOrDefault = (params: Parameter[], index: number): Parameter =>
   params.length > index ? params[index] : {};
 
-type Options = { [key: string]: Parameter[] };
+export type Options = { [key: string]: Parameter[] };
 
 const selectEditor = (
   keymap: Keymap,
@@ -34,68 +30,40 @@ const selectEditor = (
   switch (selected) {
     case "kp":
       return (
-        <KeyPicker
-          param={paramOrDefault(params, 0)}
-          setParam={(p) => {
-            setOptions({
-              ...options,
-              [selected]: [p],
-            });
-          }}
+        <EditorKP
+          keymap={keymap}
+          options={options}
+          selected={selected}
+          setOptions={setOptions}
         />
       );
 
     case "lt":
       return (
-        <>
-          <KeyPicker
-            param={paramOrDefault(params, 1)}
-            setParam={(p) => {
-              setOptions({
-                ...options,
-                [selected]: [paramOrDefault(params, 0), p],
-              });
-            }}
-          />
-          <h3>When held, switch to layer</h3>
-
-          <Grid container spacing={1} columns={4}>
-            <Grid item xs={2}>
-              <LayerPicker
-                layers={keymap.layers}
-                param={paramOrDefault(params, 0)}
-                setParam={(p) => {
-                  setOptions({
-                    ...options,
-                    [selected]: [p],
-                  });
-                }}
-              />
-            </Grid>
-          </Grid>
-        </>
+        <EditorLT
+          keymap={keymap}
+          options={options}
+          selected={selected}
+          setOptions={setOptions}
+        />
       );
 
     case "mo":
       return (
-        <LayerPicker
-          layers={keymap.layers}
-          param={paramOrDefault(params, 0)}
-          setParam={(p) => {
-            setOptions({
-              ...options,
-              [selected]: [p],
-            });
-          }}
+        <EditorMO
+          keymap={keymap}
+          options={options}
+          selected={selected}
+          setOptions={setOptions}
         />
       );
 
-    case "mt":
-      return (
-        <>
-          <KeyPicker param={paramOrDefault(params, 1)} setParam={(p) => {}} />
-        </>
-      );
+    // case "mt":
+    //   return (
+    //     <>
+    //       <KeyPicker param={paramOrDefault(params, 1)} setParam={(p) => {}} />
+    //     </>
+    //   );
 
     default:
       return <></>;
