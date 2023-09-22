@@ -1,10 +1,10 @@
-import { Box, LinkProps, Tab, TabProps, Tabs } from "@mui/material";
+import { Box, Tab, TabProps, Tabs } from "@mui/material";
 import { ComponentType, SyntheticEvent, useState } from "react";
 import "./App.css";
 import BindingEditor from "./binding-editor";
 import Keyboard from "./keyboard";
 import { Keymap, Binding, Layer } from "./keymap";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, LinkProps } from "react-router-dom";
 
 const LayerEditor = ({
   keymap,
