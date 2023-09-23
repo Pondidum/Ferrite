@@ -14,16 +14,26 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/:layer?",
-        element: <DeviceEditor />,
+        path: "/:device",
+        id: "device",
         loader: async ({ params }) => {
+          const name = params.device as string;
           const response = await fetch("http://localhost:5656/api/device");
           const keymap = (await response.json()) as Keymap;
 
-          const layer = Number.parseInt(params.layer as string);
-
-          return { keymap, layer };
+          return { keymap, name };
         },
+        children: [
+          {
+            path: ":layer?",
+            element: <DeviceEditor />,
+            id: "layer",
+            loader: ({ params }) => {
+              const layer = Number.parseInt(params.layer as string);
+              return { layer };
+            },
+          },
+        ],
       },
     ],
   },
