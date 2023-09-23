@@ -65,6 +65,18 @@ const DeviceEditor = () => {
             ),
           };
 
+          fetch("http://localhost:5656/api/device/binding", {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              layer: layerIndex,
+              key: newBinding.key,
+              Binding: newBinding.binding,
+            }),
+          });
+
           setKeymap(newKeymap);
         }}
       />
