@@ -24,7 +24,7 @@ const KeyPicker = ({
             disablePortal
             options={keys}
             renderInput={(p) => <TextField {...p} label="Key" />}
-            value={param.keyCode}
+            value={param.keyCode ?? null}
             onChange={(x, v) => {
               setParam({
                 ...param,
