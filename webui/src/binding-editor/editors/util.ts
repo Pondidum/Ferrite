@@ -1,12 +1,10 @@
-import { Actions, Parameter } from "../../keymap";
-import { Options } from "../binding-editor";
+import { Keymap, Parameter } from "../../keymap";
 
 export const paramOrDefault = (params: Parameter[], index: number): Parameter =>
   params.length > index ? params[index] : {};
 
 export interface EditorProps {
   keymap: Keymap;
-  selected: Actions;
-  options: Options;
-  setOptions: (options: Options) => void;
+  params: Parameter[];
+  setParams: (params: Parameter[]) => void;
 }

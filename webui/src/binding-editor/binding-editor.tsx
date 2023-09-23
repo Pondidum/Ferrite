@@ -14,8 +14,10 @@ import EditorKP from "./editors/kp";
 import EditorLT from "./editors/lt";
 import EditorMO from "./editors/mo";
 
-const paramOrDefault = (params: Parameter[], index: number): Parameter =>
-  params.length > index ? params[index] : {};
+export interface Keybinding {
+  key: number;
+  binding: Binding;
+}
 
 export type Options = { [key: string]: Parameter[] };
 
@@ -27,36 +29,21 @@ const selectEditor = (
 ) => {
   const params = options[selected] ?? [];
 
+  const setParams = (params: Parameter[]) =>
+    setOptions({
+      ...options,
+      [selected]: params,
+    });
+
   switch (selected) {
     case "kp":
-      return (
-        <EditorKP
-          keymap={keymap}
-          options={options}
-          selected={selected}
-          setOptions={setOptions}
-        />
-      );
+      return <EditorKP keymap={keymap} params={params} setParams={setParams} />;
 
     case "lt":
-      return (
-        <EditorLT
-          keymap={keymap}
-          options={options}
-          selected={selected}
-          setOptions={setOptions}
-        />
-      );
+      return <EditorLT keymap={keymap} params={params} setParams={setParams} />;
 
     case "mo":
-      return (
-        <EditorMO
-          keymap={keymap}
-          options={options}
-          selected={selected}
-          setOptions={setOptions}
-        />
-      );
+      return <EditorMO keymap={keymap} params={params} setParams={setParams} />;
 
     // case "mt":
     //   return (
@@ -70,26 +57,24 @@ const selectEditor = (
   }
 };
 
-// type BindingOptions = {
-//   [key in Actions]: Parameter[];
-// };
-
 const BindingEditor = ({
   open,
   keymap,
-  binding,
+  target,
   onCancel,
   onConfirm,
 }: {
   open: boolean;
   keymap: Keymap;
-  binding: Binding | undefined;
+  target: Keybinding | undefined;
   onCancel: () => void;
-  onConfirm: (newBinding: Binding) => void;
+  onConfirm: (newBinding: Keybinding) => void;
 }) => {
-  if (!binding) {
+  if (!target) {
     return <></>;
   }
+
+  const binding = target.binding;
 
   const [selected, setSelected] = useState<Actions>(binding.action);
   const [options, setOptions] = useState<Options>({
@@ -124,9 +109,11 @@ const BindingEditor = ({
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>
         <Button
-          onClick={() =>
-            onConfirm({ action: selected, params: options[selected] })
-          }
+          onClick={() => {
+            const newBinding = { action: selected, params: options[selected] };
+
+            onConfirm({ key: target.key, binding: newBinding });
+          }}
         >
           Confirm
         </Button>

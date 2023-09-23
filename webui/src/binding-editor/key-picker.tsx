@@ -25,6 +25,12 @@ const KeyPicker = ({
             options={keys}
             renderInput={(p) => <TextField {...p} label="Key" />}
             value={param.keyCode}
+            onChange={(x, v) => {
+              setParam({
+                ...param,
+                keyCode: v ?? undefined,
+              });
+            }}
           />
         </Grid>
       </Grid>

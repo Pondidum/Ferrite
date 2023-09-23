@@ -3,19 +3,12 @@ import KeyPicker from "../key-picker";
 import { EditorProps, paramOrDefault } from "./util";
 import LayerPicker from "../layer-picker";
 
-const EditorLT = ({ keymap, options, selected, setOptions }: EditorProps) => {
-  const params = options[selected] ?? [];
-
+const EditorLT = ({ keymap, params, setParams }: EditorProps) => {
   return (
     <>
       <KeyPicker
         param={paramOrDefault(params, 1)}
-        setParam={(p) => {
-          setOptions({
-            ...options,
-            [selected]: [paramOrDefault(params, 0), p],
-          });
-        }}
+        setParam={(p) => setParams([paramOrDefault(params, 0), p])}
       />
       <h3>When held, switch to layer</h3>
 
@@ -24,12 +17,7 @@ const EditorLT = ({ keymap, options, selected, setOptions }: EditorProps) => {
           <LayerPicker
             layers={keymap.layers}
             param={paramOrDefault(params, 0)}
-            setParam={(p) => {
-              setOptions({
-                ...options,
-                [selected]: [p],
-              });
-            }}
+            setParam={(p) => setParams([p, paramOrDefault(params, 1)])}
           />
         </Grid>
       </Grid>

@@ -1,18 +1,11 @@
 import KeyPicker from "../key-picker";
 import { EditorProps, paramOrDefault } from "./util";
 
-const EditorMO = ({ options, selected, setOptions }: EditorProps) => {
-  const params = options[selected] ?? [];
-
+const EditorMO = ({ params, setParams }: EditorProps) => {
   return (
     <KeyPicker
       param={paramOrDefault(params, 0)}
-      setParam={(p) => {
-        setOptions({
-          ...options,
-          [selected]: [p],
-        });
-      }}
+      setParam={(p) => setParams([p])}
     />
   );
 };

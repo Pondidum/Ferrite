@@ -2,62 +2,32 @@ import { Box, Tab, TabProps, Tabs } from "@mui/material";
 import { ComponentType, SyntheticEvent, useState } from "react";
 import "./App.css";
 import BindingEditor from "./binding-editor";
-import Keyboard from "./keyboard";
+import Layout from "./layout";
 import { Keymap, Binding, Layer } from "./keymap";
-import { Link, useLoaderData, LinkProps } from "react-router-dom";
-
-const LayerEditor = ({
-  keymap,
-  layer,
-}: {
-  keymap: Keymap;
-  layer: Layer | undefined;
-}) => {
-  if (!layer) {
-    return <></>;
-  }
-
-  const [bindings, setBindings] = useState(layer.bindings);
-  const [binding, editBinding] = useState<number | undefined>();
-
-  return (
-    <>
-      <Keyboard bindings={bindings} editBinding={editBinding} />
-      <BindingEditor
-        open={Boolean(binding)}
-        keymap={keymap}
-        binding={binding ? bindings[binding] : undefined}
-        onCancel={() => {
-          editBinding(undefined);
-        }}
-        onConfirm={(newBinding) => {
-          console.log("confirm");
-          console.log("old", binding);
-          console.log("new", newBinding);
-
-          if (binding) {
-            bindings.splice(binding, 1, newBinding);
-            setBindings(bindings);
-          }
-          // setBindings()
-          editBinding(undefined);
-        }}
-      />
-    </>
-  );
-};
+import {
+  Link,
+  useLoaderData,
+  useRouteLoaderData,
+  LinkProps,
+} from "react-router-dom";
+import { Keybinding } from "./binding-editor/binding-editor";
 
 const LinkTab: ComponentType<TabProps & LinkProps> = Tab as React.ComponentType<
   TabProps & LinkProps
 >;
 
-const KeymapEditor = () => {
-  const { keymap, layer: layerIndex } = useLoaderData() as {
+const DeviceEditor = () => {
+  const { keymap: loaderKeymap, name } = useRouteLoaderData("device") as {
     keymap: Keymap;
-    layer: number;
+    name: string;
   };
+  const [keymap, setKeymap] = useState(loaderKeymap);
+
+  const { layer: layerIndex } = useLoaderData() as { layer: number };
 
   const layer = keymap.layers[layerIndex];
+
+  const [editing, setEditing] = useState<Keybinding | undefined>();
 
   return (
     <Box>
@@ -67,14 +37,55 @@ const KeymapEditor = () => {
             key={l.name}
             label={l.name}
             LinkComponent={Link}
-            to={"/" + i}
+            to={`/${name}/${i}`}
           />
         ))}
       </Tabs>
 
-      <LayerEditor keymap={keymap} layer={layer} />
+      {layer ? (
+        <Layout bindings={layer.bindings} startEditing={setEditing} />
+      ) : (
+        <></>
+      )}
+      <BindingEditor
+        keymap={keymap}
+        open={Boolean(editing)}
+        target={editing}
+        onCancel={() => setEditing(undefined)}
+        onConfirm={(newBinding) => {
+          console.log("finishedEditing", newBinding.key, newBinding.binding);
+          setEditing(undefined);
+
+          const newKeymap: Keymap = {
+            ...keymap,
+            layers: replace(
+              keymap.layers,
+              layerIndex,
+              replaceKey(layer, newBinding)
+            ),
+          };
+
+          setKeymap(newKeymap);
+        }}
+      />
     </Box>
   );
 };
 
-export default KeymapEditor;
+export function replace<T>(arr: T[], index: number, replacement: T): T[] {
+  if (index < 0 || index >= arr.length) return arr;
+
+  const before = arr.slice(0, index);
+  const after = arr.slice(index + 1);
+
+  return before.concat([replacement]).concat(after);
+}
+
+const replaceKey = (layer: Layer, replacement: Keybinding): Layer => {
+  return {
+    ...layer,
+    bindings: replace(layer.bindings, replacement.key, replacement.binding),
+  };
+};
+
+export default DeviceEditor;

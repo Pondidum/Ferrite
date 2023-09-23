@@ -1,19 +1,11 @@
-import LayerPicker from "../layer-picker";
+import KeyPicker from "../key-picker";
 import { EditorProps, paramOrDefault } from "./util";
 
-const EditorKP = ({ keymap, options, selected, setOptions }: EditorProps) => {
-  const params = options[selected] ?? [];
-
+const EditorKP = ({ keymap, params, setParams }: EditorProps) => {
   return (
-    <LayerPicker
-      layers={keymap.layers}
+    <KeyPicker
       param={paramOrDefault(params, 0)}
-      setParam={(p) => {
-        setOptions({
-          ...options,
-          [selected]: [p],
-        });
-      }}
+      setParam={(p) => setParams([p])}
     />
   );
 };

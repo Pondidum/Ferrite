@@ -35,7 +35,7 @@ const styleKey = (k: ZmkLayoutKey): CSSProperties => {
 interface KeyProps {
   zmkKey: ZmkLayoutKey;
   binding: Binding;
-  editBinding: () => void;
+  startEditing: (b: Binding) => void;
 }
 
 const trySymbol = (lookup: { [key: string]: ZmkKey }, key: string) =>
@@ -55,11 +55,11 @@ const render = (lookup: { [key: string]: ZmkKey }, param: Parameter) => {
   return keys.map((m) => trySymbol(lookup, m)).join(" ");
 };
 
-const Key = ({ zmkKey, binding, editBinding }: KeyProps) => {
+const Key = ({ zmkKey, binding, startEditing }: KeyProps) => {
   const zmk = useContext(ZmkContext);
 
   const onClick = (e: SyntheticEvent) => {
-    editBinding();
+    startEditing(binding);
   };
 
   const params = binding.params || [];

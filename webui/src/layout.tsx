@@ -5,11 +5,12 @@ import { ZmkContext } from "./zmk/context";
 
 interface KeyboardProps {
   bindings: Binding[];
-  editBinding: Dispatch<SetStateAction<number | undefined>>;
+  startEditing: (target: { key: number; binding: Binding }) => void;
 }
 
-const Keyboard = ({ bindings, editBinding }: KeyboardProps) => {
+const Layout = ({ bindings, startEditing }: KeyboardProps) => {
   const zmk = useContext(ZmkContext);
+
   return (
     <div
       style={{
@@ -24,10 +25,10 @@ const Keyboard = ({ bindings, editBinding }: KeyboardProps) => {
           key={key.Label}
           zmkKey={key}
           binding={bindings[i]}
-          editBinding={() => editBinding(i)}
+          startEditing={(b) => startEditing({ key: i, binding: b })}
         />
       ))}
     </div>
   );
 };
-export default Keyboard;
+export default Layout;
