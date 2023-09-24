@@ -13,6 +13,7 @@ import { Keymap, Binding, Parameter, Actions } from "../keymap";
 import EditorKP from "./editors/kp";
 import EditorLT from "./editors/lt";
 import EditorMO from "./editors/mo";
+import EditorMT from "./editors/mt";
 
 export interface Keybinding {
   key: number;
@@ -45,12 +46,8 @@ const selectEditor = (
     case "mo":
       return <EditorMO keymap={keymap} params={params} setParams={setParams} />;
 
-    // case "mt":
-    //   return (
-    //     <>
-    //       <KeyPicker param={paramOrDefault(params, 1)} setParam={(p) => {}} />
-    //     </>
-    //   );
+    case "mt":
+      return <EditorMT keymap={keymap} params={params} setParams={setParams} />;
 
     default:
       return <></>;
