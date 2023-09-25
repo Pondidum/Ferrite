@@ -22,7 +22,11 @@ func Write(w io.Writer, keyboard *Keyboard, f *File) {
 func writeIncludes(w io.Writer, includes []*Include) {
 
 	for _, inc := range includes {
-		io.WriteString(w, fmt.Sprintf("#include <%s>\n", inc.Value))
+		if inc.Internal != "" {
+			io.WriteString(w, fmt.Sprintf("#include <%s>\n", inc.Internal))
+		} else {
+			io.WriteString(w, fmt.Sprintf("#include \"%s\"\n", inc.External))
+		}
 	}
 	io.WriteString(w, "\n")
 

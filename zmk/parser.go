@@ -24,7 +24,8 @@ type File struct {
 type Include struct {
 	pos lexer.Position
 
-	Value string `parser:"'#'Ident'<'@((Ident ('-' Ident)? '/'?)* ('.' Ident))'>'"`
+	Internal string `parser:"'#'Ident'<'@((Ident ('-' Ident)? '/'?)* ('.' Ident))'>'"`
+	External string `parser:"| '#'Ident@String"`
 }
 
 type Define struct {

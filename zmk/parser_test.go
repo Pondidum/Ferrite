@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/alecthomas/participle/v2"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -201,4 +202,25 @@ func TestKeymap(t *testing.T) {
 
 func p[T any](v T) *T {
 	return &v
+}
+
+func TestIncludeTypes(t *testing.T) {
+
+	var parser = participle.MustBuild[struct {
+		Includes []*Include `parser:"@@+"`
+	}](
+		participle.UseLookahead(2),
+		participle.Unquote("String"),
+	)
+
+	input := `
+#include <behaviors.dtsi>
+#include "keys_en_gb_extended.h"
+`
+
+	c, err := parser.Parse("", strings.NewReader(input))
+	assert.NoError(t, err)
+
+	assert.Equal(t, "behaviors.dtsi", c.Includes[0].Internal)
+	assert.Equal(t, "keys_en_gb_extended.h", c.Includes[1].External)
 }
