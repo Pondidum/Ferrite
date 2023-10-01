@@ -8,25 +8,24 @@ import (
 
 func TestParsingDefaultBindings(t *testing.T) {
 
-	bindings := DefaultBindings()
-	assert.NotEmpty(t, bindings)
+	standard := DefaultBindings()
+	assert.NotEmpty(t, standard.Binds)
 
-	assert.Equal(t, "LEFT_SHIFT", bindings["LEFT_SHIFT"].Name)
-	assert.Equal(t, "LEFT_SHIFT", bindings["LSHIFT"].Name)
-	assert.Equal(t, "LEFT_SHIFT", bindings["LSHFT"].Name)
-	assert.Equal(t, "LEFT_SHIFT", bindings["LS(code)"].Name)
+	assert.Equal(t, "LEFT_SHIFT", standard.Binds["LEFT_SHIFT"].Name)
+	assert.Equal(t, "LEFT_SHIFT", standard.Binds["LSHIFT"].Name)
+	assert.Equal(t, "LEFT_SHIFT", standard.Binds["LSHFT"].Name)
+	assert.Equal(t, "LEFT_SHIFT", standard.Binds["LS(code)"].Name)
 
-	assert.Equal(t, "⇧", bindings["LEFT_SHIFT"].Symbol)
-	assert.Equal(t, "CTRL", bindings["LEFT_CONTROL"].Symbol)
-	assert.Equal(t, "CTRL", bindings["RIGHT_CONTROL"].Symbol)
-	assert.Equal(t, "⌦", bindings["DELETE"].Symbol)
+	assert.Equal(t, "⇧", standard.Binds["LEFT_SHIFT"].Symbol)
+	assert.Equal(t, "CTRL", standard.Binds["LEFT_CONTROL"].Symbol)
+	assert.Equal(t, "CTRL", standard.Binds["RIGHT_CONTROL"].Symbol)
+	assert.Equal(t, "⌦", standard.Binds["DELETE"].Symbol)
 
 }
 
 func TestParsingGbBindings(t *testing.T) {
 
-	bindings := GbBindings()
-	assert.NotEmpty(t, bindings)
-
-	assert.Contains(t, bindings, "GB_EXCLAMATION")
+	gb := GbBindings()
+	assert.NotEmpty(t, gb.Binds)
+	assert.Contains(t, gb.Binds, "GB_EXCLAMATION")
 }

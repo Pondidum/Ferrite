@@ -5,6 +5,7 @@ import (
 	"bytes"
 	_ "embed"
 	"encoding/json"
+	"fmt"
 	"regexp"
 	"sync"
 )
@@ -13,15 +14,28 @@ import (
 //
 //go:embed default_keys.json
 var defaultKeysJson []byte
-var defaultBinds map[string]Bind
+var defaultBinds BindSet
 var parseDefaultBinds sync.Once
 
 // source: https://github.com/joelspadin/zmk-locale-generator/
 //
 //go:embed keys_en_gb_extended.h
 var gbKeysHeader []byte
-var gbBinds map[string]Bind
+var gbBinds BindSet
 var parseGbBinds sync.Once
+
+type BindSet struct {
+	Name  string
+	Binds map[string]Bind
+}
+
+func (bs *BindSet) CanonicalKey(key string) (string, bool) {
+	if bind, found := bs.Binds[key]; found {
+		return bind.Name, true
+	}
+
+	return key, false
+}
 
 type Bind struct {
 	Name        string
@@ -30,7 +44,21 @@ type Bind struct {
 	Symbol      string
 }
 
-func DefaultBindings() map[string]Bind {
+func SetFromName(name string) (BindSet, error) {
+
+	switch name {
+	case "default":
+		return DefaultBindings(), nil
+
+	case "en_gb":
+		return GbBindings(), nil
+
+	default:
+		return BindSet{}, fmt.Errorf("invalid bindset name")
+	}
+}
+
+func DefaultBindings() BindSet {
 	parseDefaultBinds.Do(func() {
 
 		source := []struct {
@@ -42,7 +70,10 @@ func DefaultBindings() map[string]Bind {
 
 		json.Unmarshal(defaultKeysJson, &source)
 
-		defaultBinds = map[string]Bind{}
+		defaultBinds = BindSet{
+			Name:  "default",
+			Binds: map[string]Bind{},
+		}
 
 		for _, b := range source {
 
@@ -70,7 +101,7 @@ func DefaultBindings() map[string]Bind {
 			}
 
 			for _, name := range b.Names {
-				defaultBinds[name] = bind
+				defaultBinds.Binds[name] = bind
 			}
 		}
 
@@ -79,12 +110,15 @@ func DefaultBindings() map[string]Bind {
 	return defaultBinds
 }
 
-func GbBindings() map[string]Bind {
+func GbBindings() BindSet {
 
 	parseGbBinds.Do(func() {
 
 		rx := regexp.MustCompile(`#define (.*) \(`)
-		gbBinds = map[string]Bind{}
+		gbBinds = BindSet{
+			Name:  "en_gb",
+			Binds: map[string]Bind{},
+		}
 
 		scanner := bufio.NewScanner(bytes.NewReader(gbKeysHeader))
 		for scanner.Scan() {
@@ -98,7 +132,7 @@ func GbBindings() map[string]Bind {
 				Name: matches[1],
 			}
 
-			gbBinds[b.Name] = b
+			gbBinds.Binds[b.Name] = b
 		}
 
 	})
