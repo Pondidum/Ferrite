@@ -40,7 +40,9 @@ func ReadKeys() (map[string]KeyCode, error) {
 }
 
 func Canonical(key string) string {
-	return keyMap[key].Names[0]
+	keys, _ := ReadKeys()
+
+	return keys[key].Names[0]
 }
 
 func Canonicalise(keys []string) []string {

@@ -14,5 +14,9 @@ func Commands(ui cli.Ui) map[string]cli.CommandFactory {
 		"server": func() (cli.Command, error) {
 			return NewServerCommand(ui)
 		},
+
+		"layout import": func() (cli.Command, error) {
+			return NewLayoutImportCommand(ui)
+		},
 	}
 }

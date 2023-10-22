@@ -11,7 +11,8 @@ import (
 
 func blankLayout() *Layout {
 	l := &Layout{
-		state: goes.NewAggregateState(),
+		state:       goes.NewAggregateState(),
+		bindingSets: map[string]bindings.BindSet{},
 	}
 
 	goes.Register(l.state, l.onLayoutCreated)
@@ -44,7 +45,7 @@ func (l *Layout) onLayoutCreated(e LayoutCreated) {
 	l.Name = e.Name
 }
 
-func (l *Layout) ImportFrom(file *zmk.File) {
+func (l *Layout) ImportFrom(file *zmk.File) error {
 	// a zmk.File doesn't serialize, but our object model does!
 	mapper := ZmkMapper{}
 	km, bs := mapper.KeymapFromZmk(file)
@@ -54,7 +55,7 @@ func (l *Layout) ImportFrom(file *zmk.File) {
 		bindingSets[i] = set.Name
 	}
 
-	goes.Apply(l.state, LayoutImported{
+	return goes.Apply(l.state, LayoutImported{
 		Keymap:      km,
 		BindingSets: bindingSets,
 	})
