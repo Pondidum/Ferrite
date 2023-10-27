@@ -2,6 +2,7 @@ package command
 
 import (
 	"context"
+	"ferrite/goes/sqlite"
 	"ferrite/layout"
 	"ferrite/zmk"
 	"fmt"
@@ -67,10 +68,31 @@ func (c *LayoutImportCommand) RunContext(ctx context.Context, args []string) err
 	// protect against duplicate layout names later
 	c.Ui.Output(fmt.Sprintf("Creating new layout '%s'", layoutName))
 
+	store, err := sqlite.CreateStore()
+	if err != nil {
+		return err
+	}
+	defer store.Close()
+
+	// store.RegisterProjection(layout.NewLayoutsProjection())
+
+	// exists, err := layout.QueryHasLayout(store, layoutName)
+	// if err != nil {
+	// 	return err
+	// }
+
+	// if exists {
+	// 	return fmt.Errorf("a layout called %s already exists", layoutName)
+	// }
+
 	l := layout.CreateLayout(layoutName)
 
 	c.Ui.Info("Importing existing layout file")
 	if err := l.ImportFrom(f); err != nil {
+		return err
+	}
+
+	if err := store.Save(l.State); err != nil {
 		return err
 	}
 

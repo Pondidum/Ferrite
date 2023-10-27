@@ -3,6 +3,7 @@ package command
 import (
 	"context"
 	"ferrite/api"
+	"ferrite/goes/sqlite"
 
 	"github.com/mitchellh/cli"
 	"github.com/spf13/pflag"
@@ -42,7 +43,12 @@ func (c *ServerCommand) EnvironmentVariables() map[string]string {
 
 func (c *ServerCommand) RunContext(ctx context.Context, args []string) error {
 
-	app, err := api.NewApi()
+	store, err := sqlite.CreateStore()
+	if err != nil {
+		return err
+	}
+
+	app, err := api.NewApiV2(store)
 	if err != nil {
 		return err
 	}

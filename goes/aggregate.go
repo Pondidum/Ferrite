@@ -9,14 +9,15 @@ import (
 )
 
 type AggregateState struct {
-	ID       uuid.UUID
+	id       uuid.UUID
 	sequence int
 
 	handlers map[string]func(event any) error
 
 	pendingEvents []EventDescriptor
 
-	eventFactory map[string]func() any
+	eventFactory   map[string]func() any
+	autoProjection func() any
 }
 
 func NewAggregateState() *AggregateState {
@@ -25,6 +26,10 @@ func NewAggregateState() *AggregateState {
 		handlers:     map[string]func(event any) error{},
 		eventFactory: map[string]func() any{},
 	}
+}
+
+func (a *AggregateState) ID() uuid.UUID {
+	return a.id
 }
 
 func Register[TEvent any](state *AggregateState, handler func(event TEvent)) {
@@ -62,7 +67,7 @@ func Apply[TEvent any](state *AggregateState, event TEvent) error {
 	}
 
 	descriptor := EventDescriptor{
-		AggregateID: state.ID,
+		AggregateID: state.id,
 		Sequence:    state.sequence + len(state.pendingEvents) + 1,
 		Timestamp:   time.Now().UTC(),
 		EventType:   reflect.TypeOf(event).Name(),
@@ -71,6 +76,19 @@ func Apply[TEvent any](state *AggregateState, event TEvent) error {
 
 	state.pendingEvents = append(state.pendingEvents, descriptor)
 
+	return nil
+}
+
+func RegisterAutoProjection[TView any](state *AggregateState, project func() TView) {
+	state.autoProjection = func() any {
+		return project()
+	}
+}
+
+func Project(state *AggregateState) any {
+	if state.autoProjection != nil {
+		return state.autoProjection()
+	}
 	return nil
 }
 
@@ -87,6 +105,10 @@ func NewEvent(state *AggregateState, eventType string) (any, error) {
 /// Save and Load
 
 ///
+
+func SetID(state *AggregateState, id uuid.UUID) {
+	state.id = id
+}
 
 func Sequence(state *AggregateState) int {
 	return state.sequence

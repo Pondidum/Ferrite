@@ -9,22 +9,24 @@ import (
 	"github.com/google/uuid"
 )
 
-func blankLayout() *Layout {
+func BlankLayout() *Layout {
 	l := &Layout{
-		state:       goes.NewAggregateState(),
+		State:       goes.NewAggregateState(),
 		bindingSets: map[string]bindings.BindSet{},
 	}
 
-	goes.Register(l.state, l.onLayoutCreated)
-	goes.Register(l.state, l.onLayoutImported)
-	goes.Register(l.state, l.onBindingChanged)
+	goes.Register(l.State, l.onLayoutCreated)
+	goes.Register(l.State, l.onLayoutImported)
+	goes.Register(l.State, l.onBindingChanged)
+
+	goes.RegisterAutoProjection(l.State, l.toView)
 
 	return l
 }
 
 func CreateLayout(name string) *Layout {
-	layout := blankLayout()
-	goes.Apply(layout.state, LayoutCreated{
+	layout := BlankLayout()
+	goes.Apply(layout.State, LayoutCreated{
 		ID:   uuid.New(),
 		Name: name,
 	})
@@ -32,7 +34,7 @@ func CreateLayout(name string) *Layout {
 }
 
 type Layout struct {
-	state *goes.AggregateState
+	State *goes.AggregateState
 
 	Name string
 
@@ -40,8 +42,16 @@ type Layout struct {
 	bindingSets map[string]bindings.BindSet
 }
 
+func (l *Layout) toView() LayoutView {
+	return LayoutView{
+		Name:        l.Name,
+		Keymap:      l.keymap,
+		BindingSets: l.bindingSets,
+	}
+}
+
 func (l *Layout) onLayoutCreated(e LayoutCreated) {
-	l.state.ID = e.ID
+	goes.SetID(l.State, e.ID)
 	l.Name = e.Name
 }
 
@@ -55,7 +65,7 @@ func (l *Layout) ImportFrom(file *zmk.File) error {
 		bindingSets[i] = set.Name
 	}
 
-	return goes.Apply(l.state, LayoutImported{
+	return goes.Apply(l.State, LayoutImported{
 		Keymap:      km,
 		BindingSets: bindingSets,
 	})
@@ -106,7 +116,7 @@ func (l *Layout) BindKey(layerIndex int, key int, bind Binding) error {
 		e.Params[i] = param
 	}
 
-	return goes.Apply(l.state, e)
+	return goes.Apply(l.State, e)
 }
 
 func (l *Layout) onBindingChanged(e BindingChanged) {
