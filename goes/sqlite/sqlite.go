@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"ferrite/goes"
 	"fmt"
+	"reflect"
 
 	"github.com/google/uuid"
 	_ "github.com/mattn/go-sqlite3"
@@ -37,6 +38,7 @@ CREATE TABLE IF NOT EXISTS events(
 
 create table if not exists auto_projections(
 	aggregate_id text primary key,
+	view_type text not null,
 	view text not null
 );
 `
@@ -112,13 +114,20 @@ func (store *SqliteStore) Save(state *goes.AggregateState) error {
 
 	if view := goes.Project(state); view != nil {
 
+		viewType := reflect.TypeOf(view).Name()
+
 		viewJson, err := json.Marshal(view)
 		if err != nil {
 			return err
 		}
 
-		updateView := `insert into auto_projections (aggregate_id, view) values (?, ?) on conflict(aggregate_id) do update set view=excluded.view`
-		if _, err := tx.Exec(updateView, state.ID(), viewJson); err != nil {
+		updateView := `
+			insert into auto_projections (aggregate_id, view_type, view)
+			values (?, ?, ?)
+			on conflict(aggregate_id)
+			do update set view=excluded.view`
+
+		if _, err := tx.Exec(updateView, state.ID(), viewType, viewJson); err != nil {
 			return err
 		}
 	}
@@ -167,4 +176,56 @@ func (store *SqliteStore) Load(state *goes.AggregateState, id uuid.UUID) error {
 
 func (store *SqliteStore) Query(query func(db *sql.DB) error) error {
 	return query(store.db)
+}
+
+func ViewById[TView any](store *SqliteStore, aggregate_id string) (*TView, error) {
+	// viewType := reflect.TypeOf(*new(TView)).Name()
+	var view TView
+
+	err := store.Query(func(db *sql.DB) error {
+
+		query := `select view from auto_projections where aggregate_id = ?`
+		viewJson := ""
+
+		if err := db.QueryRow(query, aggregate_id).Scan(&viewJson); err != nil {
+			return err
+		}
+
+		if err := json.Unmarshal([]byte(viewJson), &view); err != nil {
+			return err
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &view, nil
+}
+
+func ViewByProperty[TView any](store *SqliteStore, path string, value any) (*TView, error) {
+	viewType := reflect.TypeOf(*new(TView)).Name()
+	var view TView
+
+	err := store.Query(func(db *sql.DB) error {
+
+		query := `select view from auto_projections where view_type = ? and view ->> ? = ?`
+		viewJson := ""
+
+		if err := db.QueryRow(query, viewType, path, value).Scan(&viewJson); err != nil {
+			return err
+		}
+
+		if err := json.Unmarshal([]byte(viewJson), &view); err != nil {
+			return err
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &view, nil
 }

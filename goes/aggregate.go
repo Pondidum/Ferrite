@@ -70,7 +70,7 @@ func Apply[TEvent any](state *AggregateState, event TEvent) error {
 		AggregateID: state.id,
 		Sequence:    state.sequence + len(state.pendingEvents) + 1,
 		Timestamp:   time.Now().UTC(),
-		EventType:   reflect.TypeOf(event).Name(),
+		EventType:   name,
 		Event:       event,
 	}
 
