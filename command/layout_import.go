@@ -74,17 +74,6 @@ func (c *LayoutImportCommand) RunContext(ctx context.Context, args []string) err
 	}
 	defer store.Close()
 
-	// store.RegisterProjection(layout.NewLayoutsProjection())
-
-	// exists, err := layout.QueryHasLayout(store, layoutName)
-	// if err != nil {
-	// 	return err
-	// }
-
-	// if exists {
-	// 	return fmt.Errorf("a layout called %s already exists", layoutName)
-	// }
-
 	l := layout.CreateLayout(layoutName)
 
 	c.Ui.Info("Importing existing layout file")
