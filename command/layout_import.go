@@ -2,12 +2,14 @@ package command
 
 import (
 	"context"
+	"database/sql"
 	"ferrite/goes/sqlite"
 	"ferrite/layout"
 	"ferrite/zmk"
 	"fmt"
 	"os"
 	"path"
+	"reflect"
 	"strings"
 
 	"github.com/mitchellh/cli"
@@ -74,6 +76,15 @@ func (c *LayoutImportCommand) RunContext(ctx context.Context, args []string) err
 	}
 	defer store.Close()
 
+	exists, err := hasLayoutAlready(store, layoutName)
+	if err != nil {
+		return err
+	}
+
+	if exists {
+		return fmt.Errorf("a layout named %s already exists", layoutName)
+	}
+
 	l := layout.CreateLayout(layoutName)
 
 	c.Ui.Info("Importing existing layout file")
@@ -87,4 +98,29 @@ func (c *LayoutImportCommand) RunContext(ctx context.Context, args []string) err
 
 	c.Ui.Info("Done.")
 	return nil
+}
+
+func hasLayoutAlready(store *sqlite.SqliteStore, name string) (bool, error) {
+	viewType := reflect.TypeOf(*new(layout.LayoutView)).Name()
+
+	exists := false
+	err := store.Query(func(db *sql.DB) error {
+
+		query := `select count(*) from auto_projections where view_type = ? and view ->> '$.name' = ?`
+
+		var count sql.NullInt32
+		if err := db.QueryRow(query, viewType, name).Scan(&count); err != nil {
+			return err
+		}
+
+		exists = count.Valid && count.Int32 > 0
+		return nil
+
+	})
+	if err != nil {
+		return false, err
+	}
+
+	return exists, nil
+
 }
