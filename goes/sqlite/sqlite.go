@@ -12,17 +12,18 @@ import (
 )
 
 type SqliteStore struct {
-	db *sql.DB
-
 	projections []*Projection
 }
 
 func CreateStore() (*SqliteStore, error) {
 
-	db, err := sql.Open("sqlite3", "ferrite.db")
+	store := &SqliteStore{}
+
+	db, err := store.open()
 	if err != nil {
 		return nil, err
 	}
+	defer db.Close()
 
 	createTables := `
 CREATE TABLE IF NOT EXISTS events(
@@ -43,22 +44,22 @@ CREATE TABLE IF NOT EXISTS events(
 		return nil, err
 	}
 
-	return &SqliteStore{
-		db: db,
-	}, nil
+	return store, nil
 }
 
-func (store *SqliteStore) Close() error {
-	return store.db.Close()
-}
-
-func (store *SqliteStore) DB() *sql.DB {
-	return store.db
+func (store *SqliteStore) open() (*sql.DB, error) {
+	return sql.Open("sqlite3", "ferrite.db")
 }
 
 func (store *SqliteStore) RegisterProjection(p *Projection) error {
 
-	if err := p.init(store.db); err != nil {
+	db, err := store.open()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	if err := p.init(db); err != nil {
 		return err
 	}
 
@@ -69,7 +70,13 @@ func (store *SqliteStore) RegisterProjection(p *Projection) error {
 
 func (store *SqliteStore) Save(state *goes.AggregateState) error {
 
-	tx, err := store.db.BeginTx(context.Background(), nil)
+	db, err := store.open()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	tx, err := db.BeginTx(context.Background(), nil)
 	if err != nil {
 		return err
 	}
@@ -120,7 +127,13 @@ func (store *SqliteStore) Save(state *goes.AggregateState) error {
 
 func (store *SqliteStore) Load(state *goes.AggregateState, id uuid.UUID) error {
 
-	rows, err := store.db.Query("select sequence, timestamp, event_type, event_data from events where aggregate_id = ?", id)
+	db, err := store.open()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	rows, err := db.Query("select sequence, timestamp, event_type, event_data from events where aggregate_id = ?", id)
 	if err != nil {
 		return err
 	}
@@ -154,5 +167,12 @@ func (store *SqliteStore) Load(state *goes.AggregateState, id uuid.UUID) error {
 }
 
 func (store *SqliteStore) Query(query func(db *sql.DB) error) error {
-	return query(store.db)
+
+	db, err := store.open()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	return query(db)
 }

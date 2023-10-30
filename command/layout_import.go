@@ -74,7 +74,6 @@ func (c *LayoutImportCommand) RunContext(ctx context.Context, args []string) err
 	if err != nil {
 		return err
 	}
-	defer store.Close()
 
 	exists, err := hasLayoutAlready(store, layoutName)
 	if err != nil {

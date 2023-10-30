@@ -47,7 +47,6 @@ func (c *LayoutShowCommand) RunContext(ctx context.Context, args []string) error
 	if err != nil {
 		return err
 	}
-	defer store.Close()
 
 	view, err := sqlite.ViewByProperty[layout.LayoutView](store, "$.name", layoutName)
 	if err != nil {
