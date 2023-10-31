@@ -22,21 +22,22 @@ func NewApiV2(store *sqlite.SqliteStore) (*fiber.App, error) {
 
 	app.Use(cors.New())
 
-	// app.Get("/layouts", func(c *fiber.Ctx) error {
+	app.Get("/api/layouts", func(c *fiber.Ctx) error {
 
-	// 	var names []string
-	// 	if err := store.Query(AllLayoutNames(&names)); err != nil {
-	// 		return err
-	// 	}
+		names, err := layout.GetLayoutNames(store)
+		if err != nil {
+			return err
+		}
 
-	// })
+		return c.JSON(names)
+
+	})
 
 	app.Get("/api/layouts/:name", func(c *fiber.Ctx) error {
 
 		name := c.Params("name")
-		viewJson := ""
-
-		if err := store.Query(layout.GetLayoutRaw(name, &viewJson)); err != nil {
+		viewJson, err := layout.GetLayoutRaw(store, name)
+		if err != nil {
 			return err
 		}
 

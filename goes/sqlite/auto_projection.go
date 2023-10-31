@@ -96,3 +96,7 @@ func ViewByProperty[TView any](store *SqliteStore, path string, value any) (*TVi
 
 	return &view, nil
 }
+
+func ViewType[TView any]() string {
+	return reflect.TypeOf(*new(TView)).Name()
+}
