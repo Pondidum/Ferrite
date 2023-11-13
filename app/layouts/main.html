@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ferrite</title>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.7"
+      integrity="sha384-EAzY246d6BpbWR7sQ8+WEm40J8c3dHFsqC58IgPlh4kMbRRI6P6WA+LA/qGAyAu8"
+      crossorigin="anonymous"
+    ></script>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/mvp.css" /> -->
+    <link rel="stylesheet" href="/static/pico.min.css" />
+    <link rel="stylesheet" href="/static/app.css" />
+    <link rel="stylesheet" href="/static/key.css" />
+  </head>
+  <body>
+    <header class="container">
+      <nav>
+        Ferrite
+        <details role="list">
+          <summary aria-haspopup="listbox">Layouts</summary>
+          <ul role="listbox">
+            {{ range $i, $n := .LayoutNames }}
+              <li><a href="/layouts/{{ $n }}">{{ $n }}</a></li>
+            {{- end -}}
+          </ul>
+        </details>
+      </nav>
+    </header>
+    <main class="container">
+      {{embed}}
+    </main>
+  </body>
+</html>

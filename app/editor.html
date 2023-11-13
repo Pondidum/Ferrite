@@ -1,0 +1,39 @@
+<p>
+Action: {{ .Action }}
+Params:
+</p>
+<ul>
+  {{ range $i, $param := .Params }}
+  <li>{{ $param.Number}} | {{ $param.KeyCode }} - {{ $param.Modifiers }}</li>
+  {{- end -}}
+</ul>
+
+<section>
+  <h2>When Tapped</h2>
+
+  <div class="grid">
+    <article>
+      <header>Press Key</header>
+    </article>
+
+    <article>
+      <header>Switch to Layer</header>
+    </article>
+
+  </div>
+</section>
+
+<section>
+  <h2>When Held</h2>
+
+  <div class="grid">
+    <article>
+      <header>Press Key</header>
+    </article>
+
+    <article>
+      <header>Switch to Layer</header>
+    </article>
+
+  </div>
+</section>

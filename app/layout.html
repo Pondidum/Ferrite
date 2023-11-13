@@ -1,0 +1,52 @@
+
+<nav style="margin-bottom: unset;">
+  <ul>
+{{ range $i, $layer := .Layers }}
+  {{ if eq $.CurrentLayerIndex $i }}
+  <li>{{ $layer.Name }}</li>
+  {{ else }}
+  <li><a href="/layouts/{{ $.LayoutName  }}/{{ $i }}">{{ $layer.Name }}</a></li>
+  {{ end }}
+{{- end -}}
+  </ul>
+</nav>
+
+
+<div
+  style="
+    position: relative;
+    width: 765px;
+    height: 300px;
+    border: 1px solid black;
+  "
+>
+
+{{ range $i, $key := .Device.Layout }}
+
+  {{ $binding := index $.CurrentLayer.Bindings $i }}
+  <div class="key" style="{{ $key.Style }}"
+    hx-get="/layouts/{{ $.LayoutName }}/{{ $.CurrentLayerIndex}}/{{ $i }}"
+    hx-trigger="click"
+    hx-push-url="true"
+    hx-target="#editor"
+    hx-select="#editor">
+    <span class="behaviour-binding">{{ $binding.Action }}</span>
+    {{ if gt (len $binding.Params) 1 }}
+    <div class="code">{{ (index $binding.Params 1).String }}</div>
+    {{ end }}
+
+    {{ if gt (len $binding.Params) 0 }}
+    <div class="code">{{ (index $binding.Params 0).String }}</div>
+    {{ end }}
+  </div>
+
+{{- end -}}
+</div>
+
+<div id="editor">
+  {{ if .IsEdit }}
+  <h2>Editing {{ .KeyIndex }}</h2>
+
+  {{ template "editor" .Key}}
+  {{- end -}}
+</div>

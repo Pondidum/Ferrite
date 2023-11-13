@@ -1,6 +1,6 @@
 module ferrite
 
-go 1.18
+go 1.21
 
 require (
 	github.com/charmbracelet/glamour v0.6.0
@@ -21,6 +21,8 @@ require (
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
+	github.com/gofiber/template v1.8.2 // indirect
+	github.com/gofiber/utils v1.1.0 // indirect
 	github.com/klauspost/compress v1.15.9 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
@@ -51,6 +53,7 @@ require (
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/gofiber/fiber/v2 v2.42.0
+	github.com/gofiber/template/html/v2 v2.0.5
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/css v1.0.0 // indirect
