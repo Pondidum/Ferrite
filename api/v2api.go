@@ -22,6 +22,8 @@ func NewApiV2(store *sqlite.SqliteStore) (*fiber.App, error) {
 		Views: engine,
 	})
 
+	WithHotReload(app)
+
 	app.Use(func(c *fiber.Ctx) error {
 		fmt.Printf("%s %s \n", c.Method(), c.Path())
 		return c.Next()
