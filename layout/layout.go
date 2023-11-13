@@ -17,6 +17,7 @@ func BlankLayout() *Layout {
 
 	goes.Register(l.State, l.onLayoutCreated)
 	goes.Register(l.State, l.onLayoutImported)
+	goes.Register(l.State, l.onDeviceSet)
 	goes.Register(l.State, l.onBindingChanged)
 
 	goes.RegisterAutoProjection(l.State, l.toView)
@@ -40,6 +41,7 @@ type Layout struct {
 
 	keymap      Keymap
 	bindingSets map[string]bindings.BindSet
+	device      string
 }
 
 func (l *Layout) toView() LayoutView {
@@ -47,6 +49,7 @@ func (l *Layout) toView() LayoutView {
 		Name:        l.Name,
 		Keymap:      l.keymap,
 		BindingSets: l.bindingSets,
+		Device:      l.device,
 	}
 }
 
@@ -80,6 +83,16 @@ func (l *Layout) onLayoutImported(e LayoutImported) {
 			l.bindingSets[set.Name] = set
 		}
 	}
+}
+
+func (l *Layout) SetDevice(deviceName string) error {
+	return goes.Apply(l.State, DeviceSet{
+		Name: deviceName,
+	})
+}
+
+func (l *Layout) onDeviceSet(e DeviceSet) {
+	l.device = e.Name
 }
 
 func (l *Layout) BindKey(layerIndex int, key int, bind Binding) error {
@@ -144,6 +157,10 @@ type LayoutCreated struct {
 type LayoutImported struct {
 	Keymap      Keymap
 	BindingSets []string
+}
+
+type DeviceSet struct {
+	Name string
 }
 
 type BindingChanged struct {

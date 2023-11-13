@@ -3,6 +3,7 @@ package command
 import (
 	"context"
 	"database/sql"
+	"ferrite/devices"
 	"ferrite/goes/sqlite"
 	"ferrite/layout"
 	"ferrite/zmk"
@@ -10,6 +11,7 @@ import (
 	"os"
 	"path"
 	"reflect"
+	"slices"
 	"strings"
 
 	"github.com/mitchellh/cli"
@@ -26,7 +28,8 @@ func NewLayoutImportCommand(ui cli.Ui) (*LayoutImportCommand, error) {
 type LayoutImportCommand struct {
 	Base
 
-	name string
+	name   string
+	device string
 }
 
 func (c *LayoutImportCommand) Name() string {
@@ -41,6 +44,7 @@ func (c *LayoutImportCommand) Flags() *pflag.FlagSet {
 	flags := pflag.NewFlagSet(c.Name(), pflag.ContinueOnError)
 
 	flags.StringVar(&c.name, "name", "", "specify a name for the layout")
+	flags.StringVar(&c.device, "device", "", "specify the device, e.g. cradio")
 
 	return flags
 }
@@ -89,6 +93,14 @@ func (c *LayoutImportCommand) RunContext(ctx context.Context, args []string) err
 	c.Ui.Info("Importing existing layout file")
 	if err := l.ImportFrom(f); err != nil {
 		return err
+	}
+
+	if c.device != "" {
+		if slices.Contains(devices.AllDevices(), c.device) {
+			if err := l.SetDevice(c.device); err != nil {
+				return err
+			}
+		}
 	}
 
 	if err := store.Save(l.State); err != nil {

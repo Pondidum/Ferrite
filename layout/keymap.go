@@ -3,6 +3,7 @@ package layout
 import (
 	"ferrite/bindings"
 	"ferrite/zmk"
+	"strconv"
 	"strings"
 )
 
@@ -39,6 +40,14 @@ type Parameter struct {
 	Number    *int32   `json:"number"`
 	KeyCode   *string  `json:"keyCode"`
 	Modifiers []string `json:"modifiers"`
+}
+
+func (p *Parameter) String() string {
+	if p.Number != nil {
+		return strconv.Itoa(int(*p.Number))
+	}
+
+	return strings.Join(append(p.Modifiers, *p.KeyCode), "")
 }
 
 type Layer struct {

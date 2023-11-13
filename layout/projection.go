@@ -9,6 +9,7 @@ import (
 type LayoutView struct {
 	Name        string                      `json:"name"`
 	Keymap      Keymap                      `json:"keymap"`
+	Device      string                      `json:"device"`
 	BindingSets map[string]bindings.BindSet `json:"bindingSets"`
 }
 
