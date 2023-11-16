@@ -2,6 +2,9 @@ package api
 
 import (
 	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
@@ -9,11 +12,31 @@ import (
 )
 
 func WithHotReload(app *fiber.App) {
-	id := uuid.New()
-	app.Use("/ws", func(c *fiber.Ctx) error {
-		// IsWebSocketUpgrade returns true if the client
-		// requested upgrade to the WebSocket protocol.
+	id := []byte(uuid.New().String())
 
+	currentId := -1
+	connections := map[int]*websocket.Conn{}
+
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, syscall.SIGHUP)
+
+	go func() {
+		for {
+			s := <-sig
+			fmt.Printf("Received %s\n", s)
+
+			id = []byte(uuid.New().String())
+
+			for i, c := range connections {
+				if err := c.WriteMessage(websocket.TextMessage, id); err != nil {
+					fmt.Println("Removing socket", i)
+					delete(connections, i)
+				}
+			}
+		}
+	}()
+
+	app.Use("/ws", func(c *fiber.Ctx) error {
 		if websocket.IsWebSocketUpgrade(c) {
 			c.Locals("allowed", true)
 			return c.Next()
@@ -21,24 +44,19 @@ func WithHotReload(app *fiber.App) {
 		return fiber.ErrUpgradeRequired
 	})
 
-	app.Get("/ws/:id", websocket.New(func(c *websocket.Conn) {
-
-		fmt.Println("On Websocket Message")
+	app.Get("/ws/hotreload", websocket.New(func(c *websocket.Conn) {
 		for {
+			currentId++
+			connections[currentId] = c
 
-			_, msg, err := c.ReadMessage()
-			if err != nil {
-				fmt.Println("read:", err)
+			if _, _, err := c.ReadMessage(); err != nil {
 				break
 			}
-			fmt.Printf("recv: %s\n", msg)
 
-			if err := c.WriteMessage(websocket.TextMessage, []byte(id.String())); err != nil {
-				fmt.Println("write:", err)
+			if err := c.WriteMessage(websocket.TextMessage, id); err != nil {
 				break
 			}
 		}
-
 	}))
 
 }
