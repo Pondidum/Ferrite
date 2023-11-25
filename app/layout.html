@@ -47,6 +47,6 @@
   {{ if .IsEdit }}
   <h2>Editing {{ .KeyIndex }}</h2>
 
-  {{ template "editor" .Key}}
+  {{ template "editor" (dict "Layers" .Layers "Key" .Key)}}
   {{- end -}}
 </div>

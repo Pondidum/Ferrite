@@ -1,9 +1,9 @@
 <p>
-Action: {{ .Action }}
-Params:
+  Debug: Action: {{ .Key.Action }}
+  Params:
 </p>
 <ul>
-  {{ range $i, $param := .Params }}
+  {{ range $i, $param := .Key.Params }}
   <li>{{ $param.Number}} | {{ $param.KeyCode }} - {{ $param.Modifiers }}</li>
   {{- end -}}
 </ul>
@@ -11,16 +11,52 @@ Params:
 <section>
   <h2>When Tapped</h2>
 
-  <div class="grid">
-    <article>
-      <header>Press Key</header>
-    </article>
+  <form>
 
-    <article>
-      <header>Switch to Layer</header>
-    </article>
+    <fieldset>
+      <div class="grid">
+        <article>
+          <header>
+            <label for="tap-key">
+              <input type="radio" id="tap-key" name="tap-action" value="tap-key">
+              Press key
+            </label>
+          </header>
+          <input type="text" onfocus="document.getElementById('tap-key').click()">
+        </article>
 
-  </div>
+        <article>
+          <header>
+            <label for="change-layer">
+              <input type="radio" id="change-layer" name="tap-action" value="change-layer">
+              Change Layer
+            </label>
+          </header>
+
+          <select onfocus="document.getElementById('change-layer').click()">
+            {{ range $i, $layer := .Layers }}
+              <option value="{{ $i }}">{{ $layer.Name }}</option>
+            {{ end }}
+          </select>
+          <fieldset>
+            <label for="layer-type-mo">
+              <input type="radio" id="layer-type-mo" name="layer-type"  onfocus="document.getElementById('change-layer').click()">
+              Momentarily
+            </label>
+            <label for="layer-type-sl">
+              <input type="radio" id="layer-type-sl" name="layer-type"  onfocus="document.getElementById('change-layer').click()">
+              Permanently
+            </label>
+            <label for="layer-type-tog">
+              <input type="radio" id="layer-type-tog" name="layer-type"  onfocus="document.getElementById('change-layer').click()">
+              Toggle
+            </label>
+          </fieldset>
+        </article>
+      </div>
+    </fieldset>
+
+  </form>
 </section>
 
 <section>
