@@ -40,15 +40,30 @@
           </select>
           <fieldset>
             <label for="layer-type-mo">
-              <input type="radio" id="layer-type-mo" name="layer-type"  onfocus="document.getElementById('change-layer').click()">
+              <input
+                type="radio" id="layer-type-mo"
+                name="layer-type"
+                onfocus="document.getElementById('change-layer').click()"
+                {{ eq .Key.Action "mo" | ternary "checked" "" }}
+              >
               Momentarily
             </label>
             <label for="layer-type-sl">
-              <input type="radio" id="layer-type-sl" name="layer-type"  onfocus="document.getElementById('change-layer').click()">
+              <input
+                type="radio" id="layer-type-sl"
+                name="layer-type"
+                onfocus="document.getElementById('change-layer').click()"
+                {{ eq .Key.Action "sl" | ternary "checked" "" }}
+                >
               Permanently
             </label>
             <label for="layer-type-tog">
-              <input type="radio" id="layer-type-tog" name="layer-type"  onfocus="document.getElementById('change-layer').click()">
+              <input
+                type="radio" id="layer-type-tog"
+                name="layer-type"
+                onfocus="document.getElementById('change-layer').click()"
+                {{ eq .Key.Action "tog" | ternary "checked" "" }}
+              >
               Toggle
             </label>
           </fieldset>

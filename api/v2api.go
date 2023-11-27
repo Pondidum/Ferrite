@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/Masterminds/sprig/v3"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
@@ -18,20 +19,7 @@ func NewApiV2(store *sqlite.SqliteStore) (*fiber.App, error) {
 
 	engine := html.New("./app", ".html")
 	engine.Reload(true)
-
-	engine.AddFunc("dict", func(v ...interface{}) map[string]interface{} {
-		dict := map[string]interface{}{}
-		lenv := len(v)
-		for i := 0; i < lenv; i += 2 {
-			key := fmt.Sprint(v[i])
-			if i+1 >= lenv {
-				dict[key] = ""
-				continue
-			}
-			dict[key] = v[i+1]
-		}
-		return dict
-	})
+	engine.AddFuncMap(sprig.FuncMap())
 
 	app := fiber.New(fiber.Config{
 		Views: engine,
